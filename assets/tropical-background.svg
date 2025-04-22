@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="400" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Ciel -->
+  <rect width="800" height="200" fill="#87CEEB" />
+  
+  <!-- Soleil -->
+  <circle cx="700" cy="80" r="40" fill="#FFD700" />
+  <circle cx="700" cy="80" r="50" fill="#FFD700" opacity="0.3" />
+  
+  <!-- Océan -->
+  <rect y="200" width="800" height="200" fill="#1E90FF" />
+  
+  <!-- Vagues -->
+  <path d="M0,200 Q50,180 100,200 Q150,220 200,200 Q250,180 300,200 Q350,220 400,200 Q450,180 500,200 Q550,220 600,200 Q650,180 700,200 Q750,220 800,200 L800,220 Q750,200 700,220 Q650,240 600,220 Q550,200 500,220 Q450,240 400,220 Q350,200 300,220 Q250,240 200,220 Q150,200 100,220 Q50,240 0,220 Z" fill="#4682B4" opacity="0.6" />
+  
+  <!-- Île principale -->
+  <ellipse cx="400" cy="280" rx="120" ry="40" fill="#D2B48C" />
+  <ellipse cx="400" cy="280" rx="100" ry="30" fill="#DEB887" />
+  
+  <!-- Végétation de l'île -->
+  <ellipse cx="400" cy="260" rx="80" ry="20" fill="#228B22" />
+  <ellipse cx="400" cy="260" rx="60" ry="15" fill="#32CD32" />
+  
+  <!-- Palmier 1 -->
+  <line x1="380" y1="260" x2="365" y2="220" stroke="#8B4513" stroke-width="5" />
+  <path d="M365,220 C360,205 350,210 345,200 C360,205 370,200 380,205 C375,210 380,215 365,220" fill="#228B22" />
+  <path d="M365,220 C370,205 375,200 385,195 C385,210 390,215 395,220 C380,220 370,225 365,220" fill="#228B22" />
+  <path d="M365,220 C355,210 345,205 335,210 C345,215 350,225 355,230 C365,225 370,225 365,220" fill="#228B22" />
+  
+  <!-- Palmier 2 -->
+  <line x1="420" y1="260" x2="440" y2="210" stroke="#8B4513" stroke-width="5" />
+  <path d="M440,210 C445,195 455,190 465,185 C450,195 440,200 430,195 C435,200 435,205 440,210" fill="#228B22" />
+  <path d="M440,210 C445,195 445,185 440,175 C430,190 425,200 415,205 C430,210 435,210 440,210" fill="#228B22" />
+  <path d="M440,210 C455,200 465,190 480,195 C460,200 450,210 445,220 C440,215 435,210 440,210" fill="#228B22" />
+  
+  <!-- Petite île à gauche -->
+  <ellipse cx="150" cy="300" rx="50" ry="15" fill="#D2B48C" />
+  <ellipse cx="150" cy="300" rx="40" ry="10" fill="#DEB887" />
+  <ellipse cx="150" cy="295" rx="30" ry="8" fill="#228B22" />
+  
+  <!-- Palmier sur petite île -->
+  <line x1="140" y1="295" x2="130" y2="270" stroke="#8B4513" stroke-width="3" />
+  <path d="M130,270 C120,260 110,265 105,260 C115,265 125,265 130,270 C125,275 130,280 130,270" fill="#228B22" />
+  <path d="M130,270 C135,260 140,255 150,255 C140,265 140,275 135,280 C130,275 125,275 130,270" fill="#228B22" />
+  
+  <!-- Petite île à droite -->
+  <ellipse cx="650" cy="320" rx="60" ry="20" fill="#D2B48C" />
+  <ellipse cx="650" cy="320" rx="50" ry="15" fill="#DEB887" />
+  <ellipse cx="650" cy="315" rx="40" ry="10" fill="#228B22" />
+  
+  <!-- Palmiers sur petite île à droite -->
+  <line x1="630" y1="315" x2="615" y2="280" stroke="#8B4513" stroke-width="3" />
+  <path d="M615,280 C605,270 595,275 590,270 C600,275 610,275 615,280 C610,285 615,290 615,280" fill="#228B22" />
+  <path d="M615,280 C620,270 625,265 635,265 C625,275 625,285 620,290 C615,285 610,285 615,280" fill="#228B22" />
+  
+  <line x1="670" y1="315" x2="685" y2="275" stroke="#8B4513" stroke-width="3" />
+  <path d="M685,275 C695,265 705,260 715,265 C700,270 690,275 685,275 C680,280 675,285 685,275" fill="#228B22" />
+  <path d="M685,275 C680,260 670,255 665,245 C675,260 680,270 685,275 C690,270 695,265 685,275" fill="#228B22" />
+  
+  <!-- Nuages -->
+  <ellipse cx="100" cy="80" rx="50" ry="20" fill="white" opacity="0.8" />
+  <ellipse cx="130" cy="70" rx="40" ry="15" fill="white" opacity="0.9" />
+  <ellipse cx="70" cy="85" rx="30" ry="12" fill="white" opacity="0.7" />
+  
+  <ellipse cx="300" cy="50" rx="60" ry="25" fill="white" opacity="0.8" />
+  <ellipse cx="340" cy="40" rx="50" ry="20" fill="white" opacity="0.9" />
+  <ellipse cx="270" cy="60" rx="40" ry="15" fill="white" opacity="0.7" />
+  
+  <ellipse cx="500" cy="100" rx="70" ry="20" fill="white" opacity="0.7" />
+  <ellipse cx="530" cy="90" rx="50" ry="15" fill="white" opacity="0.8" />
+  <ellipse cx="470" cy="105" rx="40" ry="12" fill="white" opacity="0.6" />
+</svg>
