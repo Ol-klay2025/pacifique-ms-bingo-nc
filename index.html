@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PACIFIQUE MS BINGO - Jeu de Bingo en ligne</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/landing.css">
+    <link rel="stylesheet" href="/css/hommage.css">
+    <style>
+        :root {
+            --primary-color: #0097b2;
+            --secondary-color: #ff7e00;
+            --accent-color: #ffcc00;
+            --bg-dark: #0a2a3b;
+            --text-light: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Styles pour les nouvelles sections */
+        .live-games, .jackpot, .social {
+            background-color: rgba(0, 151, 178, 0.1);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .live-games h2, .jackpot h2, .social h2 {
+            color: var(--accent-color);
+            margin-top: 0;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .live-games ul, .jackpot ul, .social ul {
+            padding-left: 1.5rem;
+        }
+        
+        .live-games li, .jackpot li, .social li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            list-style-type: none;
+        }
+        
+        .live-games li:before, .jackpot li:before, .social li:before {
+            content: "🌴";
+            position: absolute;
+            left: -1.5rem;
+            top: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            background-image: url('/img/bingo-crypto-bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .overlay {
+            background-color: rgba(10, 42, 59, 0.8);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        p.lead {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #007d99;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e37100;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            justify-content: center;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .feature-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100%;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+        
+        .how-to-play {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .how-to-play h2 {
+            text-align: center;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            justify-content: center;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .step-number {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .prizes {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .prizes h2 {
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .prize-list {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .prize-item {
+            flex: 1;
+            min-width: 200px;
+            padding: 1rem;
+        }
+        
+        .prize-amount {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        footer {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+            color: var(--accent-color);
+        }
+        
+        .language-selector {
+            margin-bottom: 1rem;
+        }
+        
+        .language-selector select {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .features, .steps, .prize-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                margin-bottom: 1rem;
+                text-align: center;
+            }
+            
+            .feature-card, .how-to-play, .prizes {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <div class="container">
+            <header>
+                <img src="/img/logo.png" alt="PACIFIQUE MS BINGO" class="logo" style="max-width: 350px;">
+                <p class="tribute-text" style="text-align: center; color: var(--accent-color); font-style: italic; margin-top: 10px;">Un hommage à notre grand-mère au grand cœur, Monika Seuvea</p>
+            </header>
+            
+            <section class="hero" style="max-width: 1200px; margin-left: auto; margin-right: auto; text-align: center;">
+                <h1>Bienvenue sur PACIFIQUE MS BINGO</h1>
+                <p class="lead">Vivez l'expérience du bingo dans un cadre tropical paradisiaque. Participez à des parties en direct, gagnez des prix et amusez-vous dans une ambiance conviviale et immersive.</p>
+                
+                <div class="cta-buttons">
+                    <a href="/login.html" class="btn btn-primary">Se connecter</a>
+                    <a href="/login.html?tab=register" class="btn btn-secondary">S'inscrire</a>
+                </div>
+            </section>
+            
+            <section class="features" style="max-width: 1200px; margin-left: auto; margin-right: auto; text-align: center;">
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3>Parties en direct</h3>
+                    <p>Jouez à des parties de bingo en temps réel avec des joueurs du monde entier. Les parties démarrent en continu entre 10h et 3h du matin (heure locale), avec des annonces vocales en français et en anglais pour une expérience accessible et immersive.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Gros gains</h3>
+                    <p>Jackpot progressif alimenté en temps réel. Défis quotidiens pour gagner des récompenses en crypto.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🌴</div>
+                    <h3>Ambiance Pacifique</h3>
+                    <p>Immergez-vous dans un univers tropical inspiré des îles du Pacifique avec des designs colorés et une interface intuitive et conviviale.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Sécurité KYC</h3>
+                    <p>Notre système de vérification d'identité (KYC) garantit un environnement de jeu sécurisé et fiable pour tous les participants.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Traçabilité Blockchain</h3>
+                    <p>Toutes les transactions en crypto sur Pacifique MS Bingo sont traçables via notre visualiseur blockchain, basé sur notre système Pacifique Coin.</p>
+                </div>
+            </section>
+            
+            
+            <section class="how-to-play" style="max-width: 1200px; margin-left: auto; margin-right: auto; text-align: center;">
+                <h2>Comment jouer ?</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Créez un compte</h3>
+                        <p>Inscrivez-vous gratuitement pour accéder à la plateforme et découvrir l'univers du bingo en ligne dans une ambiance pacifique et conviviale.</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>Achetez des cartons</h3>
+                        <p>Choisissez parmi nos différentes options : cartons standards (100 fr), spéciaux (300 fr) ou séries (6 cartons pour 500 fr).</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>Participez aux tirages</h3>
+                        <p>Rejoignez les parties disponibles en continu de 10h à 3h (heure locale), avec des parties spéciales toutes les 4 heures.</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h3>Gagnez des prix</h3>
+                        <p>Soyez le premier à compléter une ligne (Quine) ou un carton entier (Bingo) pour remporter des prix en argent réel.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="prizes" style="max-width: 1200px; margin-left: auto; margin-right: auto; text-align: center;">
+                <h2>Répartition des mises</h2>
+                <div class="prize-list">
+                    <div class="prize-item">
+                        <div class="prize-amount">60%</div>
+                        <p>Pour les gagnants du Bingo</p>
+                    </div>
+                    
+                    <div class="prize-item">
+                        <div class="prize-amount">20%</div>
+                        <p>Pour les gagnants de la Quine</p>
+                    </div>
+                    
+                    <div class="prize-item">
+                        <div class="prize-amount">15%</div>
+                        <p>Pour la plateforme</p>
+                    </div>
+                    
+                    <div class="prize-item">
+                        <div class="prize-amount">5%</div>
+                        <p>Pour le jackpot spécial et les défis crypto</p>
+                    </div>
+                </div>
+            </section>
+            
+            
+            <section class="social" style="max-width: 1200px; margin-left: auto; margin-right: auto; text-align: center;">
+                <h2>Connexion sociale & animations régionales</h2>
+                <ul style="display: flex; flex-direction: column; align-items: center; padding-left: 0;">
+                    <li style="text-align: center; list-style-type: none; display: flex; align-items: center; justify-content: center;"><span style="color: var(--accent-color); margin-right: 8px;">✓</span>Connexion directe aux réseaux sociaux</li>
+                    <li style="text-align: center; list-style-type: none; display: flex; align-items: center; justify-content: center;"><span style="color: var(--accent-color); margin-right: 8px;">✓</span>Partage des victoires selon le type (Quine, Bingo, Jackpot)</li>
+                    <li style="text-align: center; list-style-type: none; display: flex; align-items: center; justify-content: center;"><span style="color: var(--accent-color); margin-right: 8px;">✓</span>Animations de célébration localisées selon les régions du Pacifique</li>
+                    <li style="text-align: center; list-style-type: none; display: flex; align-items: center; justify-content: center;"><span style="color: var(--accent-color); margin-right: 8px;">✓</span>Partages personnalisés & interface sociale intégrée</li>
+                </ul>
+            </section>
+            
+            <div class="cta-buttons" style="max-width: 800px; margin-left: auto; margin-right: auto;">
+                <a href="/login.html" class="btn btn-primary">Commencer à jouer maintenant</a>
+            </div>
+        </div>
+        
+        <footer>
+            <div class="footer-links">
+                <a href="/about.html">À propos</a>
+                <a href="/rules.html">Règles du jeu</a>
+                <a href="/contact.html">Contact</a>
+                <a href="/terms.html">Conditions d'utilisation</a>
+                <a href="/privacy.html">Politique de confidentialité</a>
+                <a href="/blockchain-visualizer.html">Transactions Blockchain</a>
+                <a href="/admin.html" class="admin-link">Administration</a>
+            </div>
+            
+            <div class="language-selector">
+                <select id="language-select" onchange="changeLanguage()">
+                    <option value="fr">Français</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+            
+            <p>&copy; 2025 PACIFIQUE MS BINGO. Tous droits réservés.</p>
+            
+            <div class="hommage-footer">
+                <p class="hommage-text">
+                    Ce site est un hommage sincère à notre grand-mère, Monika Seuvea. Son nom apparaît ici non à des fins commerciales, mais comme marque de respect, de reconnaissance et d'amour envers celle qui a tant donné à notre famille et notre culture.
+                </p>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Traductions
+        const translations = {
+            fr: {
+                "title": "PACIFIQUE MS BINGO - Jeu de Bingo en ligne",
+                "welcome": "Bienvenue sur PACIFIQUE MS BINGO",
+                "lead": "Vivez l'expérience du bingo dans un cadre tropical paradisiaque. Participez à des parties en direct, gagnez des prix et amusez-vous dans une ambiance conviviale et immersive.",
+                "login": "Se connecter",
+                "register": "S'inscrire",
+                "live-games-title": "Parties en direct",
+                "live-games-description": "Jouez à des parties de bingo en temps réel avec des joueurs du monde entier. Les parties démarrent en continu entre 10h et 3h du matin (heure locale), avec des annonces vocales en français et en anglais pour une expérience accessible et immersive.",
+                "big-wins-title": "Gros gains",
+                "big-wins-description": "Jackpot progressif alimenté en temps réel. Défis quotidiens pour gagner des récompenses en crypto.",
+                "pacific-ambiance-title": "Ambiance Pacifique",
+                "pacific-ambiance-description": "Immergez-vous dans un univers tropical inspiré des îles du Pacifique avec des designs colorés et une interface intuitive et conviviale.",
+                "kyc-security-title": "Sécurité KYC",
+                "kyc-security-description": "Notre système de vérification d'identité (KYC) garantit un environnement de jeu sécurisé et fiable pour tous les participants.",
+                "how-to-play": "Comment jouer ?",
+                "step1-title": "Créez un compte",
+                "step1-description": "Inscrivez-vous gratuitement pour accéder à la plateforme et découvrir l'univers du bingo en ligne dans une ambiance pacifique et conviviale.",
+                "step2-title": "Achetez des cartons",
+                "step2-description": "Choisissez parmi nos différentes options : cartons standards (100 fr), spéciaux (300 fr) ou séries (6 cartons pour 500 fr).",
+                "step3-title": "Participez aux tirages",
+                "step3-description": "Rejoignez les parties disponibles en continu de 10h à 3h (heure locale), avec des parties spéciales toutes les 4 heures.",
+                "step4-title": "Gagnez des prix",
+                "step4-description": "Soyez le premier à compléter une ligne (Quine) ou un carton entier (Bingo) pour remporter des prix en argent réel.",
+                "prize-distribution": "Répartition des mises",
+                "bingo-winners": "Pour les gagnants du Bingo",
+                "quine-winners": "Pour les gagnants de la Quine",
+                "platform": "Pour la plateforme",
+                "jackpot": "Pour le jackpot spécial et les défis crypto",
+                "social-title": "Connexion sociale & animations régionales",
+                "social-item1": "Connexion directe aux réseaux sociaux",
+                "social-item2": "Partage des victoires selon le type (Quine, Bingo, Jackpot)",
+                "social-item3": "Animations de célébration localisées selon les régions du Pacifique",
+                "social-item4": "Partages personnalisés & interface sociale intégrée",
+                "start-playing": "Commencer à jouer maintenant",
+                "about": "À propos",
+                "rules": "Règles du jeu",
+                "contact": "Contact",
+                "terms": "Conditions d'utilisation",
+                "privacy": "Politique de confidentialité",
+                "admin": "Administration",
+                "copyright": "© 2025 PACIFIQUE MS BINGO. Tous droits réservés.",
+                "tribute": "Un hommage à notre grand-mère au grand cœur, Monika Seuvea"
+            },
+            en: {
+                "title": "PACIFIC MS BINGO - Online Bingo Game",
+                "welcome": "Welcome to PACIFIC MS BINGO",
+                "lead": "Experience bingo in a tropical paradise setting. Join live games, win prizes, and have fun in a friendly and immersive atmosphere.",
+                "login": "Login",
+                "register": "Register",
+                "live-games-title": "Live Games",
+                "live-games-description": "Play bingo games in real-time with players from around the world. Games start continuously between 10am and 3am (local time), with voice announcements in French and English for an accessible and immersive experience.",
+                "big-wins-title": "Big Wins",
+                "big-wins-description": "Progressive jackpot fueled in real-time. Daily challenges to win crypto rewards.",
+                "pacific-ambiance-title": "Pacific Ambiance",
+                "pacific-ambiance-description": "Immerse yourself in a tropical universe inspired by Pacific islands with colorful designs and an intuitive, friendly interface.",
+                "kyc-security-title": "KYC Security",
+                "kyc-security-description": "Our identity verification system (KYC) ensures a secure and reliable gaming environment for all participants.",
+                "how-to-play": "How to Play?",
+                "step1-title": "Create an Account",
+                "step1-description": "Sign up for free to access the platform and discover the world of online bingo in a peaceful and friendly atmosphere.",
+                "step2-title": "Buy Cards",
+                "step2-description": "Choose from our different options: standard cards (100 fr), special cards (300 fr), or series (6 cards for 500 fr).",
+                "step3-title": "Join Draws",
+                "step3-description": "Join available games continuously from 10am to 3am (local time), with special games every 4 hours.",
+                "step4-title": "Win Prizes",
+                "step4-description": "Be the first to complete a line (Quine) or an entire card (Bingo) to win real money prizes.",
+                "prize-distribution": "Prize Distribution",
+                "bingo-winners": "For Bingo winners",
+                "quine-winners": "For Quine winners",
+                "platform": "For the platform",
+                "jackpot": "For the special jackpot and crypto challenges",
+                "social-title": "Social Connection & Regional Animations",
+                "social-item1": "Direct connection to social networks",
+                "social-item2": "Share victories by type (Quine, Bingo, Jackpot)",
+                "social-item3": "Localized celebration animations based on Pacific regions",
+                "social-item4": "Personalized sharing & integrated social interface",
+                "start-playing": "Start Playing Now",
+                "about": "About",
+                "rules": "Game Rules",
+                "contact": "Contact",
+                "terms": "Terms of Use",
+                "privacy": "Privacy Policy",
+                "admin": "Administration",
+                "copyright": "© 2025 PACIFIC MS BINGO. All rights reserved.",
+                "tribute": "A tribute to our big-hearted grandmother, Monika Seuvea"
+            }
+        };
+        
+        // Fonction pour traduire la page
+        function translatePage(language) {
+            const translation = translations[language];
+            
+            // Titre de la page
+            document.title = translation.title;
+            
+            // Traduction des éléments textuels
+            document.querySelector("h1").textContent = translation.welcome;
+            document.querySelector("p.lead").textContent = translation.lead;
+            
+            // Boutons CTA
+            const ctaButtons = document.querySelectorAll(".cta-buttons a");
+            ctaButtons[0].textContent = translation.login;
+            if (ctaButtons.length > 1) ctaButtons[1].textContent = translation.register;
+            
+            // Fonctionnalités
+            const features = document.querySelectorAll(".feature-card");
+            features[0].querySelector("h3").textContent = translation["live-games-title"];
+            features[0].querySelector("p").textContent = translation["live-games-description"];
+            features[1].querySelector("h3").textContent = translation["big-wins-title"];
+            features[1].querySelector("p").textContent = translation["big-wins-description"];
+            features[2].querySelector("h3").textContent = translation["pacific-ambiance-title"];
+            features[2].querySelector("p").textContent = translation["pacific-ambiance-description"];
+            features[3].querySelector("h3").textContent = translation["kyc-security-title"];
+            features[3].querySelector("p").textContent = translation["kyc-security-description"];
+            
+            // Comment jouer
+            document.querySelector(".how-to-play h2").textContent = translation["how-to-play"];
+            const steps = document.querySelectorAll(".step");
+            steps[0].querySelector("h3").textContent = translation["step1-title"];
+            steps[0].querySelector("p").textContent = translation["step1-description"];
+            steps[1].querySelector("h3").textContent = translation["step2-title"];
+            steps[1].querySelector("p").textContent = translation["step2-description"];
+            steps[2].querySelector("h3").textContent = translation["step3-title"];
+            steps[2].querySelector("p").textContent = translation["step3-description"];
+            steps[3].querySelector("h3").textContent = translation["step4-title"];
+            steps[3].querySelector("p").textContent = translation["step4-description"];
+            
+            // Répartition des mises
+            document.querySelector(".prizes h2").textContent = translation["prize-distribution"];
+            const prizes = document.querySelectorAll(".prize-item p");
+            prizes[0].textContent = translation["bingo-winners"];
+            prizes[1].textContent = translation["quine-winners"];
+            prizes[2].textContent = translation["platform"];
+            prizes[3].textContent = translation["jackpot"];
+            
+            // Section sociale
+            document.querySelector(".social h2").textContent = translation["social-title"];
+            const socialItems = document.querySelectorAll(".social li");
+            socialItems[0].innerHTML = `<span style="color: var(--accent-color); margin-right: 8px;">✓</span>${translation["social-item1"]}`;
+            socialItems[1].innerHTML = `<span style="color: var(--accent-color); margin-right: 8px;">✓</span>${translation["social-item2"]}`;
+            socialItems[2].innerHTML = `<span style="color: var(--accent-color); margin-right: 8px;">✓</span>${translation["social-item3"]}`;
+            socialItems[3].innerHTML = `<span style="color: var(--accent-color); margin-right: 8px;">✓</span>${translation["social-item4"]}`;
+            
+            // Bouton de démarrage de jeu
+            document.querySelector(".cta-buttons a.btn-primary").textContent = translation["start-playing"];
+            
+            // Footer
+            const footerLinks = document.querySelectorAll(".footer-links a");
+            footerLinks[0].textContent = translation.about;
+            footerLinks[1].textContent = translation.rules;
+            footerLinks[2].textContent = translation.contact;
+            footerLinks[3].textContent = translation.terms;
+            footerLinks[4].textContent = translation.privacy;
+            footerLinks[5].textContent = "Transactions Blockchain"; // Hardcoded for now
+            footerLinks[6].textContent = translation.admin;
+            
+            // Copyright
+            document.querySelector("footer p").textContent = translation.copyright;
+            
+            // Tribut à Monika Seuvea (s'il existe sur cette page)
+            const tributeText = document.querySelector(".tribute-text");
+            if (tributeText) {
+                tributeText.textContent = translation.tribute;
+            }
+        }
+        
+        // Fonction de changement de langue
+        function changeLanguage() {
+            const language = document.getElementById('language-select').value;
+            translatePage(language);
+            localStorage.setItem('preferredLanguage', language);
+        }
+        
+        // Au chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Vérifier si une langue préférée est stockée
+            const preferredLanguage = localStorage.getItem('preferredLanguage');
+            if (preferredLanguage) {
+                document.getElementById('language-select').value = preferredLanguage;
+                translatePage(preferredLanguage);
+            }
+        });
+    </script>
+    
+    <!-- Script de gestion des cookies RGPD -->
+    <script src="/js/cookie-consent.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable", "ESNext"],
+    "module": "CommonJS",
+    "skipLibCheck": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    /* Output */
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": false,
+    "noEmit": false,
+    "outDir": "./dist",
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+
+    /* Paths */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["client/src/*"],
+      "@components/*": ["client/src/components/*"],
+      "@assets/*": ["client/src/assets/*"],
+      "@shared/*": ["shared/*"],
+      "@server/*": ["server/*"]
+    }
+  },
+  "include": ["client/src", "server", "shared"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}

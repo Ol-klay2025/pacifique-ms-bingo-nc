@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS BINGO PACIFIQUE - Interface de Jeu</title>
+    <style>
+        :root {
+            --primary-color: #006699;
+            --secondary-color: #ff9933;
+            --background-color: #003366;
+            --card-bg-color: #ffffff;
+            --marked-color: #ff6600;
+            --quine-color: #33cc33;
+            --bingo-color: #cc3300;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #003366;
+            background-image: linear-gradient(rgba(0, 51, 102, 0.9), rgba(0, 25, 51, 0.9)),
+                              url('https://img.freepik.com/free-photo/tropical-beach-landscape_23-2150733807.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: white;
+            line-height: 1.6;
+            padding-bottom: 100px;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 64, 128, 0.8);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            border-bottom: 3px solid rgba(255, 204, 0, 0.5);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .game-section {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .bingo-ball-section {
+            width: 100%;
+            background: rgba(0, 51, 102, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .cards-section {
+            width: 100%;
+            background: rgba(0, 51, 102, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        @media (min-width: 1200px) {
+            .game-section {
+                flex-direction: row;
+            }
+            
+            .bingo-ball-section {
+                flex: 1;
+                min-width: 380px;
+            }
+            
+            .cards-section {
+                flex: 2;
+            }
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        
+        button {
+            background: linear-gradient(to bottom, #ff9933, #ff6600);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 14px;
+            min-width: 120px;
+            max-width: 200px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            flex: 1 1 auto;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        button:hover {
+            background: linear-gradient(to bottom, #ff6600, #ff3300);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .timer-container {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .timer {
+            font-size: 28px;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 10px 20px;
+            border-radius: 15px;
+            display: inline-block;
+            color: #ffcc00;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .draw-info {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .draw-counter {
+            font-weight: bold;
+            font-size: 20px;
+            color: #ffcc00;
+        }
+        
+        .bingo-container {
+            height: 200px;
+            position: relative;
+            margin-bottom: 30px;
+            border-radius: 50%;
+            background-color: #ffcc00;
+            width: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
+        }
+        
+        .bingo-ball {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ffffff, #ffcc00);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 60px;
+            font-weight: bold;
+            color: #003366;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+            animation: bounce 0.5s ease;
+        }
+        
+        @keyframes bounce {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .bingo-cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+        
+        .bingo-card {
+            background-color: var(--card-bg-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 250px;
+            transition: transform 0.3s ease;
+        }
+        
+        .bingo-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 1px;
+            background-color: #ddd;
+            padding: 1px;
+        }
+        
+        .bingo-cell {
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            font-weight: bold;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+        
+        .bingo-cell.empty {
+            background-color: #f5f5f5;
+        }
+        
+        .bingo-cell.marked {
+            background-color: var(--marked-color);
+            color: white;
+        }
+        
+        .bingo-cell.highlight {
+            background-color: yellow;
+            color: black;
+            animation: highlight 1s ease infinite;
+        }
+        
+        .bingo-card.quine {
+            box-shadow: 0 0 15px var(--quine-color);
+        }
+        
+        .bingo-card.bingo {
+            box-shadow: 0 0 20px var(--bingo-color);
+        }
+        
+        @keyframes highlight {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .drawn-numbers-panel {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .drawn-numbers-panel h3 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #ffcc00;
+        }
+        
+        .drawn-numbers-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 5px;
+        }
+        
+        .number-cell {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .number-cell.drawn {
+            background-color: #ffcc00;
+            color: #003366;
+            animation: pop 0.3s ease;
+        }
+        
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .status-message {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(0, 200, 255, 0.5);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 1500;
+        }
+        
+        .status-message-show {
+            opacity: 1;
+        }
+        
+        .verification-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.5s ease-in-out;
+            z-index: 2000;
+        }
+        
+        .verification-content {
+            background-color: #003366;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow: auto;
+            box-shadow: 0 0 50px rgba(0, 200, 255, 0.8);
+            color: white;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>MS BINGO PACIFIQUE - Interface de Jeu</h1>
+    </div>
+    
+    <div class="container">
+        <div class="game-section">
+            <div class="bingo-ball-section">
+                <h2>Tirage des Boules</h2>
+                <div class="bingo-container">
+                    <div class="bingo-ball" id="currentBall">--</div>
+                </div>
+                
+                <div class="controls">
+                    <button id="startGame">Commencer la partie</button>
+                    <button id="drawNumber">Tirer un numéro</button>
+                    <button id="autopilot">Mode automatique</button>
+                </div>
+                
+                <div class="timer-container">
+                    <div class="timer" id="gameTimer">00:00</div>
+                </div>
+                
+                <div class="draw-info">
+                    Numéros tirés: <span class="draw-counter" id="drawCounter">0</span>/90
+                </div>
+                
+                <div class="drawn-numbers-panel">
+                    <h3>Numéros tirés</h3>
+                    <div class="drawn-numbers-grid" id="drawnNumbersGrid">
+                        <!-- Les numéros tirés seront ajoutés ici -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cards-section">
+                <h2>Cartes de Bingo</h2>
+                <div class="controls">
+                    <button id="buyCard">Acheter une carte (100 fr)</button>
+                    <button id="buySpecialCard">Carte spéciale (300 fr)</button>
+                    <button id="buyPackage">Lot de 6 cartes (500 fr)</button>
+                </div>
+                
+                <div class="bingo-cards-container" id="bingoCardsContainer">
+                    <!-- Les cartes de bingo seront ajoutées ici -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="status-message" id="statusMessage"></div>
+    
+    <div class="verification-modal" id="verificationModal">
+        <div class="verification-content">
+            <h2>Vérification en cours...</h2>
+            <div id="verificationResult"></div>
+            <div class="controls">
+                <button id="closeVerification">Fermer</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Constantes pour les cartes
+        const REGULAR_CARD_PRICE = 100;
+        const SPECIAL_CARD_PRICE = 300;
+        const PACKAGE_PRICE = 500;
+        
+        // Variables du jeu
+        let drawnNumbers = [];
+        let gameStarted = false;
+        let gameTimer = null;
+        let startTime = null;
+        let cards = [];
+        let autopilotMode = false;
+        let autopilotInterval = null;
+        
+        // Éléments DOM
+        const currentBallElement = document.getElementById('currentBall');
+        const drawCounterElement = document.getElementById('drawCounter');
+        const gameTimerElement = document.getElementById('gameTimer');
+        const drawnNumbersGridElement = document.getElementById('drawnNumbersGrid');
+        const bingoCardsContainerElement = document.getElementById('bingoCardsContainer');
+        const statusMessageElement = document.getElementById('statusMessage');
+        const verificationModalElement = document.getElementById('verificationModal');
+        const verificationResultElement = document.getElementById('verificationResult');
+        
+        // Boutons
+        const startGameButton = document.getElementById('startGame');
+        const drawNumberButton = document.getElementById('drawNumber');
+        const autopilotButton = document.getElementById('autopilot');
+        const buyCardButton = document.getElementById('buyCard');
+        const buySpecialCardButton = document.getElementById('buySpecialCard');
+        const buyPackageButton = document.getElementById('buyPackage');
+        const closeVerificationButton = document.getElementById('closeVerification');
+        
+        // Initialisation de la grille des numéros tirés
+        function initializeDrawnNumbersGrid() {
+            drawnNumbersGridElement.innerHTML = '';
+            for (let i = 1; i <= 90; i++) {
+                const numberCell = document.createElement('div');
+                numberCell.className = 'number-cell';
+                numberCell.id = `number-${i}`;
+                numberCell.textContent = i;
+                drawnNumbersGridElement.appendChild(numberCell);
+            }
+        }
+        
+        // Fonction pour générer un carton de bingo
+        function generateBingoCard(isSpecial = false) {
+            const cardElement = document.createElement('div');
+            cardElement.className = `bingo-card ${isSpecial ? 'special-card' : ''}`;
+            
+            const cardHeader = document.createElement('div');
+            cardHeader.className = 'card-header';
+            cardHeader.textContent = isSpecial ? 'Carte Spéciale - 300 fr' : 'Carte - 100 fr';
+            cardElement.appendChild(cardHeader);
+            
+            const cardGrid = document.createElement('div');
+            cardGrid.className = 'card-grid';
+            
+            // Générer la structure de la carte (3 lignes x 9 colonnes)
+            const cardData = [];
+            for (let row = 0; row < 3; row++) {
+                const rowData = Array(9).fill(null);
+                cardData.push(rowData);
+            }
+            
+            // Remplir chaque colonne avec 1 ou 2 numéros (5 numéros par ligne)
+            for (let col = 0; col < 9; col++) {
+                // Déterminer combien de numéros dans cette colonne (1 ou 2)
+                let numberOfNumbers = col === 0 || col === 8 ? 1 : 2;
+                
+                // Rangée aléatoire pour le premier numéro
+                let row1 = Math.floor(Math.random() * 3);
+                let row2 = null;
+                
+                if (numberOfNumbers === 2) {
+                    // Trouver une rangée différente pour le deuxième numéro
+                    do {
+                        row2 = Math.floor(Math.random() * 3);
+                    } while (row2 === row1);
+                }
+                
+                // Valeurs possibles pour cette colonne
+                const minValue = col * 10 + 1;
+                const maxValue = col === 8 ? 90 : (col + 1) * 10;
+                
+                // Générer valeur unique pour le premier numéro
+                const value1 = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
+                cardData[row1][col] = value1;
+                
+                if (numberOfNumbers === 2) {
+                    // Générer valeur unique pour le deuxième numéro
+                    let value2;
+                    do {
+                        value2 = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
+                    } while (value2 === value1);
+                    
+                    cardData[row2][col] = value2;
+                }
+            }
+            
+            // Créer les cellules du carton
+            for (let row = 0; row < 3; row++) {
+                for (let col = 0; col < 9; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'bingo-cell';
+                    
+                    if (cardData[row][col] === null) {
+                        cell.classList.add('empty');
+                    } else {
+                        cell.textContent = cardData[row][col];
+                        cell.dataset.number = cardData[row][col];
+                        
+                        // Ajouter un événement de clic pour marquer manuellement
+                        cell.addEventListener('click', function() {
+                            if (drawnNumbers.includes(parseInt(this.dataset.number))) {
+                                this.classList.toggle('marked');
+                                checkForWinningPatterns(cardElement);
+                            }
+                        });
+                    }
+                    
+                    cardGrid.appendChild(cell);
+                }
+            }
+            
+            cardElement.appendChild(cardGrid);
+            
+            // Ajouter la carte au DOM
+            bingoCardsContainerElement.appendChild(cardElement);
+            
+            // Stocker les données de la carte
+            cards.push({
+                element: cardElement,
+                data: cardData,
+                isSpecial: isSpecial,
+                marked: new Set()
+            });
+            
+            return cardElement;
+        }
+        
+        // Fonction pour tirer un numéro
+        function drawNumber() {
+            if (!gameStarted) {
+                showStatusMessage("La partie n'a pas encore commencé!");
+                return;
+            }
+            
+            if (drawnNumbers.length >= 90) {
+                showStatusMessage("Tous les numéros ont été tirés!");
+                return;
+            }
+            
+            let newNumber;
+            do {
+                newNumber = Math.floor(Math.random() * 90) + 1;
+            } while (drawnNumbers.includes(newNumber));
+            
+            drawnNumbers.push(newNumber);
+            
+            // Mettre à jour l'affichage
+            currentBallElement.textContent = newNumber;
+            currentBallElement.style.animation = 'none';
+            setTimeout(() => {
+                currentBallElement.style.animation = 'bounce 0.5s ease';
+            }, 10);
+            
+            drawCounterElement.textContent = drawnNumbers.length;
+            
+            // Marquer ce numéro comme tiré dans la grille
+            const numberCell = document.getElementById(`number-${newNumber}`);
+            if (numberCell) {
+                numberCell.classList.add('drawn');
+            }
+            
+            // Vérifier et marquer automatiquement les cartes
+            markCardsWithNumber(newNumber);
+            
+            announceNumber(newNumber);
+            
+            return newNumber;
+        }
+        
+        // Fonction pour annoncer un numéro
+        function announceNumber(number) {
+            showStatusMessage(`Numéro tiré: ${number}`);
+        }
+        
+        // Fonction pour marquer les cartes avec un numéro tiré
+        function markCardsWithNumber(number) {
+            cards.forEach(card => {
+                const cells = card.element.querySelectorAll('.bingo-cell');
+                cells.forEach(cell => {
+                    if (cell.dataset.number == number) {
+                        cell.classList.add('marked');
+                        card.marked.add(parseInt(number));
+                        
+                        // Vérifier si cette carte a une quine ou un bingo
+                        checkForWinningPatterns(card.element);
+                    }
+                });
+            });
+        }
+        
+        // Fonction pour vérifier les motifs gagnants
+        function checkForWinningPatterns(cardElement) {
+            const cardIndex = cards.findIndex(card => card.element === cardElement);
+            if (cardIndex === -1) return;
+            
+            const card = cards[cardIndex];
+            
+            // Vérifier les quines (lignes)
+            const rows = [0, 1, 2];
+            let hasQuine = false;
+            
+            rows.forEach(row => {
+                let rowComplete = true;
+                for (let col = 0; col < 9; col++) {
+                    const value = card.data[row][col];
+                    if (value !== null && !drawnNumbers.includes(value)) {
+                        rowComplete = false;
+                        break;
+                    }
+                }
+                
+                if (rowComplete) {
+                    hasQuine = true;
+                    if (!cardElement.classList.contains('quine')) {
+                        cardElement.classList.add('quine');
+                        showVerification(card, 'quine', row);
+                    }
+                }
+            });
+            
+            // Vérifier le bingo (carton plein)
+            let cardComplete = true;
+            for (let row = 0; row < 3; row++) {
+                for (let col = 0; col < 9; col++) {
+                    const value = card.data[row][col];
+                    if (value !== null && !drawnNumbers.includes(value)) {
+                        cardComplete = false;
+                        break;
+                    }
+                }
+                if (!cardComplete) break;
+            }
+            
+            if (cardComplete) {
+                if (!cardElement.classList.contains('bingo')) {
+                    cardElement.classList.add('bingo');
+                    showVerification(card, 'bingo');
+                }
+            }
+        }
+        
+        // Fonction pour afficher la vérification
+        function showVerification(card, type, row = null) {
+            verificationResultElement.innerHTML = '';
+            
+            const title = document.createElement('h3');
+            title.textContent = type === 'quine' ? 'QUINE!' : 'BINGO!';
+            title.style.color = type === 'quine' ? '#ffcc00' : '#ff3300';
+            title.style.fontSize = '28px';
+            title.style.textAlign = 'center';
+            title.style.marginBottom = '20px';
+            
+            const description = document.createElement('p');
+            description.textContent = type === 'quine' 
+                ? `Vous avez complété une ligne! (Ligne ${row + 1})` 
+                : 'Vous avez complété tout le carton!';
+            description.style.textAlign = 'center';
+            description.style.marginBottom = '20px';
+            
+            const prize = document.createElement('p');
+            let prizeAmount;
+            
+            if (type === 'quine') {
+                prizeAmount = card.isSpecial ? 450 : 150;
+            } else {
+                prizeAmount = card.isSpecial ? 1500 : 500;
+            }
+            
+            prize.textContent = `Prix: ${prizeAmount} Fr`;
+            prize.style.textAlign = 'center';
+            prize.style.fontSize = '24px';
+            prize.style.color = '#33cc33';
+            prize.style.fontWeight = 'bold';
+            prize.style.marginBottom = '30px';
+            
+            verificationResultElement.appendChild(title);
+            verificationResultElement.appendChild(description);
+            verificationResultElement.appendChild(prize);
+            
+            verificationModalElement.style.display = 'flex';
+            
+            // Jouer un son festif
+            const audioSrc = type === 'quine' 
+                ? 'https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3'
+                : 'https://assets.mixkit.co/active_storage/sfx/1993/1993-preview.mp3';
+            
+            const audio = new Audio(audioSrc);
+            audio.play();
+        }
+        
+        // Fonction pour afficher un message de statut
+        function showStatusMessage(message) {
+            statusMessageElement.textContent = message;
+            statusMessageElement.classList.add('status-message-show');
+            
+            setTimeout(() => {
+                statusMessageElement.classList.remove('status-message-show');
+            }, 3000);
+        }
+        
+        // Fonction pour mettre à jour le timer
+        function updateTimer() {
+            if (!gameStarted || !startTime) return;
+            
+            const currentTime = new Date();
+            const elapsedSeconds = Math.floor((currentTime - startTime) / 1000);
+            
+            const minutes = Math.floor(elapsedSeconds / 60);
+            const seconds = elapsedSeconds % 60;
+            
+            gameTimerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Gestionnaires d'événements
+        startGameButton.addEventListener('click', () => {
+            if (gameStarted) {
+                showStatusMessage("La partie est déjà en cours!");
+                return;
+            }
+            
+            gameStarted = true;
+            startTime = new Date();
+            drawnNumbers = [];
+            
+            // Réinitialiser le compteur et la grille
+            drawCounterElement.textContent = "0";
+            initializeDrawnNumbersGrid();
+            
+            // Démmarrer le timer
+            gameTimer = setInterval(updateTimer, 1000);
+            
+            showStatusMessage("La partie commence! Bonne chance!");
+            startGameButton.textContent = "Partie en cours";
+            startGameButton.disabled = true;
+        });
+        
+        drawNumberButton.addEventListener('click', () => {
+            if (autopilotMode) {
+                showStatusMessage("Désactivez d'abord le mode automatique!");
+                return;
+            }
+            
+            drawNumber();
+        });
+        
+        autopilotButton.addEventListener('click', () => {
+            if (!gameStarted) {
+                showStatusMessage("Démarrez d'abord la partie!");
+                return;
+            }
+            
+            autopilotMode = !autopilotMode;
+            
+            if (autopilotMode) {
+                autopilotButton.textContent = "Arrêter Auto";
+                autopilotButton.style.backgroundColor = "#cc3300";
+                
+                // Tirer un numéro toutes les 3 secondes
+                autopilotInterval = setInterval(() => {
+                    if (drawnNumbers.length < 90) {
+                        drawNumber();
+                    } else {
+                        clearInterval(autopilotInterval);
+                        autopilotMode = false;
+                        autopilotButton.textContent = "Mode automatique";
+                        autopilotButton.style.backgroundColor = "";
+                    }
+                }, 3000);
+            } else {
+                clearInterval(autopilotInterval);
+                autopilotButton.textContent = "Mode automatique";
+                autopilotButton.style.backgroundColor = "";
+            }
+        });
+        
+        buyCardButton.addEventListener('click', () => {
+            generateBingoCard(false);
+            showStatusMessage(`Carte achetée pour ${REGULAR_CARD_PRICE} Fr`);
+        });
+        
+        buySpecialCardButton.addEventListener('click', () => {
+            generateBingoCard(true);
+            showStatusMessage(`Carte spéciale achetée pour ${SPECIAL_CARD_PRICE} Fr`);
+        });
+        
+        buyPackageButton.addEventListener('click', () => {
+            for (let i = 0; i < 6; i++) {
+                generateBingoCard(false);
+            }
+            showStatusMessage(`Lot de 6 cartes acheté pour ${PACKAGE_PRICE} Fr`);
+        });
+        
+        closeVerificationButton.addEventListener('click', () => {
+            verificationModalElement.style.display = 'none';
+        });
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeDrawnNumbersGrid();
+            
+            // Créer une carte gratuite pour commencer
+            generateBingoCard(false);
+        });
+    </script>
+</body>
+</html>

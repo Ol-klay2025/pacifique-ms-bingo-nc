@@ -1,0 +1,4 @@
+{
+  "name": "Compliance API",
+  "run": "NODE_ENV=production node compliance-preproduction.js"
+}

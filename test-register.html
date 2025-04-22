@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TEST D'INSCRIPTION MS BINGO</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #1a1a1a;
+      color: white;
+    }
+    h1 {
+      color: #e53935;
+      text-align: center;
+      font-size: 2rem;
+    }
+    .card {
+      background-color: #2a2a2a;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      box-sizing: border-box;
+      border: none;
+      border-radius: 5px;
+      background-color: #333;
+      color: white;
+      font-size: 16px;
+    }
+    button {
+      background-color: #e53935;
+      color: white;
+      padding: 12px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #c62828;
+    }
+    .error {
+      color: #e53935;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+    .success {
+      color: #4CAF50;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+    pre {
+      background-color: #2a2a2a;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin-top: 20px;
+    }
+    .status-section {
+      margin-top: 30px;
+    }
+    .debug-section {
+      margin-top: 30px;
+    }
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+    }
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 15px;
+      cursor: pointer;
+      background-color: #333;
+      color: #aaa;
+      border-radius: 10px 10px 0 0;
+      transition: all 0.3s;
+    }
+    .tab.active {
+      background-color: #e53935;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>TEST D'INSCRIPTION MS BINGO</h1>
+  
+  <div class="card">
+    <div class="tabs">
+      <div class="tab active" id="register-tab">Test d'inscription</div>
+      <div class="tab" id="api-tab">Test API direct</div>
+    </div>
+    
+    <div id="register-section">
+      <p>Ce formulaire permet de tester l'inscription à la plateforme MS BINGO.</p>
+      
+      <div id="register-error" class="error"></div>
+      <div id="register-success" class="success"></div>
+      
+      <div class="form-group">
+        <label for="username">Nom d'utilisateur:</label>
+        <input type="text" id="username" value="testuser123">
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" value="test@example.com">
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Mot de passe:</label>
+        <input type="password" id="password" value="password123">
+      </div>
+      
+      <div class="form-group">
+        <label for="language">Langue:</label>
+        <select id="language">
+          <option value="fr">Français</option>
+          <option value="en">Anglais</option>
+        </select>
+      </div>
+      
+      <button onclick="testRegister()">Tester l'inscription</button>
+    </div>
+    
+    <div id="api-section" style="display: none;">
+      <p>Cet outil permet de tester directement l'API d'inscription en faisant des requêtes HTTP personnalisées.</p>
+      
+      <div id="api-error" class="error"></div>
+      <div id="api-success" class="success"></div>
+      
+      <div class="form-group">
+        <label for="api-url">URL de l'API:</label>
+        <input type="text" id="api-url" value="/api/register">
+      </div>
+      
+      <div class="form-group">
+        <label for="api-method">Méthode HTTP:</label>
+        <select id="api-method">
+          <option value="POST">POST</option>
+          <option value="GET">GET</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="api-content-type">Content-Type:</label>
+        <select id="api-content-type">
+          <option value="application/json">application/json</option>
+          <option value="application/x-www-form-urlencoded">application/x-www-form-urlencoded</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="api-body">Corps de la requête (JSON):</label>
+        <input type="text" id="api-body" value='{"username":"testuser123","email":"test@example.com","password":"password123","language":"fr"}'>
+      </div>
+      
+      <button onclick="testAPI()">Tester l'API</button>
+    </div>
+  </div>
+  
+  <div class="card status-section">
+    <h2>Statut de la requête</h2>
+    <div id="status"></div>
+  </div>
+  
+  <div class="card debug-section">
+    <h2>Informations de débogage</h2>
+    <pre id="debug"></pre>
+  </div>
+  
+  <script>
+    // Changer d'onglet
+    document.getElementById('register-tab').addEventListener('click', function() {
+      document.getElementById('register-tab').classList.add('active');
+      document.getElementById('api-tab').classList.remove('active');
+      document.getElementById('register-section').style.display = 'block';
+      document.getElementById('api-section').style.display = 'none';
+    });
+    
+    document.getElementById('api-tab').addEventListener('click', function() {
+      document.getElementById('api-tab').classList.add('active');
+      document.getElementById('register-tab').classList.remove('active');
+      document.getElementById('api-section').style.display = 'block';
+      document.getElementById('register-section').style.display = 'none';
+    });
+    
+    // Test de l'inscription
+    async function testRegister() {
+      document.getElementById('register-error').textContent = '';
+      document.getElementById('register-success').textContent = '';
+      document.getElementById('status').innerHTML = '<div style="color: yellow;">Envoi de la requête...</div>';
+      document.getElementById('debug').textContent = '';
+      
+      const username = document.getElementById('username').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const language = document.getElementById('language').value;
+      
+      if (!username || !email || !password) {
+        document.getElementById('register-error').textContent = 'Tous les champs sont requis';
+        document.getElementById('status').innerHTML = '<div style="color: red;">Erreur: formulaire incomplet</div>';
+        return;
+      }
+      
+      const requestBody = {
+        username,
+        email,
+        password,
+        language
+      };
+      
+      try {
+        // Récupérer les en-têtes de la requête avec fetch
+        const debugInfo = {
+          request: {
+            url: '/api/register',
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: requestBody
+          },
+          response: null
+        };
+        
+        document.getElementById('debug').textContent = JSON.stringify(debugInfo, null, 2);
+        
+        const startTime = Date.now();
+        
+        const response = await fetch('/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestBody)
+        });
+        
+        const endTime = Date.now();
+        const duration = endTime - startTime;
+        
+        const responseData = await response.json();
+        
+        // Mettre à jour les informations de débogage
+        debugInfo.response = {
+          status: response.status,
+          statusText: response.statusText,
+          headers: {},
+          body: responseData,
+          duration: `${duration}ms`
+        };
+        
+        // Extraire les en-têtes de la réponse
+        response.headers.forEach((value, key) => {
+          debugInfo.response.headers[key] = value;
+        });
+        
+        document.getElementById('debug').textContent = JSON.stringify(debugInfo, null, 2);
+        
+        if (response.ok) {
+          document.getElementById('register-success').textContent = 'Inscription réussie!';
+          document.getElementById('status').innerHTML = `
+            <div style="color: green;">Requête réussie (${response.status} ${response.statusText})</div>
+            <div>Durée: ${duration}ms</div>
+          `;
+        } else {
+          document.getElementById('register-error').textContent = responseData.message || 'Erreur d\'inscription';
+          document.getElementById('status').innerHTML = `
+            <div style="color: red;">Requête échouée (${response.status} ${response.statusText})</div>
+            <div>Durée: ${duration}ms</div>
+          `;
+        }
+      } catch (error) {
+        document.getElementById('register-error').textContent = 'Erreur de connexion au serveur';
+        document.getElementById('status').innerHTML = `
+          <div style="color: red;">Erreur de connexion au serveur</div>
+          <div>${error.message}</div>
+        `;
+        
+        // Mettre à jour les informations de débogage
+        const debugInfo = {
+          request: {
+            url: '/api/register',
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: requestBody
+          },
+          error: {
+            message: error.message,
+            stack: error.stack
+          }
+        };
+        
+        document.getElementById('debug').textContent = JSON.stringify(debugInfo, null, 2);
+      }
+    }
+    
+    // Test de l'API directe
+    async function testAPI() {
+      document.getElementById('api-error').textContent = '';
+      document.getElementById('api-success').textContent = '';
+      document.getElementById('status').innerHTML = '<div style="color: yellow;">Envoi de la requête...</div>';
+      document.getElementById('debug').textContent = '';
+      
+      const url = document.getElementById('api-url').value;
+      const method = document.getElementById('api-method').value;
+      const contentType = document.getElementById('api-content-type').value;
+      const body = document.getElementById('api-body').value;
+      
+      try {
+        let parsedBody;
+        try {
+          parsedBody = JSON.parse(body);
+        } catch (e) {
+          document.getElementById('api-error').textContent = 'Corps de la requête JSON invalide';
+          document.getElementById('status').innerHTML = '<div style="color: red;">Erreur: JSON invalide</div>';
+          return;
+        }
+        
+        // Récupérer les en-têtes de la requête avec fetch
+        const debugInfo = {
+          request: {
+            url,
+            method,
+            headers: {
+              'Content-Type': contentType
+            },
+            body: parsedBody
+          },
+          response: null
+        };
+        
+        document.getElementById('debug').textContent = JSON.stringify(debugInfo, null, 2);
+        
+        const startTime = Date.now();
+        
+        const fetchOptions = {
+          method,
+          headers: {
+            'Content-Type': contentType
+          }
+        };
+        
+        if (method !== 'GET') {
+          if (contentType === 'application/json') {
+            fetchOptions.body = JSON.stringify(parsedBody);
+          } else {
+            // Convertir en format x-www-form-urlencoded
+            const formBody = Object.keys(parsedBody)
+              .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(parsedBody[key]))
+              .join('&');
+            fetchOptions.body = formBody;
+          }
+        }
+        
+        const response = await fetch(url, fetchOptions);
+        
+        const endTime = Date.now();
+        const duration = endTime - startTime;
+        
+        let responseData;
+        try {
+          responseData = await response.json();
+        } catch (error) {
+          responseData = { error: 'Impossible de parser la réponse en JSON' };
+        }
+        
+        // Mettre à jour les informations de débogage
+        debugInfo.response = {
+          status: response.status,
+          statusText: response.statusText,
+          headers: {},
+          body: responseData,
+          duration: `${duration}ms`
+        };
+        
+        // Extraire les en-têtes de la réponse
+        response.headers.forEach((value, key) => {
+          debugInfo.response.headers[key] = value;
+        });
+        
+        document.getElementById('debug').textContent = JSON.stringify(debugInfo, null, 2);
+        
+        if (response.ok) {
+          document.getElementById('api-success').textContent = 'Requête API réussie!';
+          document.getElementById('status').innerHTML = `
+            <div style="color: green;">Requête réussie (${response.status} ${response.statusText})</div>
+            <div>Durée: ${duration}ms</div>
+          `;
+        } else {
+          document.getElementById('api-error').textContent = responseData.message || 'Erreur de la requête API';
+          document.getElementById('status').innerHTML = `
+            <div style="color: red;">Requête échouée (${response.status} ${response.statusText})</div>
+            <div>Durée: ${duration}ms</div>
+          `;
+        }
+      } catch (error) {
+        document.getElementById('api-error').textContent = 'Erreur de connexion au serveur';
+        document.getElementById('status').innerHTML = `
+          <div style="color: red;">Erreur de connexion au serveur</div>
+          <div>${error.message}</div>
+        `;
+        
+        // Mettre à jour les informations de débogage
+        const debugInfo = {
+          request: {
+            url,
+            method,
+            headers: {
+              'Content-Type': contentType
+            },
+            body: JSON.parse(body)
+          },
+          error: {
+            message: error.message,
+            stack: error.stack
+          }
+        };
+        
+        document.getElementById('debug').textContent = JSON.stringify(debugInfo, null, 2);
+      }
+    }
+  </script>
+</body>
+</html>

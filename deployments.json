@@ -1,0 +1,18 @@
+{
+  "deployments": {
+    "main": {
+      "build": {
+        "command": "",
+        "needs": []
+      },
+      "run": {
+        "command": "node index.js",
+        "environment": {
+          "NODE_ENV": "production",
+          "PORT": "3000",
+          "SESSION_SECRET": "ms-bingo-production-secret-key-2025"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MS Bingo - Aperçu du Projet</title>
+  <style>
+    :root {
+      --primary: #e94560;
+      --background: #16213e;
+      --card: #0f3460;
+      --text: #fff;
+      --accent: #fec260;
+      --border: #576CBC;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      background-color: var(--background);
+      color: var(--text);
+      padding: 20px;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    h1 {
+      color: var(--primary);
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      color: var(--accent);
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+    
+    .progress-container {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      margin: 20px auto;
+      height: 20px;
+      width: 80%;
+      max-width: 500px;
+      position: relative;
+    }
+    
+    .progress-bar {
+      background-color: var(--primary);
+      border-radius: 10px;
+      height: 100%;
+      width: 35%; /* Exemple: 350 utilisateurs sur 1000 */
+      position: relative;
+    }
+    
+    .progress-text {
+      position: absolute;
+      right: 0;
+      bottom: -25px;
+      color: var(--accent);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .card {
+      background-color: var(--card);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .card h3 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+    
+    .feature-list {
+      list-style-position: inside;
+    }
+    
+    .feature-list li {
+      margin-bottom: 8px;
+    }
+    
+    .bingo-card {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 5px;
+      margin: 20px 0;
+      padding: 15px;
+      background-color: var(--background);
+      border-radius: 10px;
+      border: 2px solid var(--border);
+    }
+    
+    .bingo-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 40px;
+      background-color: var(--card);
+      border-radius: 5px;
+      font-weight: bold;
+      color: var(--text);
+    }
+    
+    .empty {
+      background-color: transparent;
+    }
+    
+    .called {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .highlight {
+      background-color: var(--accent);
+      color: var(--background);
+      font-weight: bold;
+    }
+    
+    .jackpot {
+      text-align: center;
+      padding: 20px;
+      background-color: var(--primary);
+      border-radius: 10px;
+      margin: 20px 0;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { opacity: 0.8; }
+      50% { opacity: 1; }
+      100% { opacity: 0.8; }
+    }
+    
+    .jackpot h2 {
+      margin-bottom: 10px;
+    }
+    
+    .jackpot-amount {
+      font-size: 2rem;
+      font-weight: bold;
+      color: white;
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .language-switcher {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+    
+    .language-switcher button {
+      background-color: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 5px 10px;
+      margin-left: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .language-switcher button.active {
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    .cta-button {
+      display: inline-block;
+      background-color: var(--primary);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 5px;
+      font-weight: bold;
+      text-decoration: none;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+    }
+    
+    .cta-button:hover {
+      background-color: #d13852;
+      transform: scale(1.05);
+    }
+    
+    .next-game {
+      text-align: center;
+      margin: 30px 0;
+    }
+    
+    .timer {
+      font-size: 1.5rem;
+      margin-top: 10px;
+      color: var(--accent);
+    }
+    
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .bingo-card {
+        grid-template-columns: repeat(9, 1fr);
+        gap: 3px;
+      }
+      
+      .bingo-number {
+        height: 30px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="language-switcher">
+    <button class="active">FR</button>
+    <button>EN</button>
+  </div>
+  
+  <header>
+    <h1>MS BINGO</h1>
+    <div class="subtitle">Plateforme de Bingo Européen en ligne avec blockchain</div>
+    
+    <div class="progress-container">
+      <div class="progress-bar"></div>
+      <div class="progress-text">350 / 1000 utilisateurs inscrits avant lancement</div>
+    </div>
+  </header>
+  
+  <div class="container">
+    <div class="jackpot">
+      <h2>JACKPOT ACTUEL</h2>
+      <div class="jackpot-amount">€ 2,345.50</div>
+      <div>Gagnez le jackpot en complétant un BINGO en moins de 40 numéros!</div>
+    </div>
+    
+    <div class="next-game">
+      <h2>PROCHAINE PARTIE DANS</h2>
+      <div class="timer">00:24:15</div>
+      <a href="#" class="cta-button">ACHETER DES CARTES</a>
+    </div>
+    
+    <div class="grid">
+      <div class="card">
+        <h3>Parties Régulières et Spéciales</h3>
+        <ul class="feature-list">
+          <li>Parties régulières toutes les heures à 1€ par carton</li>
+          <li>Parties spéciales toutes les 4 heures à 2,5€ par carton</li>
+          <li>Format européen à 90 numéros</li>
+          <li>Achat de cartons possible 2 minutes après chaque partie</li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <h3>Distribution des Prix</h3>
+        <ul class="feature-list">
+          <li>50% pour le BINGO (carte complète)</li>
+          <li>20% pour la QUINE (ligne complète)</li>
+          <li>10% pour le JACKPOT</li>
+          <li>20% pour la plateforme</li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <h3>Fonctionnalités Avancées</h3>
+        <ul class="feature-list">
+          <li>Vérification blockchain des résultats</li>
+          <li>Interface multilingue (FR, EN)</li>
+          <li>Annonces vocales des numéros</li>
+          <li>Personnalisation des thèmes</li>
+        </ul>
+      </div>
+    </div>
+    
+    <h2>Exemple de Carte de Bingo</h2>
+    <div class="bingo-card">
+      <!-- Ligne 1 -->
+      <div class="bingo-number">2</div>
+      <div class="bingo-number empty"></div>
+      <div class="bingo-number">23</div>
+      <div class="bingo-number">37</div>
+      <div class="bingo-number">41</div>
+      <div class="bingo-number empty"></div>
+      <div class="bingo-number">66</div>
+      <div class="bingo-number">78</div>
+      <div class="bingo-number empty"></div>
+      
+      <!-- Ligne 2 -->
+      <div class="bingo-number empty"></div>
+      <div class="bingo-number called">15</div>
+      <div class="bingo-number empty"></div>
+      <div class="bingo-number empty"></div>
+      <div class="bingo-number">45</div>
+      <div class="bingo-number">57</div>
+      <div class="bingo-number empty"></div>
+      <div class="bingo-number">79</div>
+      <div class="bingo-number">84</div>
+      
+      <!-- Ligne 3 -->
+      <div class="bingo-number">9</div>
+      <div class="bingo-number empty"></div>
+      <div class="bingo-number called">29</div>
+      <div class="bingo-number">32</div>
+      <div class="bingo-number empty"></div>
+      <div class="bingo-number empty"></div>
+      <div class="bingo-number">67</div>
+      <div class="bingo-number">73</div>
+      <div class="bingo-number">89</div>
+    </div>
+    
+    <div class="grid">
+      <div class="card">
+        <h3>Paiements Sécurisés</h3>
+        <ul class="feature-list">
+          <li>Dépôts via cartes de crédit (Stripe)</li>
+          <li>Retraits par virement bancaire, e-wallet ou carte virtuelle</li>
+          <li>Montant minimal de retrait : 10€</li>
+          <li>Portefeuille organisateur sécurisé</li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <h3>Recommandations Personnalisées</h3>
+        <ul class="feature-list">
+          <li>Analyse de vos performances de jeu</li>
+          <li>Recommandation du niveau de difficulté</li>
+          <li>Suggestion du nombre optimal de cartes</li>
+          <li>Statistiques détaillées de vos parties</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>© 2025 MS BINGO - Lancement officiel prévu après 1000 utilisateurs enregistrés</p>
+    <p>La disponibilité du service peut être limitée dans certains pays en raison des réglementations sur les jeux.</p>
+  </footer>
+</body>
+</html>
