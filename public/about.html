@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À propos - PACIFIQUE MS BINGO</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/landing.css">
+    <style>
+        :root {
+            --primary-color: #0097b2;
+            --secondary-color: #ff7e00;
+            --accent-color: #ffcc00;
+            --bg-dark: #0a2a3b;
+            --text-light: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            background-image: url('/img/ocean-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .overlay {
+            background-color: rgba(10, 42, 59, 0.8);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+        
+        .about-section {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 1.6;
+        }
+        
+        .about-section h1 {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .about-category {
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1.5rem;
+        }
+        
+        .about-category:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .about-category h2 {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .about-category p {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .about-category ul {
+            padding-left: 1.2rem;
+        }
+        
+        .about-category li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .back-button {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.8rem 1.8rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            background-color: #007d99;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+            color: var(--accent-color);
+        }
+        
+        .admin-card {
+            background-color: rgba(0, 151, 178, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border: 1px solid rgba(0, 151, 178, 0.3);
+        }
+        
+        .admin-card h3 {
+            color: var(--accent-color);
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .admin-card p {
+            margin: 0.5rem 0;
+        }
+        
+        .admin-title {
+            font-weight: bold;
+            display: inline-block;
+            min-width: 140px;
+        }
+        
+        .mission-statement {
+            font-style: italic;
+            font-size: 1.2rem;
+            margin: 1.5rem 0;
+            color: var(--accent-color);
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .about-section {
+                padding: 1.5rem;
+            }
+            
+            .admin-title {
+                min-width: auto;
+                display: block;
+                margin-bottom: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <div class="container">
+            <header>
+                <img src="/img/logo.png" alt="PACIFIQUE MS BINGO" class="logo" style="max-width: 350px;">
+            </header>
+            
+            <section class="about-section">
+                <h1>À propos de PACIFIQUE MS BINGO</h1>
+                
+                <div class="about-category">
+                    <h2>Notre mission</h2>
+                    <p>PACIFIQUE MS BINGO a pour mission de proposer une plateforme de jeu de bingo en ligne divertissante, sécurisée et culturellement riche, célébrant le patrimoine du Pacifique tout en contribuant positivement au développement de la région.</p>
+                    
+                    <p class="mission-statement">"Unir le divertissement et l'innovation au service des communautés du Pacifique."</p>
+                </div>
+                
+                <div class="about-category">
+                    <h2>Administration de la plateforme</h2>
+                    <p>La plateforme Pacifique MS Bingo est administrée par :</p>
+                    
+                    <div class="admin-card">
+                        <h3>Informations administratives</h3>
+                        <p><span class="admin-title">Nom :</span> Pacifique MS Bingo</p>
+                        <p><span class="admin-title">Rôle :</span> Fondatrice & Responsable de l'exploitation</p>
+                        <p><span class="admin-title">Statut juridique :</span> Enregistrement en cours pour création d'une entreprise légalement immatriculée</p>
+                        <p><span class="admin-title">Lieu d'exploitation :</span> Nouvelle-Calédonie</p>
+                        <p><span class="admin-title">Contact officiel :</span> <a href="mailto:contact@pacifiquemsbingo.nc" style="color: var(--accent-color);">contact@pacifiquemsbingo.nc</a></p>
+                    </div>
+                </div>
+                
+                <div class="about-category">
+                    <h2>Responsabilités de l'administration</h2>
+                    <p>L'administratrice de la plateforme est responsable de :</p>
+                    <ul>
+                        <li>La gestion des opérations techniques et financières</li>
+                        <li>La conformité légale (demande de licence ANJ en cours)</li>
+                        <li>La supervision de la sécurité des paiements et des données (via KYC, Stripe et Deblock)</li>
+                        <li>La modération des joueurs et des contenus partagés</li>
+                        <li>La coordination des actions sociales et des projets communautaires financés par la plateforme (via les 5 % de commission dédiée)</li>
+                    </ul>
+                </div>
+                
+                <div class="about-category">
+                    <h2>Notre engagement</h2>
+                    <p>Chez PACIFIQUE MS BINGO, nous nous engageons à :</p>
+                    <ul>
+                        <li>Assurer une expérience de jeu équitable et transparente pour tous les joueurs</li>
+                        <li>Respecter les réglementations en vigueur dans le domaine des jeux d'argent</li>
+                        <li>Promouvoir le jeu responsable et prévenir les comportements addictifs</li>
+                        <li>Soutenir des initiatives sociales et culturelles bénéfiques pour les communautés du Pacifique</li>
+                        <li>Offrir un service client réactif et à l'écoute des besoins des utilisateurs</li>
+                    </ul>
+                </div>
+                
+                <div class="about-category">
+                    <h2>Projets sociaux</h2>
+                    <p>5% des revenus de la plateforme sont dédiés à des projets sociaux dans le Pacifique, notamment :</p>
+                    <ul>
+                        <li>Soutien aux associations culturelles préservant les traditions locales</li>
+                        <li>Programmes éducatifs pour les jeunes des îles du Pacifique</li>
+                        <li>Initiatives environnementales pour la protection des écosystèmes marins</li>
+                        <li>Actions de prévention contre l'addiction aux jeux</li>
+                    </ul>
+                    <p>Un rapport annuel sur l'utilisation de ces fonds sera publié sur notre site.</p>
+                </div>
+                
+                <div style="text-align: center;">
+                    <a href="/" class="back-button">Retour à l'accueil</a>
+                </div>
+            </section>
+        </div>
+        
+        <footer>
+            <div class="footer-links">
+                <a href="/">Accueil</a>
+                <a href="/rules.html">Règles du jeu</a>
+                <a href="/contact.html">Contact</a>
+                <a href="/terms.html">Conditions d'utilisation</a>
+                <a href="/privacy.html">Politique de confidentialité</a>
+            </div>
+            
+            <p>&copy; 2025 PACIFIQUE MS BINGO. Tous droits réservés.</p>
+        </footer>
+    </div>
+</body>
+</html>

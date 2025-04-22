@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérification d'Identité KYC - PACIFIQUE MS BINGO</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f9fd;
+            margin: 0;
+            padding: 0;
+            color: #37474f;
+        }
+        
+        .kyc-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .kyc-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .kyc-header h1 {
+            color: #0d47a1;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .kyc-header p {
+            color: #546e7a;
+            font-size: 16px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .kyc-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .kyc-card-header {
+            background-color: #e3f2fd;
+            padding: 15px 20px;
+            border-bottom: 1px solid #bbdefb;
+        }
+        
+        .kyc-card-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #1976d2;
+        }
+        
+        .kyc-card-body {
+            padding: 20px;
+        }
+        
+        .kyc-status {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .kyc-status-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 24px;
+        }
+        
+        .kyc-status-icon.none {
+            background-color: #ffebee;
+            color: #f44336;
+        }
+        
+        .kyc-status-icon.basic {
+            background-color: #fff9c4;
+            color: #fbc02d;
+        }
+        
+        .kyc-status-icon.enhanced {
+            background-color: #e8f5e9;
+            color: #66bb6a;
+        }
+        
+        .kyc-status-icon.full {
+            background-color: #e3f2fd;
+            color: #42a5f5;
+        }
+        
+        .kyc-status-text {
+            flex: 1;
+        }
+        
+        .kyc-status-text h3 {
+            margin: 0 0 5px;
+            font-size: 18px;
+            color: #455a64;
+        }
+        
+        .kyc-status-text p {
+            margin: 0;
+            color: #78909c;
+            font-size: 14px;
+        }
+        
+        .kyc-progress {
+            height: 10px;
+            background-color: #eceff1;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .kyc-progress-bar {
+            height: 100%;
+            background-color: #42a5f5;
+            transition: width 0.5s ease;
+        }
+        
+        .kyc-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .kyc-step {
+            flex: 1;
+            text-align: center;
+            padding: 0 10px;
+            position: relative;
+        }
+        
+        .kyc-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: -40%;
+            width: 80%;
+            height: 2px;
+            background-color: #eceff1;
+            z-index: 1;
+        }
+        
+        .kyc-step.completed:not(:last-child)::after {
+            background-color: #42a5f5;
+        }
+        
+        .kyc-step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #eceff1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            color: #b0bec5;
+            font-weight: bold;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .kyc-step.completed .kyc-step-icon {
+            background-color: #42a5f5;
+            color: white;
+        }
+        
+        .kyc-step.active .kyc-step-icon {
+            border: 2px solid #42a5f5;
+            color: #42a5f5;
+        }
+        
+        .kyc-step-label {
+            font-size: 14px;
+            color: #78909c;
+        }
+        
+        .kyc-step.completed .kyc-step-label,
+        .kyc-step.active .kyc-step-label {
+            color: #455a64;
+            font-weight: 500;
+        }
+        
+        .kyc-document-list {
+            margin-bottom: 20px;
+        }
+        
+        .kyc-document-item {
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .kyc-document-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .kyc-document-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        .kyc-document-icon.pending {
+            background-color: #fff9c4;
+            color: #fbc02d;
+        }
+        
+        .kyc-document-icon.approved {
+            background-color: #e8f5e9;
+            color: #66bb6a;
+        }
+        
+        .kyc-document-icon.rejected {
+            background-color: #ffebee;
+            color: #f44336;
+        }
+        
+        .kyc-document-info {
+            flex: 1;
+        }
+        
+        .kyc-document-title {
+            margin: 0 0 5px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #455a64;
+        }
+        
+        .kyc-document-details {
+            color: #78909c;
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        .kyc-document-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        .kyc-document-status.pending {
+            background-color: #fff9c4;
+            color: #f57f17;
+        }
+        
+        .kyc-document-status.approved {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .kyc-document-status.rejected {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        
+        .kyc-upload-section {
+            margin-top: 20px;
+        }
+        
+        .kyc-upload-title {
+            font-size: 18px;
+            margin: 0 0 15px;
+            color: #455a64;
+        }
+        
+        .kyc-upload-form {
+            border: 2px dashed #bbdefb;
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            background-color: #f5f9fd;
+        }
+        
+        .kyc-upload-form:hover {
+            border-color: #90caf9;
+            background-color: #e3f2fd;
+        }
+        
+        .kyc-upload-icon {
+            font-size: 48px;
+            color: #90caf9;
+            margin-bottom: 10px;
+        }
+        
+        .kyc-upload-text {
+            color: #546e7a;
+            margin-bottom: 15px;
+        }
+        
+        .kyc-file-input {
+            display: none;
+        }
+        
+        .kyc-file-button {
+            display: inline-block;
+            background-color: #2196f3;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        
+        .kyc-file-button:hover {
+            background-color: #1976d2;
+        }
+        
+        .kyc-form-inputs {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .kyc-form-group {
+            margin-bottom: 15px;
+        }
+        
+        .kyc-form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #455a64;
+        }
+        
+        .kyc-form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .kyc-form-input:focus {
+            border-color: #90caf9;
+            outline: none;
+        }
+        
+        .kyc-selected-file {
+            margin-top: 15px;
+            display: none;
+            align-items: center;
+            padding: 10px;
+            background-color: #e8f5e9;
+            border-radius: 4px;
+        }
+        
+        .kyc-selected-file-icon {
+            margin-right: 10px;
+            color: #66bb6a;
+            font-size: 20px;
+        }
+        
+        .kyc-selected-file-name {
+            flex: 1;
+            font-size: 14px;
+            color: #455a64;
+        }
+        
+        .kyc-selected-file-size {
+            font-size: 12px;
+            color: #78909c;
+        }
+        
+        .kyc-submit-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .kyc-submit-button:hover {
+            background-color: #1976d2;
+        }
+        
+        .kyc-submit-button:disabled {
+            background-color: #b0bec5;
+            cursor: not-allowed;
+        }
+        
+        .kyc-error {
+            color: #f44336;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .kyc-success {
+            color: #66bb6a;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .kyc-tooltip {
+            display: inline-block;
+            position: relative;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        
+        .kyc-tooltip-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #90caf9;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .kyc-tooltip-text {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #455a64;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            width: 200px;
+            font-size: 12px;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+        
+        .kyc-tooltip:hover .kyc-tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .kyc-form-inputs {
+                grid-template-columns: 1fr;
+            }
+            
+            .kyc-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .kyc-step:not(:last-child)::after {
+                top: auto;
+                right: auto;
+                bottom: -10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 2px;
+                height: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <h1>PACIFIQUE MS BINGO</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Accueil</a></li>
+                    <li><a href="/play.html">Jouer</a></li>
+                    <li><a href="/kyc.html" class="active">Vérification KYC</a></li>
+                    <li><a href="/kyc-guide.html">Guide KYC</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <div class="kyc-container">
+            <div class="kyc-header">
+                <h1>Vérification d'Identité (KYC)</h1>
+                <p>Pour garantir la sécurité et le respect des réglementations, nous avons besoin de vérifier votre identité avant de vous permettre de jouer. Suivez les étapes ci-dessous pour compléter votre vérification.</p>
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="/kyc-guide.html" style="display: inline-block; background-color: #e3f2fd; color: #1976d2; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-weight: 500; border: 1px solid #bbdefb;">
+                        <span style="vertical-align: middle; margin-right: 8px;">📘</span> Consulter notre Guide KYC Complet
+                    </a>
+                </div>
+            </div>
+            
+            <div class="kyc-card">
+                <div class="kyc-card-header">
+                    <h2>Statut de votre vérification</h2>
+                </div>
+                <div class="kyc-card-body">
+                    <div class="kyc-status">
+                        <div id="status-icon" class="kyc-status-icon none">
+                            <i>!</i>
+                        </div>
+                        <div class="kyc-status-text">
+                            <h3 id="status-title">Non vérifié</h3>
+                            <p id="status-description">Vous n'avez pas encore complété le processus de vérification.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="kyc-progress">
+                        <div id="progress-bar" class="kyc-progress-bar" style="width: 0%"></div>
+                    </div>
+                    
+                    <div class="kyc-steps">
+                        <div id="step-email" class="kyc-step">
+                            <div class="kyc-step-icon">1</div>
+                            <div class="kyc-step-label">Email vérifié</div>
+                        </div>
+                        <div id="step-identity" class="kyc-step">
+                            <div class="kyc-step-icon">2</div>
+                            <div class="kyc-step-label">Pièce d'identité</div>
+                        </div>
+                        <div id="step-address" class="kyc-step">
+                            <div class="kyc-step-icon">3</div>
+                            <div class="kyc-step-label">Preuve d'adresse</div>
+                        </div>
+                        <div id="step-selfie" class="kyc-step">
+                            <div class="kyc-step-icon">4</div>
+                            <div class="kyc-step-label">Selfie</div>
+                        </div>
+                    </div>
+                    
+                    <div id="can-play-message" style="display: none; text-align: center; padding: 10px; background-color: #e8f5e9; border-radius: 4px; margin-bottom: 20px;">
+                        <span style="color: #2e7d32; font-weight: 500;">✓ Niveau de vérification suffisant - Vous pouvez jouer !</span>
+                    </div>
+                    
+                    <div id="cannot-play-message" style="text-align: center; padding: 10px; background-color: #ffebee; border-radius: 4px; margin-bottom: 20px;">
+                        <span style="color: #c62828; font-weight: 500;">⚠️ Vérification insuffisante - Veuillez compléter les étapes ci-dessous</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="kyc-card">
+                <div class="kyc-card-header">
+                    <h2>Documents soumis</h2>
+                </div>
+                <div class="kyc-card-body">
+                    <div id="documents-container" class="kyc-document-list">
+                        <div id="no-documents-message" style="text-align: center; padding: 20px; color: #78909c;">
+                            Vous n'avez pas encore soumis de documents.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="kyc-card">
+                <div class="kyc-card-header">
+                    <h2>Soumettre un document</h2>
+                </div>
+                <div class="kyc-card-body">
+                    <div class="kyc-upload-section">
+                        <p class="kyc-upload-title">Sélectionnez le type de document à télécharger</p>
+                        
+                        <div class="kyc-form-group">
+                            <label class="kyc-form-label" for="document-type">Type de document</label>
+                            <select id="document-type" class="kyc-form-input">
+                                <option value="">Sélectionnez un type...</option>
+                                <option value="identity_card">Carte d'identité</option>
+                                <option value="passport">Passeport</option>
+                                <option value="driving_license">Permis de conduire</option>
+                                <option value="residence_proof">Justificatif de domicile</option>
+                                <option value="selfie">Selfie avec pièce d'identité</option>
+                            </select>
+                        </div>
+                        
+                        <div id="upload-form" class="kyc-upload-form">
+                            <div class="kyc-upload-icon">📄</div>
+                            <p class="kyc-upload-text">Glissez-déposez votre fichier ici ou cliquez pour parcourir</p>
+                            <label for="document-file" class="kyc-file-button">Parcourir les fichiers</label>
+                            <input type="file" id="document-file" class="kyc-file-input" accept="image/jpeg,image/png,image/gif,application/pdf">
+                            
+                            <div id="selected-file" class="kyc-selected-file">
+                                <span class="kyc-selected-file-icon">📄</span>
+                                <span id="selected-file-name" class="kyc-selected-file-name">filename.jpg</span>
+                                <span id="selected-file-size" class="kyc-selected-file-size">(1.2 MB)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="kyc-form-inputs">
+                            <div class="kyc-form-group">
+                                <label class="kyc-form-label" for="document-number">Numéro du document</label>
+                                <input type="text" id="document-number" class="kyc-form-input" placeholder="Ex: 12AB34567">
+                            </div>
+                            
+                            <div class="kyc-form-group">
+                                <label class="kyc-form-label" for="expiry-date">Date d'expiration</label>
+                                <input type="date" id="expiry-date" class="kyc-form-input">
+                            </div>
+                            
+                            <div class="kyc-form-group">
+                                <label class="kyc-form-label" for="country">Pays d'émission</label>
+                                <select id="country" class="kyc-form-input">
+                                    <option value="">Sélectionnez un pays...</option>
+                                    <option value="FR">France</option>
+                                    <option value="NC">Nouvelle-Calédonie</option>
+                                    <option value="PF">Polynésie française</option>
+                                    <option value="WF">Wallis et Futuna</option>
+                                    <option value="AU">Australie</option>
+                                    <option value="NZ">Nouvelle-Zélande</option>
+                                    <option value="FJ">Fidji</option>
+                                    <option value="VU">Vanuatu</option>
+                                    <option value="WS">Samoa</option>
+                                    <option value="TO">Tonga</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div id="upload-error" class="kyc-error" style="display: none;"></div>
+                        <div id="upload-success" class="kyc-success" style="display: none;"></div>
+                        
+                        <button id="submit-button" class="kyc-submit-button" disabled>Soumettre le document</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-columns">
+                <div class="footer-column">
+                    <h3>À propos</h3>
+                    <p>PACIFIQUE MS BINGO est une plateforme de jeu en ligne certifiée offrant une expérience de bingo équitable et sécurisée.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Liens utiles</h3>
+                    <ul>
+                        <li><a href="/play.html">Jouer</a></li>
+                        <li><a href="/kyc.html">Vérification KYC</a></li>
+                        <li><a href="/kyc-guide.html">Guide KYC</a></li>
+                        <li><a href="/fairness-verifier.html">Vérificateur d'équité</a></li>
+                        <li><a href="/blockchain-visualizer.html">Visualiseur blockchain</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Assistance</h3>
+                    <ul>
+                        <li><a href="#">Règles du jeu</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contactez-nous</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 PACIFIQUE MS BINGO - Tous droits réservés</p>
+                <p>Licence ANJ en cours d'approbation</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Éléments DOM
+            const documentTypeSelect = document.getElementById('document-type');
+            const documentFileInput = document.getElementById('document-file');
+            const documentNumberInput = document.getElementById('document-number');
+            const expiryDateInput = document.getElementById('expiry-date');
+            const countrySelect = document.getElementById('country');
+            const uploadForm = document.getElementById('upload-form');
+            const selectedFileContainer = document.getElementById('selected-file');
+            const selectedFileName = document.getElementById('selected-file-name');
+            const selectedFileSize = document.getElementById('selected-file-size');
+            const submitButton = document.getElementById('submit-button');
+            const uploadError = document.getElementById('upload-error');
+            const uploadSuccess = document.getElementById('upload-success');
+            const documentsContainer = document.getElementById('documents-container');
+            const noDocumentsMessage = document.getElementById('no-documents-message');
+            
+            // Éléments de statut
+            const statusIcon = document.getElementById('status-icon');
+            const statusTitle = document.getElementById('status-title');
+            const statusDescription = document.getElementById('status-description');
+            const progressBar = document.getElementById('progress-bar');
+            const canPlayMessage = document.getElementById('can-play-message');
+            const cannotPlayMessage = document.getElementById('cannot-play-message');
+            
+            // Étapes
+            const stepEmail = document.getElementById('step-email');
+            const stepIdentity = document.getElementById('step-identity');
+            const stepAddress = document.getElementById('step-address');
+            const stepSelfie = document.getElementById('step-selfie');
+            
+            // Vérifier si l'utilisateur est connecté
+            checkAuthStatus();
+            
+            // Événements pour le téléchargement de fichier
+            uploadForm.addEventListener('click', function() {
+                documentFileInput.click();
+            });
+            
+            uploadForm.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadForm.style.borderColor = '#42a5f5';
+                uploadForm.style.backgroundColor = '#e3f2fd';
+            });
+            
+            uploadForm.addEventListener('dragleave', function() {
+                uploadForm.style.borderColor = '#bbdefb';
+                uploadForm.style.backgroundColor = '#f5f9fd';
+            });
+            
+            uploadForm.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadForm.style.borderColor = '#bbdefb';
+                uploadForm.style.backgroundColor = '#f5f9fd';
+                
+                if (e.dataTransfer.files.length) {
+                    handleFileSelection(e.dataTransfer.files[0]);
+                }
+            });
+            
+            documentFileInput.addEventListener('change', function() {
+                if (this.files.length) {
+                    handleFileSelection(this.files[0]);
+                }
+            });
+            
+            // Événement pour le changement de type de document
+            documentTypeSelect.addEventListener('change', validateForm);
+            
+            // Événement pour la soumission du formulaire
+            submitButton.addEventListener('click', submitDocument);
+            
+            // Charger le statut KYC et les documents
+            loadKYCStatus();
+            
+            /**
+             * Vérifie si l'utilisateur est connecté
+             */
+            function checkAuthStatus() {
+                fetch('/api/user')
+                    .then(response => {
+                        if (!response.ok) {
+                            window.location.href = '/login.html?redirect=/kyc.html';
+                            throw new Error('Non connecté');
+                        }
+                        return response.json();
+                    })
+                    .catch(error => {
+                        console.error('Erreur de vérification de connexion:', error);
+                    });
+            }
+            
+            /**
+             * Gère la sélection d'un fichier
+             * @param {File} file - Fichier sélectionné
+             */
+            function handleFileSelection(file) {
+                // Vérifier le type de fichier
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf', 'image/heic', 'image/heif'];
+                if (!allowedTypes.includes(file.type)) {
+                    uploadError.textContent = 'Type de fichier non supporté. Utilisez JPG, PNG, GIF, PDF ou HEIC.';
+                    uploadError.style.display = 'block';
+                    uploadSuccess.style.display = 'none';
+                    return;
+                }
+                
+                // Vérifier la taille du fichier (5MB max)
+                if (file.size > 5 * 1024 * 1024) {
+                    uploadError.textContent = 'Le fichier est trop volumineux. Maximum: 5 MB.';
+                    uploadError.style.display = 'block';
+                    uploadSuccess.style.display = 'none';
+                    return;
+                }
+                
+                // Afficher le fichier sélectionné
+                selectedFileName.textContent = file.name;
+                selectedFileSize.textContent = `(${formatFileSize(file.size)})`;
+                selectedFileContainer.style.display = 'flex';
+                
+                // Cacher les messages d'erreur
+                uploadError.style.display = 'none';
+                uploadSuccess.style.display = 'none';
+                
+                // Valider le formulaire
+                validateForm();
+            }
+            
+            /**
+             * Formate la taille du fichier
+             * @param {number} bytes - Taille en octets
+             * @returns {string} Taille formatée
+             */
+            function formatFileSize(bytes) {
+                if (bytes < 1024) {
+                    return bytes + ' B';
+                } else if (bytes < 1024 * 1024) {
+                    return (bytes / 1024).toFixed(1) + ' KB';
+                } else {
+                    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+                }
+            }
+            
+            /**
+             * Valide le formulaire et active/désactive le bouton de soumission
+             */
+            function validateForm() {
+                const documentType = documentTypeSelect.value;
+                const file = documentFileInput.files[0];
+                
+                let isValid = documentType && file;
+                
+                // Champs additionnels selon le type de document
+                if (documentType === 'identity_card' || documentType === 'passport' || documentType === 'driving_license') {
+                    isValid = isValid && documentNumberInput.value && countrySelect.value;
+                }
+                
+                submitButton.disabled = !isValid;
+            }
+            
+            /**
+             * Soumet le document pour vérification
+             */
+            function submitDocument() {
+                const documentType = documentTypeSelect.value;
+                const file = documentFileInput.files[0];
+                
+                if (!documentType || !file) {
+                    return;
+                }
+                
+                // Désactiver le bouton pendant la soumission
+                submitButton.disabled = true;
+                submitButton.textContent = 'Envoi en cours...';
+                
+                // Créer un objet FormData pour l'envoi multipart
+                const formData = new FormData();
+                formData.append('document', file);
+                formData.append('documentType', documentType);
+                formData.append('documentNumber', documentNumberInput.value);
+                formData.append('expiryDate', expiryDateInput.value);
+                formData.append('country', countrySelect.value);
+                
+                // Envoyer la requête
+                console.log('Soumission du document:', documentType, file.name, file.size);
+                
+                // Ajouter des credentials pour s'assurer que la session est transmise
+                fetch('/api/kyc/upload', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'same-origin' // Important pour transmettre les cookies de session
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => {
+                            throw new Error(err.message || 'Erreur lors de l\'envoi du document');
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Afficher le message de succès
+                    uploadSuccess.textContent = 'Document soumis avec succès! Il sera vérifié prochainement.';
+                    uploadSuccess.style.display = 'block';
+                    uploadError.style.display = 'none';
+                    
+                    // Réinitialiser le formulaire
+                    documentTypeSelect.value = '';
+                    documentFileInput.value = '';
+                    documentNumberInput.value = '';
+                    expiryDateInput.value = '';
+                    countrySelect.value = '';
+                    selectedFileContainer.style.display = 'none';
+                    
+                    // Recharger le statut KYC et les documents
+                    loadKYCStatus();
+                })
+                .catch(error => {
+                    console.error('Erreur de soumission:', error);
+                    uploadError.textContent = 'Erreur lors de l\'envoi du document. Veuillez réessayer.';
+                    uploadError.style.display = 'block';
+                    uploadSuccess.style.display = 'none';
+                })
+                .finally(() => {
+                    // Réactiver le bouton
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Soumettre le document';
+                });
+            }
+            
+            /**
+             * Charge le statut KYC et les documents soumis
+             */
+            function loadKYCStatus() {
+                fetch('/api/kyc/status', {
+                    credentials: 'same-origin' // Important pour transmettre les cookies de session
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erreur lors de la récupération du statut KYC');
+                        }
+                        return response.json();
+                    })
+                    .then(status => {
+                        // Mettre à jour le statut de vérification
+                        updateVerificationStatus(status);
+                        
+                        // Charger les documents
+                        loadDocuments();
+                    })
+                    .catch(error => {
+                        console.error('Erreur de chargement du statut KYC:', error);
+                        
+                        // En cas d'erreur, simuler un statut de base pour la démo
+                        // Dans une implémentation réelle, afficher un message d'erreur
+                        simulateKYCStatus();
+                    });
+            }
+            
+            /**
+             * Met à jour l'affichage du statut de vérification
+             * @param {Object} status - Statut de vérification
+             */
+            function updateVerificationStatus(status) {
+                let verificationLevel = status.verificationLevel || 'none';
+                let canPlay = status.canPlay || false;
+                
+                // Mettre à jour l'icône et le texte de statut
+                statusIcon.className = `kyc-status-icon ${verificationLevel}`;
+                
+                // Mettre à jour le titre et la description
+                switch (verificationLevel) {
+                    case 'none':
+                        statusIcon.innerHTML = '!';
+                        statusTitle.textContent = 'Non vérifié';
+                        statusDescription.textContent = 'Vous n\'avez pas encore complété le processus de vérification.';
+                        progressBar.style.width = '0%';
+                        break;
+                    case 'basic':
+                        statusIcon.innerHTML = '✓';
+                        statusTitle.textContent = 'Niveau Basique';
+                        statusDescription.textContent = 'Votre email a été vérifié. Soumettez une pièce d\'identité pour atteindre le niveau suivant.';
+                        progressBar.style.width = '25%';
+                        break;
+                    case 'enhanced':
+                        statusIcon.innerHTML = '✓✓';
+                        statusTitle.textContent = 'Niveau Renforcé';
+                        statusDescription.textContent = 'Votre identité a été vérifiée. Soumettez une preuve d\'adresse et un selfie pour une vérification complète.';
+                        progressBar.style.width = '60%';
+                        break;
+                    case 'full':
+                        statusIcon.innerHTML = '✓✓✓';
+                        statusTitle.textContent = 'Vérification Complète';
+                        statusDescription.textContent = 'Votre vérification est complète. Vous pouvez jouer sans restrictions.';
+                        progressBar.style.width = '100%';
+                        break;
+                }
+                
+                // Mettre à jour les étapes
+                updateSteps(status.documents || {});
+                
+                // Afficher le message approprié
+                if (canPlay) {
+                    canPlayMessage.style.display = 'block';
+                    cannotPlayMessage.style.display = 'none';
+                } else {
+                    canPlayMessage.style.display = 'none';
+                    cannotPlayMessage.style.display = 'block';
+                }
+            }
+            
+            /**
+             * Met à jour l'affichage des étapes
+             * @param {Object} documents - Documents soumis
+             */
+            function updateSteps(documents) {
+                // Étape 1: Email vérifié
+                // Supposons que l'email est vérifié si le niveau n'est pas "none"
+                const emailVerified = true; // Simulation
+                if (emailVerified) {
+                    stepEmail.classList.add('completed');
+                } else {
+                    stepEmail.classList.remove('completed');
+                }
+                
+                // Étape 2: Pièce d'identité
+                const hasIdentity = ['identity_card', 'passport', 'driving_license'].some(
+                    type => documents[type] && documents[type].status === 'approved'
+                );
+                if (hasIdentity) {
+                    stepIdentity.classList.add('completed');
+                } else {
+                    stepIdentity.classList.remove('completed');
+                }
+                
+                // Étape 3: Preuve d'adresse
+                const hasAddress = documents.residence_proof && documents.residence_proof.status === 'approved';
+                if (hasAddress) {
+                    stepAddress.classList.add('completed');
+                } else {
+                    stepAddress.classList.remove('completed');
+                }
+                
+                // Étape 4: Selfie
+                const hasSelfie = documents.selfie && documents.selfie.status === 'approved';
+                if (hasSelfie) {
+                    stepSelfie.classList.add('completed');
+                } else {
+                    stepSelfie.classList.remove('completed');
+                }
+                
+                // Déterminer l'étape active
+                stepEmail.classList.remove('active');
+                stepIdentity.classList.remove('active');
+                stepAddress.classList.remove('active');
+                stepSelfie.classList.remove('active');
+                
+                if (!emailVerified) {
+                    stepEmail.classList.add('active');
+                } else if (!hasIdentity) {
+                    stepIdentity.classList.add('active');
+                } else if (!hasAddress) {
+                    stepAddress.classList.add('active');
+                } else if (!hasSelfie) {
+                    stepSelfie.classList.add('active');
+                }
+            }
+            
+            /**
+             * Charge les documents soumis
+             */
+            function loadDocuments() {
+                fetch('/api/kyc/documents', {
+                    credentials: 'same-origin' // Important pour transmettre les cookies de session
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erreur lors de la récupération des documents');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        displayDocuments(data.documents || []);
+                    })
+                    .catch(error => {
+                        console.error('Erreur de chargement des documents:', error);
+                        
+                        // En cas d'erreur, simuler des documents pour la démo
+                        // Dans une implémentation réelle, afficher un message d'erreur
+                        simulateDocuments();
+                    });
+            }
+            
+            /**
+             * Affiche les documents soumis
+             * @param {Array} documents - Liste des documents
+             */
+            function displayDocuments(documents) {
+                // Vider le conteneur
+                documentsContainer.innerHTML = '';
+                
+                if (documents.length === 0) {
+                    documentsContainer.appendChild(noDocumentsMessage);
+                    return;
+                }
+                
+                // Afficher chaque document
+                documents.forEach(doc => {
+                    const docItem = document.createElement('div');
+                    docItem.className = 'kyc-document-item';
+                    
+                    // Icône selon le statut
+                    const iconClass = `kyc-document-icon ${doc.status}`;
+                    const iconText = doc.status === 'approved' ? '✓' : (doc.status === 'rejected' ? '✗' : '?');
+                    
+                    // Titre selon le type de document
+                    let docTitle = 'Document';
+                    switch (doc.documentType) {
+                        case 'identity_card':
+                            docTitle = 'Carte d\'identité';
+                            break;
+                        case 'passport':
+                            docTitle = 'Passeport';
+                            break;
+                        case 'driving_license':
+                            docTitle = 'Permis de conduire';
+                            break;
+                        case 'residence_proof':
+                            docTitle = 'Justificatif de domicile';
+                            break;
+                        case 'selfie':
+                            docTitle = 'Selfie';
+                            break;
+                    }
+                    
+                    // Statut texte
+                    let statusText = 'En attente';
+                    if (doc.status === 'approved') {
+                        statusText = 'Approuvé';
+                    } else if (doc.status === 'rejected') {
+                        statusText = 'Refusé';
+                    }
+                    
+                    // Formater la date
+                    const uploadDate = new Date(doc.uploadDate).toLocaleDateString('fr-FR');
+                    
+                    // Contenu HTML
+                    docItem.innerHTML = `
+                        <div class="${iconClass}">${iconText}</div>
+                        <div class="kyc-document-info">
+                            <h3 class="kyc-document-title">${docTitle}</h3>
+                            <p class="kyc-document-details">Envoyé le ${uploadDate}</p>
+                            ${doc.rejectionReason ? `<p class="kyc-error">Raison du refus: ${doc.rejectionReason}</p>` : ''}
+                        </div>
+                        <span class="kyc-document-status ${doc.status}">${statusText}</span>
+                    `;
+                    
+                    documentsContainer.appendChild(docItem);
+                });
+            }
+            
+            /**
+             * Simule un statut KYC pour la démonstration
+             * Note: Dans une implémentation réelle, cette fonction n'est pas nécessaire
+             */
+            function simulateKYCStatus() {
+                const status = {
+                    verificationLevel: 'basic',
+                    canPlay: false,
+                    documents: {
+                        identity_card: { status: 'pending' }
+                    }
+                };
+                
+                updateVerificationStatus(status);
+            }
+            
+            /**
+             * Simule des documents pour la démonstration
+             * Note: Dans une implémentation réelle, cette fonction n'est pas nécessaire
+             */
+            function simulateDocuments() {
+                const documents = [
+                    {
+                        id: 1,
+                        documentType: 'identity_card',
+                        status: 'pending',
+                        uploadDate: new Date().toISOString()
+                    }
+                ];
+                
+                displayDocuments(documents);
+            }
+        });
+    </script>
+</body>
+</html>

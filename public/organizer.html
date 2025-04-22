@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PACIFIQUE MS BINGO - Organisateur</title>
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+  <meta name="description" content="Interface d'organisateur pour PACIFIQUE MS BINGO - Gestion des parties, tirage des numéros et administration des joueurs">
+  <style>
+    :root {
+      --primary: #FE6800;
+      --secondary: #0077c0;
+      --accent: #32E0C4;
+      --background: #111827;
+      --card-bg: #1f2937;
+      --text: #f3f4f6;
+      --text-dark: #1f2937;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+    }
+    
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 0.5rem;
+    }
+    
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin: 0;
+    }
+    
+    .card-icon {
+      background-color: var(--primary);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .btn {
+      display: inline-block;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .btn:hover {
+      background-color: #e05a00;
+    }
+    
+    .btn-secondary {
+      background-color: var(--secondary);
+    }
+    
+    .btn-secondary:hover {
+      background-color: #0066a7;
+    }
+    
+    .full-width {
+      width: 100%;
+    }
+    
+    .action-section {
+      margin-top: 2rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    
+    input, select, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 4px;
+      border: 1px solid #374151;
+      background-color: #2d3748;
+      color: var(--text);
+      font-size: 1rem;
+    }
+    
+    .status {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.875rem;
+      font-weight: bold;
+    }
+    
+    .status-active {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+    
+    .status-inactive {
+      background-color: rgba(156, 163, 175, 0.2);
+      color: #9ca3af;
+    }
+    
+    .status-special {
+      background-color: rgba(245, 158, 11, 0.2);
+      color: #f59e0b;
+    }
+    
+    .game-controls {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    .control-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    
+    .stat-item {
+      text-align: center;
+      padding: 1rem;
+      background-color: rgba(0,0,0,0.2);
+      border-radius: 8px;
+      flex: 1;
+      margin: 0 0.5rem;
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      font-size: 0.875rem;
+      color: #9ca3af;
+    }
+    
+    .numbers-drawn {
+      background-color: rgba(0,0,0,0.2);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+    
+    .number-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      overflow: auto;
+      max-height: 300px;
+    }
+    
+    .number-cell {
+      aspect-ratio: 1;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #2d3748;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+    
+    .number-drawn {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .audio-controls {
+      margin-top: 1rem;
+      padding: 1rem;
+      background-color: rgba(0,0,0,0.2);
+      border-radius: 8px;
+    }
+    
+    @media (max-width: 768px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats {
+        flex-direction: column;
+      }
+      
+      .stat-item {
+        margin: 0.5rem 0;
+      }
+      
+      .number-grid {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PACIFIQUE MS BINGO - Interface Organisateur</h1>
+  </header>
+  
+  <div class="container">
+    <div class="dashboard-grid">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">État du jeu</h2>
+          <div class="card-icon">🎮</div>
+        </div>
+        <p>Prochaine partie: <span id="nextGameTime">--:--</span></p>
+        <p>Type: <span id="gameType" class="status status-active">Régulier</span></p>
+        <p>Joueurs connectés: <span id="connectedPlayers">0</span></p>
+        <button class="btn full-width" id="startGameManually">Démarrer une partie maintenant</button>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Cagnotte</h2>
+          <div class="card-icon">💰</div>
+        </div>
+        <p>Jackpot actuel: <span id="currentJackpot">100,000 fr</span></p>
+        <p>Fonds pour la prochaine partie: <span id="nextGameFunds">0 fr</span></p>
+        <p>Total des mises aujourd'hui: <span id="totalBetsToday">0 fr</span></p>
+        <button class="btn btn-secondary full-width" id="editJackpot">Modifier le jackpot</button>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Programmation</h2>
+          <div class="card-icon">📅</div>
+        </div>
+        <p>Prochaine partie spéciale: <span id="nextSpecialGame">--:--</span></p>
+        <p>Mode automatique: <span id="autoMode" class="status status-active">Activé</span></p>
+        <p>Horaires: <span id="schedule">10h00 - 03h00</span></p>
+        <button class="btn full-width" id="manageSchedule">Gérer le calendrier</button>
+      </div>
+    </div>
+    
+    <div class="game-controls">
+      <h2>Contrôles de jeu en direct</h2>
+      
+      <div class="stats">
+        <div class="stat-item">
+          <div class="stat-value" id="drawnCount">0</div>
+          <div class="stat-label">NUMÉROS TIRÉS</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="activePlayers">0</div>
+          <div class="stat-label">JOUEURS ACTIFS</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="cardsInPlay">0</div>
+          <div class="stat-label">CARTES EN JEU</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="quineCount">0</div>
+          <div class="stat-label">QUINES</div>
+        </div>
+      </div>
+      
+      <div class="control-buttons">
+        <button class="btn" id="drawNumber">Tirer un numéro</button>
+        <button class="btn btn-secondary" id="pauseGame">Pause</button>
+        <button class="btn" id="endGame" style="background-color: var(--error);">Terminer la partie</button>
+        <button class="btn" id="verifyWinner" style="background-color: var(--success);">Vérifier gagnant</button>
+      </div>
+      
+      <div class="numbers-drawn">
+        <h3>Numéros tirés</h3>
+        <div class="number-grid" id="numberGrid">
+          <!-- Les numéros seront générés dynamiquement -->
+        </div>
+      </div>
+      
+      <div class="audio-controls">
+        <h3>Contrôles audio</h3>
+        <div class="form-group">
+          <label for="voiceVolume">Volume de la voix</label>
+          <input type="range" id="voiceVolume" min="0" max="100" value="75">
+        </div>
+        <div class="form-group">
+          <label for="effectsVolume">Volume des effets</label>
+          <input type="range" id="effectsVolume" min="0" max="100" value="50">
+        </div>
+        <button class="btn" id="testAudio">Tester l'audio</button>
+      </div>
+    </div>
+    
+    <div class="action-section">
+      <button class="btn" onclick="window.location.href='/play'">Voir l'interface joueur</button>
+      <button class="btn btn-secondary" onclick="logout()">Se déconnecter</button>
+    </div>
+  </div>
+
+  <script>
+    // Vérification d'accès organisateur
+    async function checkOrganizerAccess() {
+      console.log('Accès organisateur simulé');
+      document.querySelector('header h1').textContent = 
+        `PACIFIQUE MS BINGO - Interface Organisateur (organisateur)`;
+      return true;
+    } catch (error) {
+        console.error('Erreur lors de la vérification des droits:', error);
+        window.location.href = '/';
+        return false;
+      }
+    }
+    
+    // Récupérer les informations de la partie en cours
+    async function getCurrentGameInfo() {
+      try {
+        const gameInfo = {
+          gameId: 25,
+          drawnNumbers: [1, 7, 13, 25, 32, 46, 58, 67, 74, 82, 90],
+          activePlayers: 42,
+          cardsInPlay: 128,
+          quineCount: 3,
+          gameType: 'regular',
+          jackpot: 100000,
+          nextGameFunds: 12800,
+          totalBetsToday: 42500,
+          nextGameTime: new Date(Date.now() + 3600000).toISOString(),
+          nextSpecialGameTime: new Date(Date.now() + 14400000).toISOString()
+        };
+        
+        updateGameDisplay(gameInfo);
+        return gameInfo;
+      } catch (error) {
+        console.error('Erreur lors de la récupération des informations de partie:', error);
+        return null;
+      }
+    }
+    }
+    
+    // Mise à jour de l'affichage avec les informations de la partie
+    function updateGameDisplay(gameInfo) {
+      if (!gameInfo) return;
+      
+      // Mettre à jour les statistiques
+      if (gameInfo.drawnNumbers) {
+        document.getElementById('drawnCount').textContent = gameInfo.drawnNumbers.length;
+        
+        // Mettre à jour la grille des numéros tirés
+        gameInfo.drawnNumbers.forEach(num => {
+          const cell = document.querySelector(`.number-cell[data-number="${num}"]`);
+          if (cell) cell.classList.add('number-drawn');
+        });
+      }
+      
+      // Mettre à jour les autres statistiques
+      if (gameInfo.activePlayers) {
+        document.getElementById('activePlayers').textContent = gameInfo.activePlayers;
+        document.getElementById('connectedPlayers').textContent = gameInfo.activePlayers;
+      }
+      
+      if (gameInfo.cardsInPlay) {
+        document.getElementById('cardsInPlay').textContent = gameInfo.cardsInPlay;
+      }
+      
+      if (gameInfo.quineCount) {
+        document.getElementById('quineCount').textContent = gameInfo.quineCount;
+      }
+      
+      if (gameInfo.jackpot) {
+        document.getElementById('currentJackpot').textContent = 
+          `${parseInt(gameInfo.jackpot).toLocaleString()} fr`;
+      }
+      
+      if (gameInfo.nextGameFunds) {
+        document.getElementById('nextGameFunds').textContent = 
+          `${parseInt(gameInfo.nextGameFunds).toLocaleString()} fr`;
+      }
+      
+      if (gameInfo.totalBetsToday) {
+        document.getElementById('totalBetsToday').textContent = 
+          `${parseInt(gameInfo.totalBetsToday).toLocaleString()} fr`;
+      }
+      
+      // Mettre à jour le type de jeu si disponible
+      if (gameInfo.gameType) {
+        const gameTypeElement = document.getElementById('gameType');
+        gameTypeElement.textContent = gameInfo.gameType === 'special' ? 'Spécial' : 'Régulier';
+        gameTypeElement.className = gameInfo.gameType === 'special' ? 
+          'status status-special' : 'status status-active';
+      }
+      
+      // Mettre à jour les horaires de la prochaine partie
+      if (gameInfo.nextGameTime) {
+        const nextGameTime = new Date(gameInfo.nextGameTime);
+        const hours = nextGameTime.getHours().toString().padStart(2, '0');
+        const minutes = nextGameTime.getMinutes().toString().padStart(2, '0');
+        document.getElementById('nextGameTime').textContent = `${hours}:${minutes}`;
+      } else {
+        updateNextGameTime(); // Calcul basique si non disponible
+      }
+      
+      // Mettre à jour l'heure de la prochaine partie spéciale
+      if (gameInfo.nextSpecialGameTime) {
+        const nextSpecial = new Date(gameInfo.nextSpecialGameTime);
+        const hours = nextSpecial.getHours().toString().padStart(2, '0');
+        const minutes = nextSpecial.getMinutes().toString().padStart(2, '0');
+        document.getElementById('nextSpecialGame').textContent = `${hours}:${minutes}`;
+      }
+    }
+    
+    // Tirer un nouveau numéro
+    async function drawNewNumber() {
+      try {
+        const response = await fetch('/api/organizer/draw-number', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (!response.ok) {
+          alert('Erreur lors du tirage du numéro');
+          return;
+        }
+        
+        const result = await response.json();
+        
+        if (result.success && result.drawnNumber) {
+          // Mettre à jour l'interface pour le numéro tiré
+          const cell = document.querySelector(`.number-cell[data-number="${result.drawnNumber}"]`);
+          if (cell) {
+            cell.classList.add('number-drawn');
+            
+            // Mettre à jour le compteur
+            const currentCount = parseInt(document.getElementById('drawnCount').textContent);
+            document.getElementById('drawnCount').textContent = currentCount + 1;
+            
+            // Notification du numéro tiré
+            alert(`Numéro tiré: ${result.drawnNumber}`);
+          }
+        }
+      } catch (error) {
+        console.error('Erreur lors du tirage d\'un numéro:', error);
+        alert('Erreur lors de la communication avec le serveur');
+      }
+    }
+    
+    // Initialisation de la page
+    async function initPage() {
+      // Vérifier l'accès organisateur
+      const hasAccess = await checkOrganizerAccess();
+      if (!hasAccess) return;
+      
+      // Générer la grille de numéros à 6 colonnes avec effet diagonal
+      const numberGrid = document.getElementById('numberGrid');
+      for (let num = 1; num <= 90; num++) {
+        const cell = document.createElement('div');
+        cell.className = 'number-cell';
+        cell.textContent = num;
+        cell.dataset.number = num;
+        
+        // Ajouter une légère rotation aux cellules pour l'effet diagonal
+        const randomRotation = Math.floor(Math.random() * 5) - 2; // Rotation entre -2 et +2 degrés
+        cell.style.transform = `rotate(${randomRotation}deg)`;
+        
+        numberGrid.appendChild(cell);
+      }
+      
+      // Obtenir les informations de la partie en cours
+      await getCurrentGameInfo();
+      
+      // Configuration WebSocket pour les mises à jour en temps réel
+      setupWebSocket();
+      
+      // Configuration des événements des boutons
+      setupButtonEvents();
+    }
+    
+    // Configuration WebSocket
+    function setupWebSocket() {
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const wsUrl = `${protocol}//${window.location.host}/ws`;
+      
+      const ws = new WebSocket(wsUrl);
+      
+      ws.onopen = () => {
+        console.log('Connexion WebSocket établie');
+        // Identification comme organisateur
+        ws.send(JSON.stringify({ 
+          type: 'IDENTIFY', 
+          role: 'organizer' 
+        }));
+        
+        // Demander les données actuelles du jeu
+        ws.send(JSON.stringify({ 
+          type: 'REQUEST_GAME_DATA' 
+        }));
+      };
+      
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          
+          if (data.type === 'game_update' && data.game) {
+            updateGameDisplay(data.game);
+          }
+        } catch (error) {
+          console.error('Erreur lors du traitement du message WebSocket:', error);
+        }
+      };
+      
+      ws.onclose = () => {
+        console.log('Connexion WebSocket fermée, tentative de reconnexion dans 5s...');
+        setTimeout(setupWebSocket, 5000);
+      };
+      
+      ws.onerror = (error) => {
+        console.error('Erreur WebSocket:', error);
+      };
+      
+      // Conserver la référence websocket
+      window.gameWs = ws;
+    }
+    
+    // Configuration des événements des boutons
+    function setupButtonEvents() {
+      // Bouton de tirage de numéro
+      document.getElementById('drawNumber').addEventListener('click', drawNewNumber);
+      
+      // Le bouton de déconnexion utilise directement onclick dans le HTML
+      
+      // Bouton début de partie manuel
+      document.getElementById('startGameManually').addEventListener('click', async function() {
+        try {
+          const response = await fetch('/api/organizer/start-game', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({})
+          });
+          
+          if (response.ok) {
+            const result = await response.json();
+            if (result.success) {
+              alert('Nouvelle partie démarrée !');
+              // Les données seront mises à jour automatiquement via WebSocket
+            } else {
+              alert(`Erreur: ${result.message}`);
+            }
+          } else {
+            alert('Erreur lors du démarrage de la partie');
+          }
+        } catch (error) {
+          console.error('Erreur:', error);
+          alert('Erreur de communication avec le serveur');
+        }
+      });
+      
+      // Bouton pour modifier le jackpot
+      document.getElementById('editJackpot').addEventListener('click', async function() {
+        const newJackpot = prompt('Entrez le nouveau montant du jackpot (en francs):', '100000');
+        if (newJackpot !== null) {
+          try {
+            const response = await fetch('/api/organizer/update-jackpot', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              credentials: 'include',
+              body: JSON.stringify({ value: parseInt(newJackpot) })
+            });
+            
+            if (response.ok) {
+              const result = await response.json();
+              if (result.success) {
+                document.getElementById('currentJackpot').textContent = `${parseInt(result.jackpotValue).toLocaleString()} fr`;
+                alert('Jackpot mis à jour !');
+              } else {
+                alert(`Erreur: ${result.message}`);
+              }
+            } else {
+              alert('Erreur lors de la mise à jour du jackpot');
+            }
+          } catch (error) {
+            console.error('Erreur:', error);
+            alert('Erreur de communication avec le serveur');
+          }
+        }
+      });
+      
+      // Bouton de gestion du calendrier
+      document.getElementById('manageSchedule').addEventListener('click', function() {
+        alert('Fonctionnalité de gestion du calendrier à venir...');
+      });
+      
+      // Bouton pause/reprendre
+      document.getElementById('pauseGame').addEventListener('click', async function() {
+        try {
+          const response = await fetch('/api/organizer/toggle-pause', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+          });
+          
+          if (response.ok) {
+            const result = await response.json();
+            if (result.success) {
+              if (this.textContent === 'Pause') {
+                this.textContent = 'Reprendre';
+                alert('Jeu en pause');
+              } else {
+                this.textContent = 'Pause';
+                alert('Jeu repris');
+              }
+            } else {
+              alert(`Erreur: ${result.message}`);
+            }
+          } else {
+            alert('Erreur lors de la mise en pause/reprise du jeu');
+          }
+        } catch (error) {
+          console.error('Erreur:', error);
+          alert('Erreur de communication avec le serveur');
+        }
+      });
+      
+      // Bouton fin de partie
+      document.getElementById('endGame').addEventListener('click', async function() {
+        if (confirm('Êtes-vous sûr de vouloir terminer la partie en cours ?')) {
+          try {
+            const response = await fetch('/api/organizer/end-game', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              credentials: 'include'
+            });
+            
+            if (response.ok) {
+              const result = await response.json();
+              if (result.success) {
+                alert('Partie terminée avec succès !');
+              } else {
+                alert(`Erreur: ${result.message}`);
+              }
+            } else {
+              alert('Erreur lors de la fin de partie');
+            }
+          } catch (error) {
+            console.error('Erreur:', error);
+            alert('Erreur de communication avec le serveur');
+          }
+        }
+      });
+      
+      // Bouton pour vérifier les gagnants
+      document.getElementById('verifyWinner').addEventListener('click', function() {
+        // Pour l'instant, utiliser une approche simplifiée avec des prompts
+        const userId = prompt('ID de l\'utilisateur:');
+        if (!userId) return;
+        
+        const cardId = prompt('ID de la carte:');
+        if (!cardId) return;
+        
+        const winType = confirm('Est-ce un bingo complet? Cliquez sur OK pour Bingo, Annuler pour Quine') 
+          ? 'bingo' : 'quine';
+        
+        let line = 0;
+        if (winType === 'quine') {
+          const lineInput = prompt('Numéro de ligne (0, 1 ou 2):', '0');
+          line = parseInt(lineInput) || 0;
+        }
+        
+        verifyWin(userId, cardId, winType, line);
+      });
+      
+      // Fonction pour vérifier une quine ou un bingo
+      async function verifyWin(userId, cardId, winType, line) {
+        try {
+          const endpoint = winType === 'quine' 
+            ? '/api/organizer/validate-quine' 
+            : '/api/organizer/validate-bingo';
+          
+          const payload = winType === 'quine'
+            ? { userId, cardId, line }
+            : { userId, cardId, card: [] }; // La carte réelle serait récupérée du serveur
+          
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify(payload)
+          });
+          
+          if (response.ok) {
+            const result = await response.json();
+            if (result.success) {
+              let message = '';
+              if (winType === 'quine') {
+                message = `Quine validée!\nGain: ${result.quine.prizeAmount.toLocaleString()} fr`;
+              } else {
+                message = `Bingo validé!\nGain: ${result.bingo.prizeAmount.toLocaleString()} fr`;
+                if (result.bingo.isJackpotWinner) {
+                  message += `\nJACKPOT GAGNÉ: ${result.bingo.jackpotAmount.toLocaleString()} fr`;
+                }
+              }
+              alert(message);
+            } else {
+              alert(`Erreur: ${result.message}`);
+            }
+          } else {
+            alert(`Erreur lors de la validation du ${winType}`);
+          }
+        } catch (error) {
+          console.error('Erreur:', error);
+          alert('Erreur de communication avec le serveur');
+        }
+      }
+      
+      // Bouton de test audio
+      document.getElementById('testAudio').addEventListener('click', function() {
+        alert('Test audio : "Numéro 25, 2-5"');
+      });
+    }
+    
+    // Calcul basique de l'heure de la prochaine partie
+    function updateNextGameTime() {
+      const now = new Date();
+      const nextHour = new Date(now);
+      nextHour.setHours(nextHour.getHours() + 1);
+      nextHour.setMinutes(0);
+      nextHour.setSeconds(0);
+      
+      const hours = nextHour.getHours().toString().padStart(2, '0');
+      const minutes = nextHour.getMinutes().toString().padStart(2, '0');
+      
+      document.getElementById('nextGameTime').textContent = `${hours}:${minutes}`;
+    }
+    
+    // Déconnexion
+    async function logout() {
+      try {
+        await fetch('/api/logout', { 
+          method: 'POST',
+          credentials: 'include'
+        });
+        window.location.href = '/';
+      } catch (error) {
+        console.error('Erreur lors de la déconnexion:', error);
+        alert('Erreur lors de la déconnexion');
+      }
+    }
+    
+    // Démarrer l'application
+    document.addEventListener('DOMContentLoaded', initPage);
+  </script>
+  
+  <!-- Script de gestion des cookies RGPD -->
+  <script src="/js/cookie-consent.js"></script>
+</body>
+</html>

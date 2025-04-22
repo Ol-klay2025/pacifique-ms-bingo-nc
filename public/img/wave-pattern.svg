@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800px" height="600px" viewBox="0 0 800 600" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Wave Pattern</title>
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M0,50 C150,100 250,0 400,50 C550,100 650,0 800,50 L800,600 L0,600 Z" fill="#FFFFFF"></path>
+        <path d="M0,150 C150,200 250,100 400,150 C550,200 650,100 800,150 L800,600 L0,600 Z" fill="#FFFFFF"></path>
+        <path d="M0,250 C150,300 250,200 400,250 C550,300 650,200 800,250 L800,600 L0,600 Z" fill="#FFFFFF"></path>
+        <path d="M0,350 C150,400 250,300 400,350 C550,400 650,300 800,350 L800,600 L0,600 Z" fill="#FFFFFF"></path>
+        <path d="M0,450 C150,500 250,400 400,450 C550,500 650,400 800,450 L800,600 L0,600 Z" fill="#FFFFFF"></path>
+    </g>
+</svg>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demande de Suppression de Données | MS BINGO PACIFIQUE</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/tropical-theme.css">
+    <style>
+        .gdpr-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gdpr-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        
+        .gdpr-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #039be5;
+        }
+        
+        .gdpr-content {
+            line-height: 1.6;
+        }
+        
+        .gdpr-form {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid #039be5;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 16px;
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .btn-submit {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #039be5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-submit:hover {
+            background-color: #0277bd;
+        }
+        
+        .btn-secondary {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #78909c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-left: 10px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #607d8b;
+        }
+        
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .request-status {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fffde7;
+            border-radius: 8px;
+            border-left: 4px solid #fdd835;
+            display: none;
+        }
+        
+        .status-heading {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .status-item {
+            margin-bottom: 5px;
+        }
+        
+        .status-label {
+            font-weight: 600;
+            margin-right: 5px;
+        }
+        
+        /* Status badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .badge-pending {
+            background-color: #fff9c4;
+            color: #fbc02d;
+        }
+        
+        .badge-completed {
+            background-color: #c8e6c9;
+            color: #4caf50;
+        }
+        
+        .badge-rejected {
+            background-color: #ffcdd2;
+            color: #f44336;
+        }
+        
+        /* Login prompt */
+        .login-required {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            margin: 40px 0;
+        }
+        
+        .login-required h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .login-required p {
+            margin-bottom: 20px;
+            color: #607d8b;
+        }
+        
+        .btn-login {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #42b983;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-login:hover {
+            background-color: #3aa876;
+        }
+        
+        @media (max-width: 768px) {
+            .gdpr-container {
+                padding: 20px;
+                margin: 20px;
+            }
+            
+            .btn-submit,
+            .btn-secondary {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="background-image"></div>
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="MS BINGO PACIFIQUE">
+                </a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/">Accueil</a></li>
+                    <li><a href="/play.html">Jouer</a></li>
+                    <li><a href="/banking.html">Banque</a></li>
+                    <li><a href="/privacy.html">Confidentialité</a></li>
+                </ul>
+            </nav>
+            <div class="user-menu">
+                <div id="login-status"></div>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="gdpr-container">
+            <div class="gdpr-header">
+                <h1>Demande de Suppression de Données</h1>
+                <p>Exercez votre droit à l'oubli conformément au RGPD (Règlement Général sur la Protection des Données)</p>
+            </div>
+            
+            <div class="gdpr-content">
+                <p>
+                    Conformément au Règlement Général sur la Protection des Données (RGPD), vous avez le droit de demander la suppression de vos données personnelles de notre système. Cette page vous permet d'exercer ce droit.
+                </p>
+                
+                <p>
+                    <strong>Veuillez noter que :</strong>
+                </p>
+                
+                <ul>
+                    <li>La suppression de vos données est irréversible.</li>
+                    <li>Votre compte sera désactivé et vous ne pourrez plus vous connecter après la suppression.</li>
+                    <li>Certaines informations pourraient être conservées pour des obligations légales ou réglementaires, mais seront anonymisées.</li>
+                    <li>Le traitement de votre demande peut prendre jusqu'à 30 jours.</li>
+                </ul>
+                
+                <div id="login-required" class="login-required">
+                    <h2>Connexion Requise</h2>
+                    <p>Vous devez être connecté pour soumettre une demande de suppression de données.</p>
+                    <a href="/login.html" class="btn-login">Se connecter</a>
+                </div>
+                
+                <div id="deletion-form-container" style="display: none;">
+                    <div id="alert-success" class="alert alert-success">
+                        Votre demande a été soumise avec succès. Vous recevrez une confirmation par email.
+                    </div>
+                    
+                    <div id="alert-error" class="alert alert-danger">
+                        Une erreur s'est produite lors de la soumission de votre demande. Veuillez réessayer.
+                    </div>
+                    
+                    <form id="deletion-form" class="gdpr-form">
+                        <div class="form-group">
+                            <label for="reason">Raison de la suppression (optionnel)</label>
+                            <textarea id="reason" name="reason" class="form-control" placeholder="Veuillez nous indiquer la raison pour laquelle vous souhaitez supprimer vos données."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="confirmation" name="confirmation" required>
+                                Je comprends que cette action est irréversible et que mon compte sera désactivé après le traitement de ma demande.
+                            </label>
+                        </div>
+                        
+                        <div>
+                            <button type="submit" id="submit-btn" class="btn-submit">Soumettre la demande</button>
+                            <a href="/" class="btn-secondary">Annuler</a>
+                        </div>
+                    </form>
+                </div>
+                
+                <div id="request-status" class="request-status">
+                    <h3 class="status-heading">Statut de votre demande</h3>
+                    
+                    <div class="status-item">
+                        <span class="status-label">Identifiant de la demande :</span>
+                        <span id="request-id"></span>
+                    </div>
+                    
+                    <div class="status-item">
+                        <span class="status-label">Date de soumission :</span>
+                        <span id="request-date"></span>
+                    </div>
+                    
+                    <div class="status-item">
+                        <span class="status-label">Statut actuel :</span>
+                        <span id="request-status-badge"></span>
+                    </div>
+                    
+                    <div class="status-item" id="completion-date-container" style="display: none;">
+                        <span class="status-label">Date de traitement :</span>
+                        <span id="completion-date"></span>
+                    </div>
+                    
+                    <p id="status-message"></p>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>MS BINGO PACIFIQUE</h3>
+                <p>La plateforme de bingo en ligne célébrant le Pacifique</p>
+            </div>
+            <div class="footer-section">
+                <h3>Liens utiles</h3>
+                <ul>
+                    <li><a href="/about.html">À propos</a></li>
+                    <li><a href="/privacy.html">Politique de confidentialité</a></li>
+                    <li><a href="/terms.html">Conditions d'utilisation</a></li>
+                    <li><a href="javascript:openCookiePreferences()">Préférences de cookies</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="/help.html">Aide</a></li>
+                    <li><a href="/contact.html">Contact</a></li>
+                    <li><a href="/gdpr-deletion.html">Suppression de données</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 MS BINGO PACIFIQUE. Tous droits réservés.</p>
+        </div>
+    </footer>
+    
+    <script src="/js/auth-client.js"></script>
+    <script src="/js/cookie-consent.js"></script>
+    <script>
+        // Fonction pour formatter une date
+        function formatDate(dateString) {
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            return new Date(dateString).toLocaleDateString('fr-FR', options);
+        }
+        
+        // Vérifier si l'utilisateur est connecté
+        async function checkAuth() {
+            try {
+                const userCheck = await fetch('/api/user/check');
+                if (userCheck.ok) {
+                    const userData = await userCheck.json();
+                    
+                    if (userData.authenticated) {
+                        // Utilisateur connecté, afficher le formulaire
+                        document.getElementById('login-required').style.display = 'none';
+                        document.getElementById('deletion-form-container').style.display = 'block';
+                        
+                        // Vérifier s'il y a déjà une demande en cours
+                        checkExistingRequest(userData.id);
+                    }
+                }
+            } catch (error) {
+                console.error('Erreur lors de la vérification de l\'authentification:', error);
+            }
+        }
+        
+        // Vérifier s'il existe déjà une demande pour cet utilisateur
+        async function checkExistingRequest(userId) {
+            try {
+                const response = await fetch('/api/gdpr/user-deletion-requests');
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    if (data.success && data.requests && data.requests.length > 0) {
+                        // Il existe déjà une demande, afficher son statut
+                        const latestRequest = data.requests[0]; // La plus récente
+                        displayRequestStatus(latestRequest);
+                    }
+                }
+            } catch (error) {
+                console.error('Erreur lors de la vérification des demandes existantes:', error);
+            }
+        }
+        
+        // Afficher le statut d'une demande
+        function displayRequestStatus(request) {
+            document.getElementById('deletion-form-container').style.display = 'none';
+            document.getElementById('request-status').style.display = 'block';
+            
+            document.getElementById('request-id').textContent = request.id;
+            document.getElementById('request-date').textContent = formatDate(request.request_date);
+            
+            // Afficher le badge de statut
+            const statusBadge = document.getElementById('request-status-badge');
+            switch (request.status) {
+                case 'pending':
+                    statusBadge.textContent = 'En attente';
+                    statusBadge.className = 'badge badge-pending';
+                    document.getElementById('status-message').textContent = 'Votre demande est en cours de traitement. Cela peut prendre jusqu\'à 30 jours.';
+                    break;
+                case 'completed':
+                    statusBadge.textContent = 'Traitée';
+                    statusBadge.className = 'badge badge-completed';
+                    document.getElementById('status-message').textContent = 'Votre demande a été traitée. Vos données ont été supprimées conformément à notre politique de confidentialité.';
+                    if (request.completion_date) {
+                        document.getElementById('completion-date-container').style.display = 'block';
+                        document.getElementById('completion-date').textContent = formatDate(request.completion_date);
+                    }
+                    break;
+                case 'rejected':
+                    statusBadge.textContent = 'Rejetée';
+                    statusBadge.className = 'badge badge-rejected';
+                    document.getElementById('status-message').textContent = 'Votre demande a été rejetée. Veuillez contacter notre service client pour plus d\'informations.';
+                    if (request.completion_date) {
+                        document.getElementById('completion-date-container').style.display = 'block';
+                        document.getElementById('completion-date').textContent = formatDate(request.completion_date);
+                    }
+                    break;
+                default:
+                    statusBadge.textContent = request.status;
+                    statusBadge.className = 'badge';
+            }
+        }
+        
+        // Gérer la soumission du formulaire
+        document.getElementById('deletion-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!document.getElementById('confirmation').checked) {
+                alert('Veuillez confirmer que vous comprenez les conséquences de cette action.');
+                return;
+            }
+            
+            const reason = document.getElementById('reason').value;
+            
+            try {
+                const submitBtn = document.getElementById('submit-btn');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Envoi en cours...';
+                
+                const response = await fetch('/api/gdpr/request-deletion', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ reason })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    document.getElementById('alert-success').style.display = 'block';
+                    document.getElementById('alert-error').style.display = 'none';
+                    document.getElementById('deletion-form').reset();
+                    
+                    // Afficher le statut de la demande
+                    setTimeout(() => {
+                        displayRequestStatus({
+                            id: data.requestId,
+                            request_date: data.requestDate,
+                            status: data.status
+                        });
+                    }, 2000);
+                } else {
+                    document.getElementById('alert-error').textContent = data.message || 'Une erreur s\'est produite. Veuillez réessayer.';
+                    document.getElementById('alert-error').style.display = 'block';
+                    document.getElementById('alert-success').style.display = 'none';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Soumettre la demande';
+                }
+            } catch (error) {
+                console.error('Erreur lors de la soumission de la demande:', error);
+                document.getElementById('alert-error').textContent = 'Une erreur de connexion s\'est produite. Veuillez réessayer.';
+                document.getElementById('alert-error').style.display = 'block';
+                document.getElementById('alert-success').style.display = 'none';
+                
+                const submitBtn = document.getElementById('submit-btn');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Soumettre la demande';
+            }
+        });
+        
+        // Vérifier l'authentification au chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+        });
+    </script>
+</body>
+</html>

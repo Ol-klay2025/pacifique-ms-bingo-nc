@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PACIFIQUE MS BINGO - Administration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Trebuchet+MS:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Trebuchet MS', sans-serif;
+      background: linear-gradient(to bottom, #1e5799, #2989d8, #207cca, #7db9e8);
+      color: #333;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .container {
+      width: 90%;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 2rem;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      color: #0099cc;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    .login-form {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #0099cc;
+    }
+    
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    
+    input:focus {
+      border-color: #0099cc;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 153, 204, 0.2);
+    }
+    
+    button {
+      background-color: #0099cc;
+      color: white;
+      border: none;
+      padding: 1rem;
+      font-size: 1.1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    
+    button:hover {
+      background-color: #007399;
+      transform: translateY(-2px);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    .alert {
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 5px;
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      display: none;
+    }
+    
+    .alert.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .logo {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .logo h2 {
+      font-size: 2rem;
+      margin: 0;
+      color: #ff6600;
+    }
+    
+    .logo p {
+      font-style: italic;
+      color: #666;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <h2>PACIFIQUE MS BINGO</h2>
+      <p>Administration</p>
+    </div>
+    
+    <h1>Connexion Admin</h1>
+    
+    <div id="alert" class="alert"></div>
+    
+    <form id="loginForm" class="login-form">
+      <div class="form-group">
+        <label for="password">Mot de passe administrateur</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      
+      <button type="submit">Se connecter</button>
+    </form>
+    
+    <div class="footer">
+      <p>&copy; 2025 PACIFIQUE MS BINGO. Tous droits réservés.</p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginForm = document.getElementById('loginForm');
+      const alertBox = document.getElementById('alert');
+      
+      loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const password = document.getElementById('password').value;
+        
+        try {
+          const response = await fetch('/api/admin/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ password }),
+            credentials: 'include'
+          });
+          
+          const data = await response.json();
+          
+          if (response.ok) {
+            alertBox.textContent = data.message;
+            alertBox.className = 'alert success';
+            alertBox.style.display = 'block';
+            
+            // Rediriger vers la page d'administration après un délai
+            setTimeout(() => {
+              window.location.href = '/admin';
+            }, 1500);
+          } else {
+            alertBox.textContent = data.message || 'Mot de passe incorrect';
+            alertBox.className = 'alert';
+            alertBox.style.display = 'block';
+          }
+        } catch (error) {
+          alertBox.textContent = 'Erreur de connexion au serveur';
+          alertBox.className = 'alert';
+          alertBox.style.display = 'block';
+          console.error('Erreur:', error);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

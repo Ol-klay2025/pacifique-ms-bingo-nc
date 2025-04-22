@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Règles du jeu - PACIFIQUE MS BINGO</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/landing.css">
+    <style>
+        :root {
+            --primary-color: #0097b2;
+            --secondary-color: #ff7e00;
+            --accent-color: #ffcc00;
+            --bg-dark: #0a2a3b;
+            --text-light: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            background-image: url('/img/ocean-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .overlay {
+            background-color: rgba(10, 42, 59, 0.8);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+        
+        .rules-section {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 1.6;
+        }
+        
+        .rules-section h1 {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .rule-category {
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1.5rem;
+        }
+        
+        .rule-category:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .rule-category h2 {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .rule-category h2::before {
+            content: "🌴";
+            margin-right: 0.5rem;
+        }
+        
+        .rule-category p {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .rule-category ul {
+            padding-left: 1.2rem;
+        }
+        
+        .rule-category li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .back-button {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.8rem 1.8rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            background-color: #007d99;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+            color: var(--accent-color);
+        }
+        
+        .emphasis {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .rules-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <div class="container">
+            <header>
+                <img src="/img/logo.png" alt="PACIFIQUE MS BINGO" class="logo" style="max-width: 350px;">
+            </header>
+            
+            <section class="rules-section">
+                <h1>RÈGLES DU JEU – PACIFIQUE MS BINGO</h1>
+                
+                <div class="rule-category">
+                    <h2>1. Conditions d'accès</h2>
+                    <ul>
+                        <li>Le jeu est réservé aux personnes majeures (+18 ans).</li>
+                        <li>Une inscription avec vérification d'identité (KYC) est obligatoire.</li>
+                        <li>Le joueur choisit son mode de gains : via Stripe (euros) ou Deblock (crypto + euros).</li>
+                    </ul>
+                </div>
+                
+                <div class="rule-category">
+                    <h2>2. Fonctionnement des parties</h2>
+                    <p>Les parties sont ouvertes tous les jours de 10h à 3h du matin (heure locale).</p>
+                    <p>Le joueur peut acheter 1 ou plusieurs cartons par partie :</p>
+                    <ul>
+                        <li><span class="emphasis">Parties régulières :</span> 100 F CFP le carton, disponibles en continu.</li>
+                        <li><span class="emphasis">Parties spéciales :</span> 300 F CFP le carton, toutes les 4 heures.</li>
+                    </ul>
+                    <p>Chaque table accueille jusqu'à 2 000 joueurs.</p>
+                </div>
+                
+                <div class="rule-category">
+                    <h2>3. Objectif du jeu</h2>
+                    <ul>
+                        <li><span class="emphasis">Quine :</span> être le premier à compléter une ligne horizontale sur un carton.</li>
+                        <li><span class="emphasis">Bingo :</span> être le premier à compléter tout le carton.</li>
+                    </ul>
+                </div>
+                
+                <div class="rule-category">
+                    <h2>4. Répartition des mises</h2>
+                    <ul>
+                        <li>60 % des mises vont aux gagnants du Bingo</li>
+                        <li>20 % aux gagnants de la Quine</li>
+                        <li>15 % pour le fonctionnement de la plateforme (dont 5 % pour projets sociaux)</li>
+                        <li>5 % pour un jackpot spécial et les défis crypto</li>
+                    </ul>
+                </div>
+                
+                <div class="rule-category">
+                    <h2>5. Défis & crypto</h2>
+                    <ul>
+                        <li>Des défis quotidiens sont proposés (ex. : faire 3 bingos dans la journée).</li>
+                        <li>Les récompenses des défis sont en cryptomonnaies (BTC, ETH, SOL…).</li>
+                    </ul>
+                </div>
+                
+                <div class="rule-category">
+                    <h2>6. Règlement & responsabilité</h2>
+                    <ul>
+                        <li>En cas d'égalité (plusieurs quines/bingos en même temps), un tirage au sort équitable est effectué.</li>
+                        <li>Le joueur peut à tout moment consulter l'historique de ses parties et gains.</li>
+                        <li>Le jeu est soumis aux conditions de licence ANJ. La plateforme garantit un tirage aléatoire certifié (RNG).</li>
+                    </ul>
+                </div>
+                
+                <div class="rule-category">
+                    <h2>7. Modération et assistance</h2>
+                    <ul>
+                        <li>Tout comportement frauduleux, insultant ou contraire aux règles entraînera l'exclusion du joueur.</li>
+                        <li>Une équipe support est disponible par email : <a href="mailto:support@pacifiquemsbingo.nc" style="color: var(--accent-color);">support@pacifiquemsbingo.nc</a></li>
+                    </ul>
+                </div>
+                
+                <div style="text-align: center;">
+                    <a href="/" class="back-button">Retour à l'accueil</a>
+                </div>
+            </section>
+        </div>
+        
+        <footer>
+            <div class="footer-links">
+                <a href="/">Accueil</a>
+                <a href="/about.html">À propos</a>
+                <a href="/contact.html">Contact</a>
+                <a href="/terms.html">Conditions d'utilisation</a>
+                <a href="/privacy.html">Politique de confidentialité</a>
+            </div>
+            
+            <p>&copy; 2025 PACIFIQUE MS BINGO. Tous droits réservés.</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS BINGO PACIFIQUE - Jeu en direct</title>
+    <link rel="stylesheet" href="css/bingo-ui.css">
+</head>
+<body>
+    <div class="main-container">
+        <h1>MS BINGO PACIFIQUE</h1>
+        
+        <!-- Conteneur des boutons principaux -->
+        <div class="button-container">
+            <button id="show-numbers">Numéros tirés</button>
+            <button id="start-draw">Démarrer tirage...</button>
+            <button id="reset-game">Réinitialiser</button>
+        </div>
+        
+        <!-- Panneau d'affichage du dernier numéro tiré -->
+        <div id="current-number" style="font-size: 80px; margin: 20px 0; font-weight: bold;"></div>
+        
+        <!-- Panneau des numéros tirés -->
+        <div class="drawn-numbers-panel" id="drawn-numbers">
+            <!-- Généré dynamiquement par JavaScript -->
+        </div>
+        
+        <!-- Conteneur des cartes de bingo -->
+        <div class="bingo-cards-container" id="bingo-cards">
+            <!-- Cartes générées dynamiquement -->
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/voice-announcer.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser l'annonceur vocal
+            const voiceAnnouncer = new VoiceAnnouncer();
+            
+            // Créer les cases de numéros de 1 à 90
+            const drawnNumbersPanel = document.getElementById('drawn-numbers');
+            for (let i = 1; i <= 90; i++) {
+                const numberDiv = document.createElement('div');
+                numberDiv.className = 'number';
+                numberDiv.id = `number-${i}`;
+                numberDiv.textContent = i;
+                drawnNumbersPanel.appendChild(numberDiv);
+            }
+            
+            // Bouton pour démarrer le tirage
+            const startDrawButton = document.getElementById('start-draw');
+            let isDrawing = false;
+            let drawnNumbers = [];
+            let drawInterval;
+            
+            startDrawButton.addEventListener('click', function() {
+                if (!isDrawing) {
+                    // Démarrer le tirage
+                    isDrawing = true;
+                    startDrawButton.textContent = 'Arrêter tirage';
+                    startDrawButton.classList.add('active');
+                    
+                    // Annoncer le début de la partie
+                    voiceAnnouncer.announceGameStart();
+                    
+                    // Démarrer le tirage automatique
+                    drawInterval = setInterval(drawNumber, 5000); // Toutes les 5 secondes
+                } else {
+                    // Arrêter le tirage
+                    isDrawing = false;
+                    startDrawButton.textContent = 'Démarrer tirage...';
+                    startDrawButton.classList.remove('active');
+                    clearInterval(drawInterval);
+                }
+            });
+            
+            // Bouton pour réinitialiser le jeu
+            const resetButton = document.getElementById('reset-game');
+            resetButton.addEventListener('click', function() {
+                // Arrêter le tirage en cours
+                isDrawing = false;
+                startDrawButton.textContent = 'Démarrer tirage...';
+                startDrawButton.classList.remove('active');
+                if (drawInterval) clearInterval(drawInterval);
+                
+                // Réinitialiser les numéros tirés
+                drawnNumbers = [];
+                document.getElementById('current-number').textContent = '';
+                
+                // Réinitialiser l'affichage des numéros
+                document.querySelectorAll('.number').forEach(numberDiv => {
+                    numberDiv.classList.remove('drawn');
+                });
+                
+                // Annoncer la fin et le redémarrage
+                voiceAnnouncer.announceGameEnd();
+            });
+            
+            // Fonction pour tirer un numéro aléatoire
+            function drawNumber() {
+                // Vérifier s'il reste des numéros à tirer
+                if (drawnNumbers.length >= 90) {
+                    clearInterval(drawInterval);
+                    isDrawing = false;
+                    startDrawButton.textContent = 'Partie terminée';
+                    startDrawButton.disabled = true;
+                    return;
+                }
+                
+                // Tirer un numéro qui n'a pas encore été tiré
+                let number;
+                do {
+                    number = Math.floor(Math.random() * 90) + 1;
+                } while (drawnNumbers.includes(number));
+                
+                // Ajouter le numéro à la liste des numéros tirés
+                drawnNumbers.push(number);
+                
+                // Afficher le numéro tiré
+                document.getElementById('current-number').textContent = number;
+                document.getElementById(`number-${number}`).classList.add('drawn');
+                
+                // Stocker le dernier numéro tiré pour l'annonceur vocal
+                window.lastDrawnNumber = number;
+                
+                // Annoncer le numéro
+                voiceAnnouncer.announceNumber(number);
+                
+                // Simuler une quine après certains numéros (pour démonstration)
+                if (drawnNumbers.length === 5) {
+                    // Simuler un court délai avant l'annonce de la quine
+                    setTimeout(() => {
+                        const cardInfo = {
+                            id: '42', 
+                            winningNumbers: [14, 27, 33, 51, 75]
+                        };
+                        voiceAnnouncer.announceQuine(cardInfo);
+                    }, 2000);
+                }
+            }
+            
+            // Fonction pour redémarrer la partie (utilisée par l'annonceur vocal)
+            window.resumeBingoGame = function() {
+                console.log("Partie redémarrée automatiquement");
+                // Ici, on pourrait ajouter du code pour redémarrer automatiquement le tirage
+            };
+            
+            // Fonction pour mettre en pause la partie (utilisée par l'annonceur vocal)
+            window.pauseBingoGame = function() {
+                console.log("Partie mise en pause pour vérification");
+                // Arrêter temporairement le tirage
+                if (drawInterval) {
+                    clearInterval(drawInterval);
+                }
+            };
+        });
+    </script>
+</body>
+</html>

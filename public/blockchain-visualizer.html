@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualiseur de Transactions Blockchain - PACIFIQUE MS BINGO</title>
+    <link rel="stylesheet" href="/css/blockchain-visualizer.css">
+    <style>
+        :root {
+            --primary-color: #00a2cc;
+            --secondary-color: #ff8000;
+            --accent-color: #ffcc00;
+            --bg-dark: #00314d;
+            --text-light: #f0f0f0;
+            --card-bg: rgba(0, 65, 90, 0.7);
+        }
+        
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            background-image: url('/img/bingo-crypto-bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .overlay {
+            background-color: rgba(10, 42, 59, 0.8);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+        
+        header {
+            text-align: center;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            max-width: 350px;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .page-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 2rem;
+        }
+        
+        .page-title h1 {
+            margin: 0;
+        }
+        
+        .page-title .icon {
+            font-size: 2rem;
+            color: var(--accent-color);
+        }
+        
+        .nav-bar {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .control-panel {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .control-item {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .control-item h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        
+        .config-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        label {
+            font-weight: bold;
+        }
+        
+        select, input {
+            padding: 0.5rem;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 0.7rem 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #007d99;
+        }
+        
+        .info-panel {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .info-panel h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        
+        .explanation {
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        
+        footer {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+            color: var(--accent-color);
+        }
+        
+        /* Style pour la bannière de mode démo */
+        .demo-mode-banner {
+            background-color: rgba(255, 204, 0, 0.15);
+            border: 2px solid rgba(255, 204, 0, 0.5);
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+        }
+        
+        .demo-mode-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .demo-icon {
+            font-size: 24px;
+        }
+        
+        .demo-mode-content p {
+            margin: 0;
+            font-weight: 500;
+            font-size: 16px;
+            color: #ffcc00;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .nav-bar, .nav-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .user-info {
+                margin-top: 1rem;
+            }
+            
+            .control-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .demo-mode-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <div class="container">
+            <header>
+                <a href="/">
+                    <img src="/img/logo.png" alt="PACIFIQUE MS BINGO" class="logo">
+                </a>
+                <div class="page-title">
+                    <span class="icon">📊</span>
+                    <h1>Visualiseur de Transactions Blockchain</h1>
+                </div>
+            </header>
+            
+            <nav class="nav-bar">
+                <div class="nav-links">
+                    <a href="/">Accueil</a>
+                    <a href="/play.html">Jouer</a>
+                    <a href="/organizer.html">Interface Organisateur</a>
+                    <a href="/blockchain-visualizer.html" class="active">Transactions Blockchain</a>
+                </div>
+                <div class="user-info">
+                    <span id="user-balance">1000 ₣</span>
+                    <a href="/profile.html" class="btn">Profil</a>
+                </div>
+            </nav>
+            
+            <div class="demo-mode-banner">
+                <div class="demo-mode-content">
+                    <span class="demo-icon">ℹ️</span>
+                    <p>Mode démo : les chiffres affichés sont simulés pour illustrer le fonctionnement du système de blockchain utilisé sur la plateforme.</p>
+                </div>
+            </div>
+            
+            <div class="control-panel">
+                <div class="control-grid">
+                    <div class="control-item">
+                        <h3>Configuration du Visualiseur</h3>
+                        <div class="config-form">
+                            <div class="form-group">
+                                <label for="blockchain-type">Type de Blockchain:</label>
+                                <select id="blockchain-type">
+                                    <option value="pacifique">Pacifique Coin</option>
+                                    <option value="ethereum">Ethereum</option>
+                                    <option value="bitcoin">Bitcoin</option>
+                                    <option value="solana">Solana</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="block-count">Nombre de Blocs:</label>
+                                <select id="block-count">
+                                    <option value="4">4 blocs</option>
+                                    <option value="6" selected>6 blocs</option>
+                                    <option value="8">8 blocs</option>
+                                    <option value="10">10 blocs</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="transaction-speed">Vitesse des Transactions:</label>
+                                <select id="transaction-speed">
+                                    <option value="4000">Lente</option>
+                                    <option value="2000" selected>Normale</option>
+                                    <option value="1000">Rapide</option>
+                                    <option value="500">Très Rapide</option>
+                                </select>
+                            </div>
+                            <button id="apply-settings" class="btn">Appliquer</button>
+                        </div>
+                    </div>
+                    <div class="control-item">
+                        <h3>À propos de ce Visualiseur</h3>
+                        <div class="explanation">
+                            <p><strong>Mode démo :</strong> les chiffres affichés sont simulés pour illustrer le fonctionnement du système de blockchain utilisé sur la plateforme.</p>
+                            <p>Ce visualiseur simule en temps réel le processus de traitement des transactions blockchain, similaire à celui utilisé pour les transactions de crypto-monnaies sur PACIFIQUE MS BINGO.</p>
+                            <p>Les transactions se déplacent de manière aléatoire vers les blocs où elles sont ensuite confirmées et intégrées à la chaîne.</p>
+                            <p>Utilisez les contrôles sous la visualisation pour ajouter des transactions manuellement, mettre en pause l'animation ou réinitialiser la visualisation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="blockchain-container">
+                <!-- Le visualiseur sera injecté ici par le JavaScript -->
+            </div>
+            
+            <div class="info-panel">
+                <h3>Comment ça fonctionne</h3>
+                <div class="explanation">
+                    <p><strong>Transactions:</strong> Les points lumineux représentent des transactions individuelles qui se déplacent vers les blocs.</p>
+                    <p><strong>Blocs:</strong> Les rectangles représentent des blocs dans la blockchain qui stockent et confirment les transactions.</p>
+                    <p><strong>Couleurs:</strong> Les transactions jaunes sont nouvelles, orange sont en attente, et vertes sont confirmées.</p>
+                    <p><strong>Statistiques:</strong> Les données au bas du visualiseur montrent des informations en temps réel sur l'activité de la blockchain.</p>
+                    <p>Passez votre souris sur les éléments pour voir plus de détails sur les transactions et les blocs.</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <div class="footer-links">
+                <a href="/about.html">À propos</a>
+                <a href="/rules.html">Règles du jeu</a>
+                <a href="/contact.html">Contact</a>
+                <a href="/terms.html">Conditions d'utilisation</a>
+                <a href="/privacy.html">Politique de confidentialité</a>
+            </div>
+            <p>&copy; 2025 PACIFIQUE MS BINGO. Tous droits réservés.</p>
+        </footer>
+    </div>
+    
+    <script src="/js/blockchain-visualizer.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser le visualiseur avec les options par défaut
+            let visualizer = initBlockchainVisualizer('blockchain-container', {
+                blockCount: 6,
+                transactionSpeed: 2000,
+                animationDuration: 1500,
+                autoPlay: true,
+                currencySymbol: '₣',
+                language: 'fr',
+                blockchainType: 'pacifique'
+            });
+            
+            // Configuration des changements d'options
+            document.getElementById('apply-settings').addEventListener('click', function() {
+                const blockchainType = document.getElementById('blockchain-type').value;
+                const blockCount = parseInt(document.getElementById('block-count').value);
+                const transactionSpeed = parseInt(document.getElementById('transaction-speed').value);
+                
+                // Nettoyer le conteneur
+                document.getElementById('blockchain-container').innerHTML = '';
+                
+                // Recréer le visualiseur avec les nouvelles options
+                visualizer = initBlockchainVisualizer('blockchain-container', {
+                    blockCount: blockCount,
+                    transactionSpeed: transactionSpeed,
+                    animationDuration: 1500,
+                    autoPlay: true,
+                    currencySymbol: blockchainType === 'bitcoin' ? '₿' : (blockchainType === 'ethereum' ? 'Ξ' : (blockchainType === 'solana' ? 'SOL' : '₣')),
+                    language: 'fr',
+                    blockchainType: blockchainType
+                });
+            });
+            
+            // Charger les données utilisateur depuis l'API si disponible
+            function loadUserData() {
+                fetch('/api/user/info')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Non connecté');
+                        }
+                        return response.json();
+                    })
+                    .then(userData => {
+                        if (userData && userData.username) {
+                            document.getElementById('user-balance').textContent = `${userData.balance.toLocaleString()} ₣`;
+                        }
+                    })
+                    .catch(error => {
+                        console.log('Utilisateur non connecté ou API non disponible:', error);
+                        // Utiliser des données par défaut en cas d'erreur
+                        document.getElementById('user-balance').textContent = `1000 ₣`;
+                    });
+            }
+            
+            loadUserData();
+        });
+    </script>
+</body>
+</html>

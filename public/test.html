@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page de Test MS BINGO</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #1e5799, #207cca);
+            color: white;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #ffeb3b;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #ffeb3b;
+            color: #333;
+            padding: 12px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .button:hover {
+            background-color: #fff;
+            transform: scale(1.05);
+        }
+        .timestamp {
+            font-size: 14px;
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MS BINGO PACIFIQUE</h1>
+        <p>Cette page confirme que le serveur simplifié fonctionne correctement !</p>
+        
+        <div>
+            <a href="/play.html" class="button">Interface de jeu</a>
+            <a href="/organizer.html" class="button">Interface organisateur</a>
+        </div>
+        
+        <div>
+            <a href="/direct-play" class="button">Accès direct (jeu)</a>
+            <a href="/direct-organizer" class="button">Accès direct (organisateur)</a>
+        </div>
+        
+        <p class="timestamp">
+            Serveur démarré le : <span id="server-time"></span>
+        </p>
+    </div>
+
+    <script>
+        // Afficher l'heure actuelle
+        document.getElementById('server-time').textContent = new Date().toLocaleString();
+    </script>
+</body>
+</html>

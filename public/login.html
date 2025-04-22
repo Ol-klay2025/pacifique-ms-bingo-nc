@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Connexion - PACIFIQUE MS BINGO</title>
+    <style>
+        :root {
+            --primary-color: #00a2cc;
+            --secondary-color: #ff8000;
+            --accent-color: #ffcc00;
+            --bg-dark: #00314d;
+            --text-light: #f0f0f0;
+            --card-bg: rgba(0, 65, 90, 0.7);
+            --error-color: #ff3333;
+            --success-color: #33cc66;
+        }
+        
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            background-image: url('/img/bingo-crypto-bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .overlay {
+            background-color: rgba(10, 42, 59, 0.8);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+        
+        header {
+            text-align: center;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 1rem;
+            max-width: 350px;
+        }
+        
+        .auth-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 900px;
+            margin: 2rem auto;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .tabs {
+            display: flex;
+            width: 100%;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--text-light);
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: center;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #007d99;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+            margin-top: 1rem;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e37100;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .alert-error {
+            background-color: var(--error-color);
+            color: white;
+        }
+        
+        .alert-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .home-link {
+            display: block;
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+        
+        .home-link:hover {
+            text-decoration: underline;
+        }
+        
+        footer {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+            color: var(--accent-color);
+        }
+        
+        .language-selector {
+            margin-bottom: 1rem;
+        }
+        
+        .language-selector select {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .auth-container {
+                padding: 1.5rem;
+            }
+            
+            .tab {
+                padding: 0.8rem 0.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <div class="container">
+            <header>
+                <a href="/">
+                    <img src="/img/logo.png" alt="PACIFIQUE MS BINGO" class="logo">
+                </a>
+            </header>
+            
+            <div class="auth-container">
+                <div class="tabs">
+                    <div class="tab active" id="login-tab">Connexion</div>
+                    <div class="tab disabled" id="register-tab" style="opacity: 0.5; cursor: not-allowed;">Inscription</div>
+                </div>
+                
+                <div class="form-container" id="login-form">
+                    <div class="alert alert-error hidden" id="login-error"></div>
+                    <div class="form-group">
+                        <label for="login-username">Nom d'utilisateur</label>
+                        <input type="text" id="login-username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Mot de passe</label>
+                        <input type="password" id="login-password" name="password" required>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="login-btn">Se connecter</button>
+                    <div class="alert" style="background-color: #00314d; color: #ffffff; text-align: center; margin-top: 1rem; padding: 1rem; border: 1px solid var(--primary-color); border-radius: 5px;">
+                        <strong>Inscriptions temporairement désactivées</strong>
+                        <p style="margin: 0.5rem 0 0;">Les inscriptions sont actuellement suspendues dans l'attente de l'approbation réglementaire par l'ANJ (Autorité Nationale des Jeux).</p>
+                    </div>
+                    <!-- Lien d'inscription supprimé intentionnellement -->
+                    <div id="switch-to-register" style="display: none;"></div>
+                </div>
+                
+                <div class="form-container hidden" id="register-form">
+                    <div class="alert" style="background-color: #00314d; color: #ffffff; text-align: center; margin-bottom: 1rem; padding: 1.5rem; border: 1px solid var(--primary-color); border-radius: 5px;">
+                        <strong style="font-size: 1.2em; display: block; margin-bottom: 0.5rem;">Inscriptions temporairement désactivées</strong>
+                        <p style="margin: 0.5rem 0 0;">Les inscriptions sont actuellement suspendues dans l'attente de l'approbation réglementaire par l'ANJ (Autorité Nationale des Jeux).</p>
+                        <p style="margin: 0.5rem 0 0;">Merci de votre compréhension. Vous pourrez vous inscrire dès que nous aurons reçu l'autorisation officielle.</p>
+                        <button type="button" class="btn btn-primary" style="margin-top: 1rem; width: auto; display: inline-block;" id="back-to-login">Retour à la connexion</button>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="/" class="home-link">Retour à l'accueil</a>
+        </div>
+        
+        <footer>
+            <div class="footer-links">
+                <a href="/about.html">À propos</a>
+                <a href="/rules.html">Règles du jeu</a>
+                <a href="/contact.html">Contact</a>
+                <a href="/terms.html">Conditions d'utilisation</a>
+                <a href="/privacy.html">Politique de confidentialité</a>
+            </div>
+            
+            <div class="language-selector">
+                <select id="language-select" onchange="changeLanguage()">
+                    <option value="fr">Français</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+            
+            <p>&copy; 2025 PACIFIQUE MS BINGO. Tous droits réservés.</p>
+        </footer>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Éléments des onglets
+            const loginTab = document.getElementById('login-tab');
+            const registerTab = document.getElementById('register-tab');
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const switchToRegister = document.getElementById('switch-to-register');
+            const switchToLogin = document.getElementById('switch-to-login');
+            
+            // Éléments de formulaire de connexion
+            const loginUsername = document.getElementById('login-username');
+            const loginPassword = document.getElementById('login-password');
+            const loginBtn = document.getElementById('login-btn');
+            const loginError = document.getElementById('login-error');
+            
+            // Éléments de formulaire d'inscription
+            const registerUsername = document.getElementById('register-username');
+            const registerEmail = document.getElementById('register-email');
+            const registerPassword = document.getElementById('register-password');
+            const registerConfirmPassword = document.getElementById('register-confirm-password');
+            const registerBtn = document.getElementById('register-btn');
+            const registerError = document.getElementById('register-error');
+            const registerSuccess = document.getElementById('register-success');
+            
+            // Fonction pour basculer entre les onglets
+            function switchTab(activeTab, activeForm, inactiveTab, inactiveForm) {
+                activeTab.classList.add('active');
+                inactiveTab.classList.remove('active');
+                activeForm.classList.remove('hidden');
+                inactiveForm.classList.add('hidden');
+                
+                // Réinitialiser les messages d'erreur
+                loginError.classList.add('hidden');
+                registerError.classList.add('hidden');
+                registerSuccess.classList.add('hidden');
+            }
+            
+            // Événements pour changer d'onglet
+            loginTab.addEventListener('click', () => {
+                switchTab(loginTab, loginForm, registerTab, registerForm);
+            });
+            
+            // L'onglet d'inscription est désactivé - notification à l'utilisateur
+            registerTab.addEventListener('click', () => {
+                alert("Les inscriptions sont temporairement désactivées dans l'attente de l'approbation réglementaire par l'ANJ (Autorité Nationale des Jeux).");
+            });
+            
+            // Le bouton "back-to-login" sur la page d'inscription désactivée
+            const backToLoginBtn = document.getElementById('back-to-login');
+            if (backToLoginBtn) {
+                backToLoginBtn.addEventListener('click', () => {
+                    switchTab(loginTab, loginForm, registerTab, registerForm);
+                });
+            }
+            
+            switchToLogin.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchTab(loginTab, loginForm, registerTab, registerForm);
+            });
+            
+            // Fonction pour la connexion
+            loginBtn.addEventListener('click', async () => {
+                if (!loginUsername.value || !loginPassword.value) {
+                    loginError.textContent = 'Veuillez remplir tous les champs';
+                    loginError.classList.remove('hidden');
+                    return;
+                }
+                
+                try {
+                    loginBtn.disabled = true;
+                    loginBtn.innerHTML = '<span class="loading">Connexion en cours...</span>';
+                    
+                    const response = await fetch('/api/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            username: loginUsername.value,
+                            password: loginPassword.value
+                        }),
+                        credentials: 'include'
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        loginBtn.disabled = false;
+                        loginBtn.textContent = translations[document.getElementById('language-select').value]["login-button"];
+                        loginError.textContent = data.message || translations[document.getElementById('language-select').value]["login-error"];
+                        loginError.classList.remove('hidden');
+                        return;
+                    }
+                    
+                    // Redirection en cas de succès
+                    // Si l'utilisateur est un organisateur, rediriger vers l'interface organisateur
+                    console.log('Connexion réussie, redirection:', data);
+                    if (data.redirectTo) {
+                        console.log('Redirection vers:', data.redirectTo);
+                        window.location.href = data.redirectTo;
+                    } else {
+                        console.log('Redirection par défaut vers play.html');
+                        window.location.href = '/play.html';
+                    }
+                } catch (error) {
+                    loginError.textContent = 'Erreur de connexion au serveur';
+                    loginError.classList.remove('hidden');
+                    console.error('Erreur:', error);
+                }
+            });
+            
+            // Fonction pour l'inscription
+            registerBtn.addEventListener('click', async () => {
+                // Validation des champs
+                if (!registerUsername.value || !registerPassword.value) {
+                    registerError.textContent = 'Veuillez remplir tous les champs obligatoires';
+                    registerError.classList.remove('hidden');
+                    return;
+                }
+                
+                if (registerPassword.value !== registerConfirmPassword.value) {
+                    registerError.textContent = 'Les mots de passe ne correspondent pas';
+                    registerError.classList.remove('hidden');
+                    return;
+                }
+                
+                try {
+                    registerBtn.disabled = true;
+                    registerBtn.innerHTML = '<span class="loading">Inscription en cours...</span>';
+                    
+                    const response = await fetch('/api/register', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            username: registerUsername.value,
+                            email: registerEmail.value,
+                            password: registerPassword.value
+                        }),
+                        credentials: 'include'
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        registerBtn.disabled = false;
+                        registerBtn.textContent = translations[document.getElementById('language-select').value]["register-button"];
+                        registerError.textContent = data.message || 'Erreur d\'inscription';
+                        registerError.classList.remove('hidden');
+                        return;
+                    }
+                    
+                    // Afficher le message de succès et rediriger
+                    registerSuccess.textContent = 'Inscription réussie! Redirection...';
+                    registerSuccess.classList.remove('hidden');
+                    registerError.classList.add('hidden');
+                    
+                    // Redirection après une pause
+                    setTimeout(() => {
+                        window.location.href = '/play.html';
+                    }, 1500);
+                } catch (error) {
+                    registerError.textContent = 'Erreur de connexion au serveur';
+                    registerError.classList.remove('hidden');
+                    console.error('Erreur:', error);
+                }
+            });
+            
+            // Permettre la soumission par la touche Entrée
+            loginPassword.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    loginBtn.click();
+                }
+            });
+            
+            registerConfirmPassword.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    registerBtn.click();
+                }
+            });
+        });
+        
+        // Traductions
+        const translations = {
+            fr: {
+                "page-title": "Connexion - PACIFIQUE MS BINGO",
+                "login-tab": "Connexion",
+                "register-tab": "Inscription",
+                "username-label": "Nom d'utilisateur",
+                "email-label": "Email (optionnel)",
+                "password-label": "Mot de passe",
+                "confirm-password-label": "Confirmer le mot de passe",
+                "login-button": "Se connecter",
+                "register-button": "S'inscrire",
+                "no-account": "Pas encore de compte?",
+                "register-link": "Inscrivez-vous",
+                "has-account": "Déjà inscrit?",
+                "login-link": "Connectez-vous",
+                "home-link": "Retour à l'accueil",
+                "about": "À propos",
+                "rules": "Règles du jeu",
+                "contact": "Contact",
+                "terms": "Conditions d'utilisation",
+                "privacy": "Politique de confidentialité",
+                "copyright": "© 2025 PACIFIQUE MS BINGO. Tous droits réservés.",
+                "fill-fields": "Veuillez remplir tous les champs",
+                "server-error": "Erreur de connexion au serveur",
+                "fill-required": "Veuillez remplir tous les champs obligatoires",
+                "passwords-mismatch": "Les mots de passe ne correspondent pas",
+                "login-error": "Erreur de connexion",
+                "register-success": "Inscription réussie! Vous pouvez maintenant vous connecter."
+            },
+            en: {
+                "page-title": "Login - PACIFIC MS BINGO",
+                "login-tab": "Login",
+                "register-tab": "Register",
+                "username-label": "Username",
+                "email-label": "Email (optional)",
+                "password-label": "Password",
+                "confirm-password-label": "Confirm password",
+                "login-button": "Login",
+                "register-button": "Register",
+                "no-account": "Don't have an account yet?",
+                "register-link": "Sign up",
+                "has-account": "Already registered?",
+                "login-link": "Log in",
+                "home-link": "Back to home",
+                "about": "About",
+                "rules": "Game Rules",
+                "contact": "Contact",
+                "terms": "Terms of Use",
+                "privacy": "Privacy Policy",
+                "copyright": "© 2025 PACIFIC MS BINGO. All rights reserved.",
+                "fill-fields": "Please fill in all fields",
+                "server-error": "Server connection error",
+                "fill-required": "Please fill in all required fields",
+                "passwords-mismatch": "Passwords do not match",
+                "login-error": "Login error",
+                "register-success": "Registration successful! You can now log in."
+            }
+        };
+        
+        function changeLanguage() {
+            const language = document.getElementById('language-select').value;
+            const translation = translations[language];
+            
+            // Page title
+            document.getElementById('page-title').textContent = translation["page-title"];
+            
+            // Tabs
+            document.getElementById('login-tab').textContent = translation["login-tab"];
+            document.getElementById('register-tab').textContent = translation["register-tab"];
+            
+            // Login form
+            document.querySelector('label[for="login-username"]').textContent = translation["username-label"];
+            document.querySelector('label[for="login-password"]').textContent = translation["password-label"];
+            document.getElementById('login-btn').textContent = translation["login-button"];
+            
+            // Ne plus afficher le lien d'inscription
+            // Ces lignes sont commentées car le lien d'inscription est désactivé
+            // document.querySelector('#switch-to-register').parentElement.childNodes[0].textContent = translation["no-account"] + " ";
+            // document.querySelector('#switch-to-register').textContent = translation["register-link"];
+            
+            // Register form
+            document.querySelector('label[for="register-username"]').textContent = translation["username-label"];
+            document.querySelector('label[for="register-email"]').textContent = translation["email-label"];
+            document.querySelector('label[for="register-password"]').textContent = translation["password-label"];
+            document.querySelector('label[for="register-confirm-password"]').textContent = translation["confirm-password-label"];
+            document.getElementById('register-btn').textContent = translation["register-button"];
+            document.querySelector('#switch-to-login').parentElement.childNodes[0].textContent = translation["has-account"] + " ";
+            document.querySelector('#switch-to-login').textContent = translation["login-link"];
+            
+            // Home link
+            document.querySelector('.home-link').textContent = translation["home-link"];
+            
+            // Footer
+            const footerLinks = document.querySelectorAll(".footer-links a");
+            footerLinks[0].textContent = translation.about;
+            footerLinks[1].textContent = translation.rules;
+            footerLinks[2].textContent = translation.contact;
+            footerLinks[3].textContent = translation.terms;
+            footerLinks[4].textContent = translation.privacy;
+            
+            // Copyright
+            document.querySelector("footer p").textContent = translation.copyright;
+        }
+    </script>
+</body>
+</html>

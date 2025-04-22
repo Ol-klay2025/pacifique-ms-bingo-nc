@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS BINGO PACIFIQUE - Démo d'Intégration</title>
+    <style>
+        :root {
+            --primary-color: #006699;
+            --secondary-color: #ff9933;
+            --background-color: #003366;
+            --card-bg-color: #ffffff;
+            --marked-color: #ff6600;
+            --quine-color: #33cc33;
+            --bingo-color: #cc3300;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('images/pacifique-bingo-background.png');
+            background-size: cover; /* Changé de contain à cover pour couvrir tout l'écran */
+            background-position: center center; /* Centré pour voir l'image complète */
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-color: #003366; /* Couleur de fond coordonnée avec l'image */
+            color: white;
+            line-height: 1.6;
+            padding-bottom: 100px;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden; /* Empêche le défilement horizontal */
+        }
+        
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 64, 128, 0.8);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            border-bottom: 3px solid rgba(255, 204, 0, 0.5);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .game-section {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .bingo-ball-section {
+            width: 100%;
+            background: rgba(0, 51, 102, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .cards-section {
+            width: 100%;
+            background: rgba(0, 51, 102, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        @media (min-width: 1200px) {
+            .game-section {
+                flex-direction: row;
+            }
+            
+            .bingo-ball-section {
+                flex: 1;
+                min-width: 380px;
+            }
+            
+            .cards-section {
+                flex: 2;
+            }
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: row; /* Alignement horizontal */
+            flex-wrap: wrap; /* Pour une meilleure adaptation responsive */
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        
+        button {
+            background: linear-gradient(to bottom, #ff9933, #ff6600);
+            color: white;
+            border: none;
+            padding: 8px 16px; /* Réduit la taille */
+            font-size: 14px; /* Police plus petite */
+            min-width: 120px;
+            max-width: 200px;
+            border-radius: 20px; /* Légèrement moins arrondi */
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Ombre plus discrète */
+            flex: 1 1 auto; /* Permet aux boutons de s'adapter à l'espace disponible */
+            white-space: nowrap; /* Texte sur une seule ligne */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Ajoute des pointillés si le texte est trop long */
+        }
+        
+        button:hover {
+            background: linear-gradient(to bottom, #ff6600, #ff3300);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .timer-container {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .timer {
+            font-size: 28px;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 10px 20px;
+            border-radius: 15px;
+            display: inline-block;
+            color: #ffcc00;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .draw-info {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .draw-counter {
+            font-weight: bold;
+            font-size: 20px;
+            color: #ffcc00;
+        }
+        
+        .bingo-container {
+            height: 200px;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .bingo-cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+        
+        .bingo-card {
+            background-color: var(--card-bg-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 250px;
+            transition: transform 0.3s ease;
+        }
+        
+        .bingo-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 1px;
+            background-color: #ddd;
+            padding: 1px;
+        }
+        
+        .bingo-cell {
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            font-weight: bold;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+        
+        .bingo-cell.empty {
+            background-color: #f5f5f5;
+        }
+        
+        .bingo-cell.marked {
+            background-color: var(--marked-color);
+            color: white;
+        }
+        
+        .bingo-cell.highlight {
+            background-color: yellow;
+            color: black;
+            animation: highlight 1s ease infinite;
+        }
+        
+        .bingo-card.quine {
+            box-shadow: 0 0 15px var(--quine-color);
+        }
+        
+        .bingo-card.bingo {
+            box-shadow: 0 0 20px var(--bingo-color);
+        }
+        
+        /* Animation pour les cellules */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .bingo-cell.pulse {
+            animation: pulse 0.5s ease-in-out;
+        }
+        
+        @keyframes highlight {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        /* Section des contrôles audio supprimée */
+        
+        /* Styles de contrôles audio supprimés */
+        
+        .status-message {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(0, 200, 255, 0.5);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 1500;
+        }
+        
+        .status-message-show {
+            opacity: 1;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            display: none;
+        }
+        
+        /* Suppression des vagues pour afficher l'image de fond */
+        .wave {
+            display: none;
+        }
+        
+        .wave:nth-child(2) {
+            display: none;
+        }
+        
+        @keyframes wave-animation {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 1000px; }
+        }
+        
+        @keyframes wave-animation-2 {
+            0% { background-position-x: 0; }
+            100% { background-position-x: -1000px; }
+        }
+        
+        /* Styles pour la vérification des quines/bingos */
+        .verification-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.5s ease-in-out;
+            z-index: 2000;
+            overflow: hidden; /* Empêcher tout défilement */
+        }
+        
+        .verification-content {
+            background-color: #003366;
+            border-radius: 0;
+            padding: 30px;
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100vh;
+            overflow: hidden; /* Pas de défilement */
+            box-shadow: 0 0 50px rgba(0, 200, 255, 0.8);
+            border: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .verification-content h2 {
+            text-align: center;
+            color: #ffcc00;
+            margin-top: 0;
+            font-size: 28px;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+        }
+        
+        .verification-content p {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .verification-display {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        @media (min-width: 768px) {
+            .verification-display {
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+        
+        .verification-card {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .verification-card .bingo-card {
+            transform: scale(1.5);
+            margin: 10px;
+            border: 2px solid #ffcc00;
+            box-shadow: 0 0 30px rgba(255, 204, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .verification-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .drawn-numbers, .verification-numbers {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+        }
+        
+        .drawn-numbers h3, .verification-numbers h3 {
+            color: #ffcc00;
+            margin-top: 0;
+            text-align: center;
+            font-size: 20px;
+        }
+        
+        .number-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 5px;
+            max-width: 300px;
+            margin: 0 auto;
+            overflow: auto;
+            max-height: 300px;
+        }
+        
+        .number-cell {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .number-cell.drawn {
+            background-color: #33cc33;
+            color: white;
+            box-shadow: 0 0 8px rgba(51, 204, 51, 0.6);
+        }
+        
+        .number-cell.verification {
+            border: 2px solid #ffcc00;
+            transform: scale(1.1);
+        }
+        
+        .number-cell.drawn.verification {
+            background-color: #ffcc00;
+            color: black;
+            font-weight: bolder;
+            box-shadow: 0 0 12px rgba(255, 204, 0, 0.8);
+        }
+        
+        .number-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .verification-number {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 8px 12px;
+            border-radius: 50%;
+            min-width: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .verification-number.current {
+            background-color: #ffcc00;
+            color: black;
+            animation: pulse 1s infinite;
+            box-shadow: 0 0 15px #ffcc00;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 10px #ffcc00; }
+            50% { transform: scale(1.1); box-shadow: 0 0 20px #ffcc00; }
+            100% { transform: scale(1); box-shadow: 0 0 10px #ffcc00; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .verification-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .verification-controls button {
+            background: linear-gradient(to bottom, #0099cc, #006699);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            min-width: 120px;
+            max-width: 200px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .verification-controls button:hover {
+            background: linear-gradient(to bottom, #00aadd, #0077aa);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .verification-controls button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="wave"></div>
+    <div class="wave"></div>
+    
+    <div class="header">
+        <h1>MS BINGO PACIFIQUE - Démonstration d'Intégration</h1>
+    </div>
+    
+    <div class="container">
+        <div class="game-section">
+            <div class="bingo-ball-section">
+                <h2>Tirage des Boules</h2>
+                <div class="bingo-container" id="bingoBallContainer"></div>
+                
+                <!-- Timer supprimé sur demande -->
+                <div class="timer-container" style="display: none;">
+                    <div class="timer" id="timer">3</div>
+                </div>
+                
+                <div class="draw-info">
+                    Numéros tirés: <span class="draw-counter" id="drawCounter">0</span> / 90
+                </div>
+                
+                <div class="controls">
+                    <button id="drawButton">Tirer un numéro</button>
+                    <button id="startAutoDrawButton">Démarrer tirage automatique</button>
+                    <button id="resetButton">Réinitialiser</button>
+                </div>
+            </div>
+            
+            <div class="cards-section">
+                <h2>Mes Cartes de Bingo</h2>
+                <div class="bingo-cards-container" id="bingoCardsContainer">
+                    <!-- Les cartes de bingo seront générées ici -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section de contrôles audio supprimée -->
+    </div>
+    
+    <div class="status-message" id="statusMessage"></div>
+    
+    <script src="js/bingo-ball-3d.js"></script>
+    <script src="js/bingo-audio.js"></script>
+    <script src="js/bingo-card-marker.js"></script>
+    
+    <!-- Script pour l'effet de défilement diagonal des numéros -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Fonction pour appliquer l'effet diagonal aux numéros tirés
+        function applyDiagonalEffect() {
+            // Sélectionner toutes les cellules de numéros
+            const cells = document.querySelectorAll('.number-cell');
+            
+            // Pour chaque cellule, appliquer une rotation légèrement aléatoire
+            cells.forEach((cell, index) => {
+                // Calculer l'angle de rotation (-3 à +3 degrés pour effet subtil)
+                const rotation = Math.floor(Math.random() * 7) - 3;
+                
+                // Appliquer une transformation différente selon la position dans la grille
+                // pour créer un effet de "diagonale"
+                const row = Math.floor(index / 6); // 6 cellules par ligne
+                const col = index % 6;
+                
+                // Décalage diagonal
+                const offsetX = (col - 2.5) * 2; // -5 à +5 px
+                const offsetY = (row - 2.5) * 2; // -5 à +5 px
+                
+                // Appliquer les transformations
+                cell.style.transform = `rotate(${rotation}deg) translate(${offsetX}px, ${offsetY}px)`;
+            });
+        }
+        
+        // Appliquer l'effet initial
+        setTimeout(applyDiagonalEffect, 500);
+        
+        // Observer les changements dans la grille pour appliquer l'effet aux nouveaux numéros
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                    // Si de nouveaux nœuds sont ajoutés, appliquer l'effet diagonal
+                    applyDiagonalEffect();
+                }
+            });
+        });
+        
+        // Observer la grille de numéros
+        const grid = document.querySelector('.number-grid');
+        if (grid) {
+            observer.observe(grid, { childList: true, subtree: true });
+        }
+    });
+    </script>
+    <script>
+        // Créer des images pour les vagues si elles n'existent pas
+        function createWaveSVG() {
+            const waveSVG = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
+                <path d="M0,50 C150,100 350,0 500,50 C650,100 850,0 1000,50 L1000,100 L0,100 Z" fill="#006699"></path>
+            </svg>
+            `;
+            
+            // Créer le fichier SVG
+            const blob = new Blob([waveSVG], { type: 'image/svg+xml' });
+            return URL.createObjectURL(blob);
+        }
+        
+        // Appliquer les vagues
+        document.querySelectorAll('.wave').forEach(wave => {
+            wave.style.backgroundImage = `url('${createWaveSVG()}')`;
+        });
+        
+        // Initialisation des variables
+        let bingoBall;
+        let bingoAudio;
+        let bingoCardMarker;
+        let autoDrawInterval;
+        let timerInterval;
+        let secondsLeft = 3;
+        
+        // Éléments DOM
+        const drawButton = document.getElementById('drawButton');
+        const startAutoDrawButton = document.getElementById('startAutoDrawButton');
+        const resetButton = document.getElementById('resetButton');
+        const drawCounter = document.getElementById('drawCounter');
+        const timerElement = document.getElementById('timer');
+        const cardsContainer = document.getElementById('bingoCardsContainer');
+        const statusMessage = document.getElementById('statusMessage');
+        
+        // Fonction pour initialiser les boules de bingo
+        function initBingoBalls() {
+            // Options des boules
+            const options = {
+                size: 150,
+                colors: ['#FFA500', '#FF69B4', '#32CD32', '#FF6347', '#FF4500', '#FFD700', '#1E90FF', '#20B2AA'],
+                highlightColor: '#ffffff',
+                animationDuration: 800,
+                floatingEffect: true,
+                reflectionEffect: true,
+                glowEffect: true
+            };
+            
+            // Initialiser la classe BingoBall3D
+            bingoBall = new BingoBall3D('bingoBallContainer', options);
+            
+            // Initialiser le moteur audio avec tous les sons désactivés
+            bingoAudio = new BingoAudio({
+                volume: 0.8,
+                muteMusic: true,
+                muteSoundEffects: true,
+                voiceEnabled: true,
+                voiceLanguage: 'fr-FR',
+                voiceRate: 0.8,
+                voiceGender: 'female'
+            });
+            
+            // Initialiser le marqueur de cartes
+            bingoCardMarker = new BingoCardMarker({
+                cardSelector: '.bingo-card',
+                cellSelector: '.bingo-cell',
+                numberDataAttr: 'data-number',
+                markedClass: 'marked',
+                highlightClass: 'highlight',
+                animationClass: 'pulse',
+                quineClass: 'quine',
+                bingoClass: 'bingo',
+                gameRoot: document,
+                onQuine: handleQuine,
+                onBingo: handleBingo,
+                onNumberMarked: handleNumberMarked,
+                audio: null  // Désactiver complètement l'audio
+            });
+            
+            // Créer des cartes de bingo de démo
+            createDemoCards();
+            
+            // Mettre à jour le compteur
+            updateDrawCounter();
+        }
+        
+        // Fonction pour créer des cartes de bingo de démonstration
+        function createDemoCards() {
+            // Vider le conteneur de cartes
+            cardsContainer.innerHTML = '';
+            
+            // Créer 3 cartes de bingo de démo
+            for (let cardIndex = 0; cardIndex < 3; cardIndex++) {
+                // Créer la carte
+                const card = document.createElement('div');
+                card.className = 'bingo-card';
+                card.id = `card-${cardIndex + 1}`;
+                card.setAttribute('data-card-id', cardIndex + 1);
+                
+                // Créer l'en-tête
+                const header = document.createElement('div');
+                header.className = 'card-header';
+                header.textContent = `Carte ${cardIndex + 1}`;
+                card.appendChild(header);
+                
+                // Créer la grille
+                const grid = document.createElement('div');
+                grid.className = 'card-grid';
+                
+                // Ensembles pour garder trace des numéros déjà utilisés
+                const usedNumbers = new Set(); // Tous les numéros utilisés dans cette carte
+                const usedNumbersInColumn = Array(9).fill().map(() => new Set()); // Numéros par colonne
+                
+                // Créer les cellules (format européen 9x3 avec 15 numéros)
+                for (let row = 0; row < 3; row++) {
+                    for (let col = 0; col < 9; col++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'bingo-cell';
+                        cell.setAttribute('data-row', row);
+                        cell.setAttribute('data-col', col);
+                        
+                        // Définir les numéros (5 par ligne)
+                        // Dans une carte de bingo européenne, il y a 15 numéros (5 par ligne)
+                        const shouldHaveNumber = Math.random() < 5/9; // 5 numéros sur 9 colonnes
+                        
+                        if (shouldHaveNumber) {
+                            // Chaque colonne a un intervalle de nombres spécifique
+                            // Col 0: 1-9, Col 1: 10-19, etc.
+                            const minNum = col === 0 ? 1 : col * 10;
+                            const maxNum = col === 0 ? 9 : (col * 10) + 9;
+                            
+                            // Générer un numéro unique qui n'est pas déjà utilisé dans cette carte
+                            let number;
+                            let attempts = 0;
+                            do {
+                                number = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
+                                attempts++;
+                                // Sortir après 10 tentatives pour éviter une boucle infinie
+                                if (attempts > 10) {
+                                    // Si on ne trouve pas de numéro unique après 10 tentatives,
+                                    // itérer sur toutes les valeurs possibles pour trouver une valeur non utilisée
+                                    for (let n = minNum; n <= maxNum; n++) {
+                                        if (!usedNumbers.has(n) && !usedNumbersInColumn[col].has(n)) {
+                                            number = n;
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            } while (usedNumbers.has(number) || usedNumbersInColumn[col].has(number));
+                            
+                            // Enregistrer ce numéro comme utilisé
+                            usedNumbers.add(number);
+                            usedNumbersInColumn[col].add(number);
+                            
+                            cell.textContent = number;
+                            cell.setAttribute('data-number', number);
+                        } else {
+                            cell.classList.add('empty');
+                        }
+                        
+                        grid.appendChild(cell);
+                    }
+                }
+                
+                card.appendChild(grid);
+                cardsContainer.appendChild(card);
+            }
+            
+            // Ajuster la distribution des numéros pour s'assurer que chaque ligne a exactement 5 numéros
+            const cards = document.querySelectorAll('.bingo-card');
+            cards.forEach(card => {
+                for (let row = 0; row < 3; row++) {
+                    const cells = Array.from(card.querySelectorAll(`.bingo-cell[data-row="${row}"]`));
+                    const numberedCells = cells.filter(cell => !cell.classList.contains('empty'));
+                    const emptyCells = cells.filter(cell => cell.classList.contains('empty'));
+                    
+                    // Ajuster pour avoir exactement 5 numéros par ligne
+                    if (numberedCells.length > 5) {
+                        // Trop de numéros, en supprimer quelques-uns
+                        while (numberedCells.length > 5) {
+                            const cellToEmpty = numberedCells.pop();
+                            cellToEmpty.textContent = '';
+                            cellToEmpty.removeAttribute('data-number');
+                            cellToEmpty.classList.add('empty');
+                            emptyCells.push(cellToEmpty);
+                        }
+                    } else if (numberedCells.length < 5) {
+                        // Pas assez de numéros, en ajouter quelques-uns
+                        while (numberedCells.length < 5 && emptyCells.length > 0) {
+                            const cellToFill = emptyCells.pop();
+                            cellToFill.classList.remove('empty');
+                            
+                            // Déterminer la colonne et générer un numéro approprié
+                            const col = parseInt(cellToFill.getAttribute('data-col'));
+                            const minNum = col === 0 ? 1 : col * 10;
+                            const maxNum = col === 0 ? 9 : (col * 10) + 9;
+                            
+                            // Récupérer tous les numéros déjà utilisés sur cette carte entière
+                            const existingNumbers = new Set();
+                            Array.from(card.querySelectorAll(`.bingo-cell`))
+                                .filter(c => c.hasAttribute('data-number'))
+                                .forEach(c => existingNumbers.add(parseInt(c.getAttribute('data-number'))));
+                            
+                            // Générer un numéro unique qui n'est pas déjà utilisé dans cette colonne
+                            let number;
+                            let attempts = 0;
+                            do {
+                                number = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
+                                attempts++;
+                                // Sortir après 10 tentatives pour éviter une boucle infinie
+                                if (attempts > 10) {
+                                    // Si on ne trouve pas de numéro unique après 10 tentatives,
+                                    // itérer sur toutes les valeurs possibles pour trouver une valeur non utilisée
+                                    for (let n = minNum; n <= maxNum; n++) {
+                                        if (!existingNumbers.has(n)) {
+                                            number = n;
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            } while (existingNumbers.has(number));
+                            
+                            cellToFill.textContent = number;
+                            cellToFill.setAttribute('data-number', number);
+                            numberedCells.push(cellToFill);
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Fonction pour tirer un numéro aléatoire
+        function drawRandomNumber() {
+            // Vérifier si tous les numéros ont été tirés
+            if (bingoBall.getDrawnNumbers().length >= 90) {
+                showStatusMessage('Tous les numéros ont été tirés!');
+                stopAutoDrawing();
+                return;
+            }
+            
+            // Générer un numéro aléatoire qui n'a pas encore été tiré
+            let randomNumber;
+            const drawnNumbers = bingoBall.getDrawnNumbers();
+            
+            do {
+                randomNumber = Math.floor(Math.random() * 90) + 1;
+            } while (drawnNumbers.includes(randomNumber));
+            
+            // Tirer le numéro
+            bingoBall.drawNumber(randomNumber);
+            
+            // Annoncer le numéro avec la voix
+            if (bingoAudio) {
+                bingoAudio.speak(randomNumber.toString());
+            }
+            
+            // Marquer le numéro sur les cartes
+            if (bingoCardMarker) {
+                bingoCardMarker.markNumber(randomNumber);
+            }
+            
+            // Créer un événement personnalisé pour indiquer qu'un numéro a été tiré
+            const event = new CustomEvent('numberDrawn', { detail: randomNumber });
+            document.dispatchEvent(event);
+            
+            // Mettre à jour le compteur
+            updateDrawCounter();
+        }
+        
+        // Fonction pour mettre à jour le compteur
+        function updateDrawCounter() {
+            drawCounter.textContent = bingoBall.getDrawnNumbers().length;
+        }
+        
+        // Fonction pour démarrer le tirage automatique
+        function startAutoDrawing() {
+            // Arrêter tout tirage automatique en cours
+            stopAutoDrawing();
+            
+            // Mettre à jour le texte du bouton
+            startAutoDrawButton.textContent = 'Arrêter tirage automatique';
+            
+            // Tirer un premier numéro immédiatement
+            drawRandomNumber();
+            
+            // Démarrer le tirage automatique après le premier tirage
+            autoDrawInterval = setInterval(() => {
+                // Vérifier s'il reste des numéros à tirer
+                // La fonction drawRandomNumber vérifie déjà si tous les numéros ont été tirés
+                drawRandomNumber();
+            }, 3000); // Interval de 3 secondes entre les tirages
+            
+            // Message de statut
+            showStatusMessage('Tirage automatique démarré');
+        }
+        
+        // Fonction pour arrêter le tirage automatique
+        function stopAutoDrawing() {
+            // Arrêter les deux intervalles
+            clearInterval(autoDrawInterval);
+            clearInterval(timerInterval);
+            
+            // Réinitialiser les variables
+            autoDrawInterval = null;
+            timerInterval = null;
+            secondsLeft = 3;
+            
+            // Mettre à jour l'interface
+            timerElement.style.display = 'none';
+            timerElement.textContent = secondsLeft;
+            startAutoDrawButton.textContent = 'Démarrer tirage automatique';
+            
+            // Mettre à jour le statut si on est en mode vérification
+            if (verificationMode) {
+                showStatusMessage('Jeu en pause pour vérification');
+            }
+        }
+        
+        // Fonction pour réinitialiser le jeu
+        function resetGame() {
+            stopAutoDrawing();
+            
+            // Réinitialiser le système de boules
+            bingoBall.reset();
+            
+            // Réinitialiser le marqueur de cartes
+            bingoCardMarker.reset();
+            
+            // Créer de nouvelles cartes
+            createDemoCards();
+            
+            // Mettre à jour le compteur
+            updateDrawCounter();
+            
+            // Réinitialiser le flag de quine détectée pour permettre une nouvelle quine dans la partie suivante
+            quineDetected = false;
+            
+            // Musique désactivée
+            // Aucune musique ne sera jouée
+        }
+        
+        // Variables pour la vérification des quines et bingos
+        let verificationMode = false;
+        let verificationCard = null;
+        let verificationNumbers = [];
+        let verificationTimer = null;
+        let verificationIndex = 0;
+        let verificationModal = null;
+        let quineDetected = false; // Pour suivre si une quine a déjà été détectée
+        
+        // Fonctions de gestion des événements
+        function handleQuine(card) {
+            // Ignorer les quines supplémentaires après la première
+            if (quineDetected) {
+                console.log("Quine déjà détectée, ignorée");
+                return;
+            }
+            
+            console.log("QUINE DÉTECTÉ!", card);
+            stopAutoDrawing(); // Arrêter le tirage automatique
+            verificationMode = true;
+            verificationCard = card;
+            quineDetected = true; // Marquer qu'une quine a été détectée
+            
+            // Collecter les numéros de la ligne complète
+            const cardId = card.getAttribute('data-card-id');
+            const rowWithQuine = findRowWithQuine(card);
+            verificationNumbers = getNumbersInRow(card, rowWithQuine);
+            
+            // Message de statut pour l'interface
+            showStatusMessage(`Quine détectée sur le carton ${cardId}, vérification automatique en cours...`);
+            
+            // Annoncer la quine avec la voix
+            if (bingoAudio) {
+                bingoAudio.speak("QUINE! Vérification en cours");
+            }
+            showVerificationModal('quine', cardId, rowWithQuine);
+        }
+        
+        function handleBingo(card) {
+            console.log("BINGO DÉTECTÉ!", card);
+            stopAutoDrawing(); // Arrêter le tirage automatique
+            verificationMode = true;
+            verificationCard = card;
+            
+            // Collecter tous les numéros du carton
+            const cardId = card.getAttribute('data-card-id');
+            verificationNumbers = getAllNumbersInCard(card);
+            
+            // Message de statut pour l'interface
+            showStatusMessage(`BINGO sur le carton ${cardId}! Vérification automatique en cours...`);
+            
+            // Annoncer le bingo avec la voix
+            if (bingoAudio) {
+                bingoAudio.speak("BINGO! Vérification en cours");
+            }
+            showVerificationModal('bingo', cardId);
+        }
+        
+        // Fonction pour trouver la ligne qui a formé une quine
+        function findRowWithQuine(card) {
+            for (let row = 0; row < 3; row++) {
+                const cells = Array.from(card.querySelectorAll(`.bingo-cell[data-row="${row}"]`));
+                const markedCells = cells.filter(cell => cell.classList.contains('marked'));
+                
+                // On compte seulement les cellules qui ont un numéro (pas les cases vides)
+                const numberedCells = cells.filter(cell => cell.hasAttribute('data-number'));
+                
+                if (markedCells.length === numberedCells.length && numberedCells.length === 5) {
+                    return row;
+                }
+            }
+            return -1; // Aucune ligne complète trouvée
+        }
+        
+        // Fonction pour obtenir les numéros d'une ligne spécifique
+        function getNumbersInRow(card, row) {
+            const cells = Array.from(card.querySelectorAll(`.bingo-cell[data-row="${row}"]`));
+            return cells
+                .filter(cell => cell.hasAttribute('data-number'))
+                .map(cell => parseInt(cell.getAttribute('data-number')))
+                .sort((a, b) => a - b); // Trier les numéros pour une vérification plus claire
+        }
+        
+        // Fonction pour obtenir tous les numéros d'un carton
+        function getAllNumbersInCard(card) {
+            return Array.from(card.querySelectorAll('.bingo-cell'))
+                .filter(cell => cell.hasAttribute('data-number'))
+                .map(cell => parseInt(cell.getAttribute('data-number')))
+                .sort((a, b) => a - b); // Trier les numéros pour une vérification plus claire
+        }
+        
+        // Fonction pour afficher la modal de vérification
+        function showVerificationModal(type, cardId, row = -1) {
+            // Créer la modal de vérification si elle n'existe pas
+            if (!verificationModal) {
+                verificationModal = document.createElement('div');
+                verificationModal.className = 'verification-modal';
+                document.body.appendChild(verificationModal);
+            }
+            
+            // Titre et description
+            const title = type === 'quine' ? `QUINE sur le carton ${cardId}` : `BINGO sur le carton ${cardId}`;
+            const description = type === 'quine' ? `Vérification de la ligne ${row + 1}` : `Vérification du carton complet`;
+            
+            // Préparer le contenu de la modal
+            verificationModal.innerHTML = `
+                <div class="verification-content">
+                    <h2>${title}</h2>
+                    <p>${description}</p>
+                    
+                    <div class="verification-display">
+                        <div class="verification-card">
+                            ${verificationCard.outerHTML}
+                        </div>
+                        
+                        <div class="verification-info">
+                            <div class="drawn-numbers">
+                                <h3>Numéros tirés</h3>
+                                <div class="number-grid" id="drawnNumbersGrid"></div>
+                            </div>
+                            
+                            <div class="verification-numbers">
+                                <h3>Numéros à vérifier</h3>
+                                <div class="number-list" id="verificationNumbersList">
+                                    ${verificationNumbers.map(n => `<span class="verification-number">${n}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="verification-controls">
+                        <button id="startVerificationBtn" style="display: none;">Démarrer la vérification</button>
+                        <button id="closeVerificationBtn" style="display: none;">Fermer</button>
+                    </div>
+                </div>
+            `;
+            
+            // Afficher la modal
+            verificationModal.style.display = 'flex';
+            
+            // Remplir la grille des numéros tirés
+            const drawnNumbersGrid = document.getElementById('drawnNumbersGrid');
+            const drawnNumbers = bingoBall.getDrawnNumbers();
+            
+            // Vider la grille
+            drawnNumbersGrid.innerHTML = '';
+            
+            // Créer un tableau de tous les numéros possibles (1-90)
+            const allNumbers = Array.from({ length: 90 }, (_, i) => i + 1);
+            
+            // Marquer les numéros qui ont été tirés
+            const drawnNumbersSet = new Set(drawnNumbers);
+            
+            // Créer les cellules pour la grille, affichage en 6 colonnes avec effet diagonal
+            for (let num = 1; num <= 90; num++) {
+                const numberCell = document.createElement('div');
+                numberCell.className = 'number-cell';
+                numberCell.textContent = num;
+                
+                // Ajouter une légère rotation aux cellules pour accentuer l'effet diagonal
+                const randomRotation = Math.floor(Math.random() * 5) - 2; // Rotation entre -2 et +2 degrés
+                numberCell.style.transform = `rotate(${randomRotation}deg)`;
+                
+                // Si le numéro a été tiré, ajouter la classe correspondante
+                if (drawnNumbersSet.has(num)) {
+                    numberCell.classList.add('drawn');
+                    
+                    if (verificationNumbers.includes(num)) {
+                        numberCell.classList.add('verification');
+                    }
+                }
+                
+                drawnNumbersGrid.appendChild(numberCell);
+            }
+            
+            // Ajouter les gestionnaires d'événements
+            document.getElementById('startVerificationBtn').addEventListener('click', startVerification);
+            document.getElementById('closeVerificationBtn').addEventListener('click', closeVerificationModal);
+            
+            // Démarrer automatiquement la vérification après un court délai
+            setTimeout(() => {
+                startVerification();
+            }, 1000);
+        }
+        
+        // Fonction pour démarrer la vérification auditive
+        function startVerification() {
+            document.getElementById('startVerificationBtn').disabled = true;
+            
+            // Réinitialiser l'index
+            verificationIndex = 0;
+            
+            // Pas d'annonce vocale, démarrer directement la vérification visuelle
+            verificationTimer = setInterval(announceNextVerificationNumber, 800);
+        }
+        
+        // Fonction pour annoncer le prochain numéro de vérification
+        function announceNextVerificationNumber() {
+            if (verificationIndex < verificationNumbers.length) {
+                const number = verificationNumbers[verificationIndex];
+                
+                // Mettre en évidence le numéro en cours de vérification
+                const numberElements = document.querySelectorAll('.verification-number');
+                if (verificationIndex > 0) {
+                    numberElements[verificationIndex - 1].classList.remove('current');
+                }
+                numberElements[verificationIndex].classList.add('current');
+                
+                // Annoncer le numéro
+                if (bingoAudio) {
+                    bingoAudio.speak(number.toString());
+                }
+                
+                verificationIndex++;
+            } else {
+                // Fin de la vérification
+                clearInterval(verificationTimer);
+                
+                if (bingoAudio) {
+                    setTimeout(() => {
+                        if (verificationCard.classList.contains('quine') && !verificationCard.classList.contains('bingo')) {
+                            bingoAudio.speak("Quine confirmée! Le jeu continue");
+                            
+                            // Fermer automatiquement la fenêtre après l'annonce pour les quines
+                            setTimeout(() => {
+                                closeVerificationModal();
+                                
+                                // Redémarrer automatiquement le tirage
+                                if (!autoDrawInterval) {
+                                    startAutoDrawing();
+                                }
+                            }, 3000);
+                        } else if (verificationCard.classList.contains('bingo')) {
+                            bingoAudio.speak("Bingo confirmé! Félicitations!");
+                            
+                            // Pour un bingo, fermer automatiquement après un délai plus long
+                            setTimeout(() => {
+                                closeVerificationModal();
+                                resetGame(); // Réinitialiser le jeu en cas de bingo
+                            }, 5000);
+                        }
+                    }, 1000);
+                }
+                
+                document.getElementById('startVerificationBtn').disabled = false;
+            }
+        }
+        
+        // Fonction pour fermer la modal de vérification
+        function closeVerificationModal() {
+            // Arrêter le timer de vérification
+            if (verificationTimer) {
+                clearInterval(verificationTimer);
+                verificationTimer = null;
+            }
+            
+            // Fermer la fenêtre modale
+            if (verificationModal) {
+                verificationModal.style.display = 'none';
+            }
+            
+            // Réinitialiser le mode de vérification
+            verificationMode = false;
+            verificationCard = null;
+            verificationNumbers = [];
+            verificationIndex = 0;
+            
+            // Mise à jour du statut
+            showStatusMessage("Vérification terminée. Le jeu peut reprendre.");
+            
+            // Réinitialiser les numéros en cours de vérification
+            const currentVerificationNumber = document.querySelector('.verification-number.current');
+            if (currentVerificationNumber) {
+                currentVerificationNumber.classList.remove('current');
+            }
+            
+            // Mettre à jour l'interface pour permettre de relancer le jeu
+            startAutoDrawButton.textContent = 'Démarrer tirage automatique';
+            timerElement.style.display = 'none';
+            secondsLeft = 3;
+            timerElement.textContent = secondsLeft;
+            
+            // Pour les quines, le jeu reprend automatiquement sans annonce
+            // Pour les bingos, laisser l'annonce de fin de partie
+            if (bingoAudio && verificationCard && verificationCard.classList.contains('bingo')) {
+                setTimeout(() => {
+                    bingoAudio.speak("Le jeu est terminé");
+                }, 500);
+            }
+        }
+        
+        function handleNumberMarked(number, cells) {
+            // On pourrait ajouter des actions supplémentaires ici
+        }
+        
+        // Fonction pour afficher un message de statut
+        function showStatusMessage(message) {
+            statusMessage.textContent = message;
+            statusMessage.style.display = 'block';
+            
+            // Ajouter une classe pour l'animation
+            statusMessage.classList.add('status-message-show');
+            
+            // Cacher le message après 5 secondes (durée augmentée pour les annonces importantes)
+            setTimeout(() => {
+                statusMessage.classList.remove('status-message-show');
+                setTimeout(() => {
+                    statusMessage.style.display = 'none';
+                }, 500);
+            }, 5000);
+        }
+        
+        // Gestionnaires d'événements
+        drawButton.addEventListener('click', drawRandomNumber);
+        
+        startAutoDrawButton.addEventListener('click', function() {
+            if (autoDrawInterval) {
+                stopAutoDrawing();
+            } else {
+                startAutoDrawing();
+            }
+        });
+        
+        resetButton.addEventListener('click', resetGame);
+        
+        // Gestionnaires pour les contrôles audio supprimés
+        
+        // Initialiser le jeu au chargement de la page
+        window.addEventListener('load', initBingoBalls);
+    </script>
+</body>
+</html>

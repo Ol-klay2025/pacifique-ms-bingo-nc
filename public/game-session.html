@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PACIFIQUE MS BINGO - Session de Jeu</title>
+  <style>
+    :root {
+      --primary: #FE6800;
+      --secondary: #0077c0;
+      --accent: #32E0C4;
+      --background: #111827;
+      --card-bg: #1f2937;
+      --text: #f3f4f6;
+      --text-dark: #1f2937;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+    }
+    
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: var(--background);
+      background-image: url('/img/bingo-crypto-bg.png');
+      background-size: cover;
+      background-position: center center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    
+    .container, #game-container, .panel, .ball-container, .numbers-grid {
+      background-color: rgba(42, 42, 42, 0.85);
+      backdrop-filter: blur(5px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .game-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      gap: 1rem;
+    }
+    
+    .game-info {
+      flex: 1;
+    }
+    
+    .game-title {
+      font-size: 1.5rem;
+      margin: 0 0 0.5rem 0;
+    }
+    
+    .game-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    
+    .game-meta-item {
+      background-color: rgba(255,255,255,0.1);
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.875rem;
+    }
+    
+    .game-actions {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      margin-bottom: 1.5rem;
+    }
+    
+    .btn {
+      display: inline-block;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .btn:hover {
+      background-color: #e05a00;
+    }
+    
+    .btn-secondary {
+      background-color: var(--secondary);
+    }
+    
+    .btn-secondary:hover {
+      background-color: #0066a7;
+    }
+    
+    .btn-success {
+      background-color: var(--success);
+    }
+    
+    .btn-success:hover {
+      background-color: #0ca974;
+    }
+    
+    .btn-warning {
+      background-color: var(--warning);
+    }
+    
+    .btn-warning:hover {
+      background-color: #e08c00;
+    }
+    
+    .btn-danger {
+      background-color: var(--error);
+    }
+    
+    .btn-danger:hover {
+      background-color: #dc3030;
+    }
+    
+    .btn-lg {
+      padding: 1rem 2rem;
+      font-size: 1.25rem;
+    }
+    
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 1.5rem;
+    }
+    
+    .numbers-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .number-cell {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(255,255,255,0.05);
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 1.25rem;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .number-cell.drawn {
+      background-color: var(--primary);
+      color: white;
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(254, 104, 0, 0.5);
+    }
+    
+    .latest-number {
+      font-size: 4rem;
+      font-weight: bold;
+      text-align: center;
+      margin: 1rem 0;
+      color: var(--primary);
+      text-shadow: 0 0 10px rgba(254, 104, 0, 0.5);
+      animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .history {
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 1rem;
+      background-color: rgba(0,0,0,0.2);
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+    
+    .history-title {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      color: rgba(255,255,255,0.7);
+    }
+    
+    .history-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .history-item {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .stat-card {
+      background-color: rgba(0,0,0,0.2);
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase;
+    }
+    
+    .player-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .player-item {
+      padding: 0.75rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .player-item:last-child {
+      border-bottom: none;
+    }
+    
+    .player-name {
+      font-weight: bold;
+    }
+    
+    .player-cards {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.875rem;
+    }
+    
+    .player-status {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 50px;
+      text-transform: uppercase;
+    }
+    
+    .player-status.quine {
+      background-color: rgba(245, 158, 11, 0.2);
+      color: #f59e0b;
+    }
+    
+    .player-status.bingo {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+    
+    .audio-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .volume-control {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .volume-slider {
+      flex: 1;
+      height: 6px;
+      -webkit-appearance: none;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 50px;
+      outline: none;
+    }
+    
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      cursor: pointer;
+    }
+    
+    .timer {
+      font-size: 1.25rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    
+    .progress-container {
+      height: 8px;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 50px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      width: 33%;
+      background-color: var(--primary);
+      border-radius: 50px;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal.show {
+      display: flex;
+    }
+    
+    .modal-content {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 2rem;
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 1rem;
+    }
+    
+    .modal-title {
+      font-weight: bold;
+      font-size: 1.25rem;
+      margin: 0;
+    }
+    
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text);
+    }
+    
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 1.5rem;
+      gap: 1rem;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+      
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .game-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .game-actions {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .numbers-grid {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PACIFIQUE MS BINGO - Session de Jeu</h1>
+    <nav style="margin-top: 1rem;">
+      <a href="/organizer" style="color: white; margin-right: 1rem; text-decoration: none;">Tableau de bord</a>
+      <a href="/game-management.html" style="color: white; margin-right: 1rem; text-decoration: none;">Gestion des parties</a>
+      <a href="/play" style="color: white; margin-right: 1rem; text-decoration: none;">Interface joueur</a>
+      <a href="/" style="color: white;" onclick="logout(); return false;">Déconnexion</a>
+    </nav>
+  </header>
+  
+  <div class="container">
+    <div class="game-header">
+      <div class="game-info">
+        <h2 class="game-title" id="gameTitle">Partie régulière #124</h2>
+        <div class="game-meta">
+          <div class="game-meta-item" id="gameType">Partie régulière</div>
+          <div class="game-meta-item" id="gamePrice">100 fr par carton</div>
+          <div class="game-meta-item" id="gameStatus">En cours</div>
+        </div>
+      </div>
+      
+      <!-- Zone d'information de la session de jeu -->
+      <div id="sessionInfo" style="flex-basis: 100%; margin: 1rem 0;"></div>
+      
+      <div class="game-actions">
+        <button class="btn btn-warning" id="pauseBtn">Pause</button>
+        <button class="btn btn-danger" id="endGameBtn">Terminer</button>
+      </div>
+    </div>
+    
+    <div class="grid-container">
+      <div class="main-section">
+        <div class="card">
+          <h2>Tirage des numéros</h2>
+          
+          <div class="latest-number" id="latestNumber">--</div>
+          
+          <div class="timer" id="timer">00:02</div>
+          <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+          
+          <div class="audio-controls">
+            <div class="volume-control">
+              <span>Volume:</span>
+              <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="75">
+            </div>
+            <button class="btn btn-secondary" id="testAudioBtn">Test</button>
+          </div>
+          
+          <div class="text-center" style="margin-bottom: 1.5rem; display: flex; justify-content: center; gap: 1rem;">
+            <button class="btn btn-lg btn-success" id="drawNumberBtn">Tirer un numéro</button>
+            <button class="btn btn-lg btn-secondary" id="autoDrawBtn">Tirage auto</button>
+          </div>
+          
+          <div class="numbers-grid" id="numbersGrid">
+            <!-- Les numéros seront générés dynamiquement -->
+          </div>
+        </div>
+        
+        <div class="card">
+          <h2>Statistiques de la partie</h2>
+          
+          <div class="stats-container">
+            <div class="stat-card">
+              <div class="stat-value" id="totalPlayers">8</div>
+              <div class="stat-label">Joueurs</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="totalCards">15</div>
+              <div class="stat-label">Cartons</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="numbersCalled">3</div>
+              <div class="stat-label">N° tirés</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="quineCount">0</div>
+              <div class="stat-label">Quines</div>
+            </div>
+          </div>
+          
+          <h3>Gains actuels</h3>
+          <div class="stats-container">
+            <div class="stat-card">
+              <div class="stat-value" id="quineAmount">300 fr</div>
+              <div class="stat-label">Quine</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="bingoAmount">750 fr</div>
+              <div class="stat-label">Bingo</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="jackpotAmount">100 000 fr</div>
+              <div class="stat-label">Jackpot</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="sidebar">
+        <div class="card">
+          <h2>Joueurs connectés</h2>
+          <ul class="player-list" id="playerList">
+            <li class="player-item">
+              <div>
+                <div class="player-name">testuser</div>
+                <div class="player-cards">2 cartons</div>
+              </div>
+              <span class="player-status quine">Quine</span>
+            </li>
+            <li class="player-item">
+              <div>
+                <div class="player-name">organisateur</div>
+                <div class="player-cards">3 cartons</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="card">
+          <h2>Historique</h2>
+          <div class="history">
+            <h3 class="history-title">Numéros tirés</h3>
+            <ul class="history-list" id="historyList">
+              <li class="history-item">
+                <span>Numéro 12</span>
+                <span>10:05:20</span>
+              </li>
+              <li class="history-item">
+                <span>Numéro 34</span>
+                <span>10:05:35</span>
+              </li>
+              <li class="history-item">
+                <span>Numéro 56</span>
+                <span>10:05:50</span>
+              </li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 class="history-title">Événements</h3>
+            <div class="history" id="eventHistory">
+              <ul class="history-list">
+                <li class="history-item">
+                  <span>Partie démarrée</span>
+                  <span>10:05:00</span>
+                </li>
+                <li class="history-item">
+                  <span>testuser annonce Quine</span>
+                  <span>10:05:45</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal pour vérifier une quine -->
+  <div class="modal" id="quineModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Vérification de quine</h2>
+        <button class="close-modal" id="closeQuineModal">&times;</button>
+      </div>
+      
+      <div>
+        <p><strong>Joueur:</strong> <span id="quinePlayerName">testuser</span></p>
+        <p><strong>Carton:</strong> <span id="quineCardId">#123456</span></p>
+        
+        <div style="background-color: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+          <h3 style="margin-top: 0;">Carton du joueur</h3>
+          <div id="quineCardGrid" style="display: grid; grid-template-columns: repeat(9, 1fr); gap: 5px;">
+            <!-- Le carton sera généré dynamiquement -->
+          </div>
+        </div>
+        
+        <div style="background-color: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+          <h3 style="margin-top: 0;">Ligne avec quine</h3>
+          <div id="quineLineGrid" style="display: grid; grid-template-columns: repeat(9, 1fr); gap: 5px;">
+            <!-- La ligne sera générée dynamiquement -->
+          </div>
+        </div>
+        
+        <p><strong>Numéros tirés concernés:</strong> <span id="quineNumbers">12, 34, 56</span></p>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-danger" id="rejectQuineBtn">Rejeter</button>
+        <button class="btn btn-success" id="validateQuineBtn">Valider</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal pour vérifier un bingo -->
+  <div class="modal" id="bingoModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Vérification de bingo</h2>
+        <button class="close-modal" id="closeBingoModal">&times;</button>
+      </div>
+      
+      <div>
+        <p><strong>Joueur:</strong> <span id="bingoPlayerName">testuser</span></p>
+        <p><strong>Carton:</strong> <span id="bingoCardId">#123456</span></p>
+        
+        <div style="background-color: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+          <h3 style="margin-top: 0;">Carton du joueur</h3>
+          <div id="bingoCardGrid" style="display: grid; grid-template-columns: repeat(9, 1fr); gap: 5px;">
+            <!-- Le carton sera généré dynamiquement -->
+          </div>
+        </div>
+        
+        <p><strong>Numéros tirés concernés:</strong> <span id="bingoNumbers">12, 34, 56</span></p>
+        
+        <div id="jackpotNotice" style="background-color: rgba(254, 104, 0, 0.2); padding: 1rem; border-radius: 8px; margin: 1rem 0; display: none;">
+          <h3 style="margin-top: 0; color: var(--primary);">JACKPOT POSSIBLE!</h3>
+          <p>Ce bingo a été réalisé en moins de 40 numéros et est éligible pour le jackpot de 100 000 fr!</p>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-danger" id="rejectBingoBtn">Rejeter</button>
+        <button class="btn btn-success" id="validateBingoBtn">Valider</button>
+        <button class="btn btn-warning" id="jackpotBtn" style="display: none;">Valider + Jackpot</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Générer la grille de numéros
+    const numbersGrid = document.getElementById('numbersGrid');
+    for (let i = 1; i <= 90; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'number-cell';
+      cell.textContent = i;
+      cell.dataset.number = i;
+      numbersGrid.appendChild(cell);
+    }
+    
+    // Déjà marquer les numéros tirés
+    const drawnNumbers = [12, 34, 56];
+    drawnNumbers.forEach(num => {
+      const cell = document.querySelector(`.number-cell[data-number="${num}"]`);
+      if (cell) {
+        cell.classList.add('drawn');
+      }
+    });
+    
+    // Définir le dernier numéro tiré
+    document.getElementById('latestNumber').textContent = drawnNumbers[drawnNumbers.length - 1] || '--';
+    
+    // Fonction pour tirer un nouveau numéro
+    const drawNumberBtn = document.getElementById('drawNumberBtn');
+    const latestNumber = document.getElementById('latestNumber');
+    const numbersCalled = document.getElementById('numbersCalled');
+    
+    drawNumberBtn.addEventListener('click', function() {
+      // Trouver tous les numéros qui n'ont pas encore été tirés
+      const allCells = document.querySelectorAll('.number-cell');
+      const undrawnCells = Array.from(allCells).filter(cell => !cell.classList.contains('drawn'));
+      
+      if (undrawnCells.length === 0) {
+        alert('Tous les numéros ont été tirés !');
+        return;
+      }
+      
+      // Sélectionner un numéro aléatoire parmi ceux qui n'ont pas été tirés
+      const randomIndex = Math.floor(Math.random() * undrawnCells.length);
+      const selectedCell = undrawnCells[randomIndex];
+      
+      // Marquer le numéro comme tiré
+      selectedCell.classList.add('drawn');
+      
+      // Mettre à jour l'affichage du dernier numéro
+      latestNumber.textContent = selectedCell.dataset.number;
+      
+      // Mettre à jour le compteur
+      const count = document.querySelectorAll('.number-cell.drawn').length;
+      numbersCalled.textContent = count;
+      
+      // Mettre à jour l'historique
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('fr-FR');
+      const historyList = document.getElementById('historyList');
+      const historyItem = document.createElement('li');
+      historyItem.className = 'history-item';
+      historyItem.innerHTML = `
+        <span>Numéro ${selectedCell.dataset.number}</span>
+        <span>${timeStr}</span>
+      `;
+      historyList.prepend(historyItem);
+      
+      // Démarrer le timer
+      resetTimer();
+      startTimer();
+    });
+    
+    // Fonctions pour le timer
+    let timerInterval;
+    const timer = document.getElementById('timer');
+    const progressBar = document.getElementById('progressBar');
+    
+    function resetTimer() {
+      clearInterval(timerInterval);
+      timer.textContent = '00:02';
+      progressBar.style.width = '100%';
+    }
+    
+    function startTimer() {
+      let seconds = 2;
+      const totalSeconds = 2;
+      
+      timerInterval = setInterval(() => {
+        seconds -= 0.1;
+        if (seconds <= 0) {
+          clearInterval(timerInterval);
+          timer.textContent = '00:00';
+          progressBar.style.width = '0%';
+        } else {
+          timer.textContent = `00:0${seconds.toFixed(1)}`;
+          const percentage = (seconds / totalSeconds) * 100;
+          progressBar.style.width = `${percentage}%`;
+        }
+      }, 100);
+    }
+    
+    // Fonction pour le tirage automatique
+    let autoDrawInterval;
+    const autoDrawBtn = document.getElementById('autoDrawBtn');
+    
+    autoDrawBtn.addEventListener('click', function() {
+      if (autoDrawBtn.textContent === 'Tirage auto') {
+        autoDrawBtn.textContent = 'Arrêter';
+        autoDrawBtn.classList.remove('btn-secondary');
+        autoDrawBtn.classList.add('btn-warning');
+        
+        // Démarrer le tirage automatique avec intervalle de 2 secondes
+        autoDrawInterval = setInterval(() => {
+          drawNumberBtn.click();
+        }, 2000);
+      } else {
+        autoDrawBtn.textContent = 'Tirage auto';
+        autoDrawBtn.classList.remove('btn-warning');
+        autoDrawBtn.classList.add('btn-secondary');
+        
+        // Arrêter le tirage automatique
+        clearInterval(autoDrawInterval);
+      }
+    });
+    
+    // Pause et reprise
+    const pauseBtn = document.getElementById('pauseBtn');
+    
+    pauseBtn.addEventListener('click', function() {
+      if (pauseBtn.textContent === 'Pause') {
+        pauseBtn.textContent = 'Reprendre';
+        
+        // Arrêter le tirage automatique
+        if (autoDrawBtn.textContent === 'Arrêter') {
+          autoDrawBtn.click();
+        }
+        
+        // Désactiver le bouton de tirage
+        drawNumberBtn.disabled = true;
+        autoDrawBtn.disabled = true;
+        
+        // Ajouter un événement dans l'historique
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('fr-FR');
+        const eventHistory = document.querySelector('#eventHistory .history-list');
+        const eventItem = document.createElement('li');
+        eventItem.className = 'history-item';
+        eventItem.innerHTML = `
+          <span>Partie en pause</span>
+          <span>${timeStr}</span>
+        `;
+        eventHistory.prepend(eventItem);
+      } else {
+        pauseBtn.textContent = 'Pause';
+        
+        // Réactiver les boutons
+        drawNumberBtn.disabled = false;
+        autoDrawBtn.disabled = false;
+        
+        // Ajouter un événement dans l'historique
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('fr-FR');
+        const eventHistory = document.querySelector('#eventHistory .history-list');
+        const eventItem = document.createElement('li');
+        eventItem.className = 'history-item';
+        eventItem.innerHTML = `
+          <span>Partie reprise</span>
+          <span>${timeStr}</span>
+        `;
+        eventHistory.prepend(eventItem);
+      }
+    });
+    
+    // Terminer la partie
+    const endGameBtn = document.getElementById('endGameBtn');
+    
+    endGameBtn.addEventListener('click', function() {
+      if (confirm('Êtes-vous sûr de vouloir terminer cette partie ?')) {
+        alert('La partie a été terminée');
+        window.location.href = '/game-management.html';
+      }
+    });
+    
+    // Fonctions pour les modales
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.add('show');
+    }
+    
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('show');
+    }
+    
+    // Événements pour les modales
+    document.getElementById('closeQuineModal').addEventListener('click', function() {
+      closeModal('quineModal');
+    });
+    
+    document.getElementById('closeBingoModal').addEventListener('click', function() {
+      closeModal('bingoModal');
+    });
+    
+    document.getElementById('rejectQuineBtn').addEventListener('click', function() {
+      if (confirm('Êtes-vous sûr de vouloir rejeter cette quine ?')) {
+        alert('La quine a été rejetée');
+        closeModal('quineModal');
+      }
+    });
+    
+    document.getElementById('validateQuineBtn').addEventListener('click', function() {
+      alert('La quine a été validée !');
+      closeModal('quineModal');
+      
+      // Mettre à jour le compteur de quines
+      const quineCount = document.getElementById('quineCount');
+      quineCount.textContent = parseInt(quineCount.textContent) + 1;
+      
+      // Ajouter un événement dans l'historique
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('fr-FR');
+      const eventHistory = document.querySelector('#eventHistory .history-list');
+      const eventItem = document.createElement('li');
+      eventItem.className = 'history-item';
+      eventItem.innerHTML = `
+        <span>Quine validée pour testuser</span>
+        <span>${timeStr}</span>
+      `;
+      eventHistory.prepend(eventItem);
+    });
+    
+    document.getElementById('rejectBingoBtn').addEventListener('click', function() {
+      if (confirm('Êtes-vous sûr de vouloir rejeter ce bingo ?')) {
+        alert('Le bingo a été rejeté');
+        closeModal('bingoModal');
+      }
+    });
+    
+    document.getElementById('validateBingoBtn').addEventListener('click', function() {
+      alert('Le bingo a été validé ! La partie est terminée.');
+      closeModal('bingoModal');
+      window.location.href = '/game-management.html';
+    });
+    
+    document.getElementById('jackpotBtn').addEventListener('click', function() {
+      if (confirm('Êtes-vous sûr de valider ce bingo et d\'attribuer le jackpot ?')) {
+        alert('JACKPOT! Le joueur a gagné 100 000 fr !');
+        closeModal('bingoModal');
+        window.location.href = '/game-management.html';
+      }
+    });
+    
+    // Simuler une notification de quine après 5 secondes
+    setTimeout(() => {
+      // Générer un carton de quine fictif
+      const quineCardGrid = document.getElementById('quineCardGrid');
+      quineCardGrid.innerHTML = '';
+      
+      // 3 lignes x 9 colonnes
+      for (let i = 0; i < 27; i++) {
+        const cell = document.createElement('div');
+        cell.style.aspectRatio = '1';
+        cell.style.display = 'flex';
+        cell.style.alignItems = 'center';
+        cell.style.justifyContent = 'center';
+        cell.style.backgroundColor = '#2d3748';
+        cell.style.borderRadius = '4px';
+        
+        // Remplir la première ligne avec des numéros, dont certains sont tirés
+        if (i < 9) {
+          const rowIndex = Math.floor(i / 9);
+          const colIndex = i % 9;
+          
+          if (colIndex === 1 || colIndex === 3 || colIndex === 5 || colIndex === 7 || colIndex === 8) {
+            const number = colIndex * 10 + Math.floor(Math.random() * 9) + 1;
+            cell.textContent = number;
+            
+            // Marquer les numéros tirés
+            if (number === 12 || number === 34 || number === 56) {
+              cell.style.backgroundColor = '#FE6800';
+              cell.style.color = 'white';
+            }
+          }
+        }
+        
+        quineCardGrid.appendChild(cell);
+      }
+      
+      // Générer la ligne avec quine
+      const quineLineGrid = document.getElementById('quineLineGrid');
+      quineLineGrid.innerHTML = '';
+      
+      for (let i = 0; i < 9; i++) {
+        const cell = document.createElement('div');
+        cell.style.aspectRatio = '1';
+        cell.style.display = 'flex';
+        cell.style.alignItems = 'center';
+        cell.style.justifyContent = 'center';
+        cell.style.backgroundColor = '#2d3748';
+        cell.style.borderRadius = '4px';
+        
+        if (i === 1 || i === 3 || i === 5 || i === 7 || i === 8) {
+          const number = i * 10 + Math.floor(Math.random() * 9) + 1;
+          cell.textContent = i === 1 ? 12 : (i === 3 ? 34 : (i === 5 ? 56 : number));
+          cell.style.backgroundColor = '#FE6800';
+          cell.style.color = 'white';
+        }
+        
+        quineLineGrid.appendChild(cell);
+      }
+      
+      // Ouvrir la modale de quine
+      openModal('quineModal');
+    }, 2000);
+    
+    // Test audio
+    document.getElementById('testAudioBtn').addEventListener('click', function() {
+      const volume = document.getElementById('volumeSlider').value;
+      alert(`Test audio au volume ${volume}% : "Numéro 25, 2-5"`);
+    });
+    
+    // Déconnexion
+    async function logout() {
+      try {
+        await fetch('/api/logout', { 
+          method: 'POST',
+          credentials: 'include'
+        });
+        window.location.href = '/';
+      } catch (error) {
+        alert('Erreur lors de la déconnexion');
+      }
+    }
+
+    // Système de redémarrage automatique des parties
+    let gameCountdownInterval;
+    let gameCountdownSeconds = 0;
+    const gameSessionInfo = document.getElementById('sessionInfo');
+    
+    // Fonction pour démarrer le compte à rebours entre les parties
+    function startGameCountdown() {
+      // Arrêter les tirages automatiques en cours
+      if (autoDrawBtn.textContent === 'Arrêter') {
+        autoDrawBtn.click();
+      }
+      
+      // Réinitialiser l'interface pour une nouvelle partie
+      const allCells = document.querySelectorAll('.number-cell');
+      allCells.forEach(cell => {
+        cell.classList.remove('drawn');
+      });
+      
+      latestNumber.textContent = '--';
+      numbersCalled.textContent = '0';
+      
+      // Vider l'historique
+      document.getElementById('historyList').innerHTML = '';
+      
+      // Démarrer le compte à rebours de 2 minutes (120 secondes)
+      gameCountdownSeconds = 120;
+      updateGameCountdownDisplay();
+      
+      // Afficher l'info de compte à rebours
+      gameSessionInfo.innerHTML = `<div class="alert alert-info">
+        <strong>Prochaine partie:</strong> <span id="gameCountdown">02:00</span>
+        <div class="progress mt-2">
+          <div id="gameCountdownProgress" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+        </div>
+      </div>`;
+      
+      // Démarrer l'intervalle du compte à rebours
+      clearInterval(gameCountdownInterval);
+      gameCountdownInterval = setInterval(() => {
+        gameCountdownSeconds--;
+        updateGameCountdownDisplay();
+        
+        if (gameCountdownSeconds <= 0) {
+          clearInterval(gameCountdownInterval);
+          startNewGame();
+        }
+      }, 1000);
+    }
+    
+    function updateGameCountdownDisplay() {
+      const minutes = Math.floor(gameCountdownSeconds / 60);
+      const seconds = gameCountdownSeconds % 60;
+      const countdownDisplay = document.getElementById('gameCountdown');
+      const progressBar = document.getElementById('gameCountdownProgress');
+      
+      if (countdownDisplay) {
+        countdownDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }
+      
+      if (progressBar) {
+        const percentage = (gameCountdownSeconds / 120) * 100;
+        progressBar.style.width = `${percentage}%`;
+      }
+    }
+    
+    function startNewGame() {
+      // Afficher l'annonce du début de partie
+      gameSessionInfo.innerHTML = `<div class="alert alert-success">
+        <strong>La partie commence !</strong>
+      </div>`;
+      
+      // Commencer les tirages automatiques
+      if (autoDrawBtn.textContent === 'Tirage auto') {
+        autoDrawBtn.click();
+      }
+    }
+    
+    // Fonction pour gérer la fin d'une partie quand un bingo est validé
+    function endCurrentGame() {
+      // Afficher un message de fin de partie
+      gameSessionInfo.innerHTML = `<div class="alert alert-warning">
+        <strong>Partie terminée !</strong> Un bingo a été validé.
+      </div>`;
+      
+      // Démarrer le compte à rebours pour la prochaine partie
+      setTimeout(() => {
+        startGameCountdown();
+      }, 2000);
+    }
+    
+    // Ajout d'un gestionnaire pour le bouton de validation du bingo
+    document.getElementById('validateBingoBtn').addEventListener('click', function() {
+      // Fermer la modale de bingo
+      closeModal('bingoModal');
+      
+      // Terminer la partie actuelle et démarrer le compte à rebours
+      endCurrentGame();
+    });
+    
+    // Ajout d'un gestionnaire pour le bouton de jackpot
+    document.getElementById('jackpotBtn').addEventListener('click', function() {
+      // Fermer la modale de bingo
+      closeModal('bingoModal');
+      
+      // Terminer la partie actuelle et démarrer le compte à rebours
+      endCurrentGame();
+    });
+    
+    // Démarrer une nouvelle session de jeu automatiquement
+    window.addEventListener('load', function() {
+      // Afficher un message de bienvenue
+      gameSessionInfo.innerHTML = `<div class="alert alert-primary">
+        <strong>Bienvenue dans la session de jeu !</strong> Cliquez sur "Nouvelle partie" pour commencer.
+      </div>`;
+      
+      // Ajouter un bouton pour démarrer manuellement une nouvelle partie
+      const controlsRow = document.querySelector('.controls-row');
+      const newGameBtn = document.createElement('button');
+      newGameBtn.className = 'btn btn-primary ml-2';
+      newGameBtn.textContent = 'Nouvelle partie';
+      newGameBtn.addEventListener('click', startGameCountdown);
+      controlsRow.appendChild(newGameBtn);
+    });
+  </script>
+
+  <!-- Script personnalisé pour forcer l'intervalle de tirage à 2 secondes -->
+  <script>
+    // Configuration forcée pour l'intervalle de tirage
+    const FORCE_DRAW_INTERVAL = 2000; // 2 secondes exactement
+    
+    // Écraser la fonction setInterval native pour intercepter les appels liés au tirage automatique
+    const originalSetInterval = window.setInterval;
+    window.setInterval = function(callback, interval, ...args) {
+      // Si c'est un intervalle lié au tirage automatique (détection par le callback qui contient 'drawNumberBtn')
+      if (interval > 5000 && callback.toString().includes('drawNumberBtn')) {
+        console.log('🔄 Intervalle de tirage détecté et corrigé à 2 secondes');
+        return originalSetInterval(callback, FORCE_DRAW_INTERVAL, ...args);
+      }
+      
+      // Pour tous les autres intervalles, comportement normal
+      return originalSetInterval(callback, interval, ...args);
+    };
+    
+    // S'assurer que l'intervalle est correctement défini au chargement de la page
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('🎲 Initialisation de l'intervalle de tirage à 2 secondes');
+      
+      // Observer les modifications du bouton de tirage automatique
+      const autoDrawBtn = document.getElementById('autoDrawBtn');
+      if (autoDrawBtn) {
+        const originalClick = autoDrawBtn.onclick;
+        autoDrawBtn.onclick = function(e) {
+          if (originalClick) {
+            originalClick.call(this, e);
+          }
+          
+          // S'assurer que l'intervalle est à 2 secondes après le clic
+          setTimeout(() => {
+            if (autoDrawInterval) {
+              clearInterval(autoDrawInterval);
+              autoDrawInterval = setInterval(() => {
+                drawNumberBtn.click();
+              }, FORCE_DRAW_INTERVAL);
+              console.log('🔄 Intervalle de tirage automatique réinitialisé à 2 secondes');
+            }
+          }, 100);
+        };
+      }
+    });
+  </script>
+    <!-- Scripts -->
+    <script src="/js/lib/confetti.min.js"></script>
+    <script src="/js/voice-announcer.js"></script>
+    <script src="/js/celebration-animations.js"></script>
+    <script src="/js/social-share.js"></script>
+    <script src="/js/social-integration.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Ajouter un lien pour l'annonceur vocal dans la barre de menu
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+          const voiceSettingsLink = document.createElement('a');
+          voiceSettingsLink.className = 'navbar-item';
+          voiceSettingsLink.href = '#';
+          voiceSettingsLink.textContent = 'Annonceur Vocal';
+          voiceSettingsLink.onclick = function(e) {
+            e.preventDefault();
+            if (typeof showVoiceSettings === 'function') {
+              showVoiceSettings();
+            } else {
+              alert('La fonctionnalité d\'annonceur vocal n\'est pas disponible');
+            }
+          };
+          navbar.appendChild(voiceSettingsLink);
+        }
+      });
+    </script>
+  </body>
+</html>

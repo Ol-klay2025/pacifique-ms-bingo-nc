@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide de Vérification KYC - PACIFIQUE MS BINGO</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f9fd;
+            margin: 0;
+            padding: 0;
+            color: #37474f;
+            line-height: 1.6;
+        }
+        
+        .guide-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .guide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .guide-header h1 {
+            color: #0d47a1;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .guide-header p {
+            color: #546e7a;
+            font-size: 18px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .guide-section {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background-color: #e3f2fd;
+            padding: 15px 20px;
+            border-bottom: 1px solid #bbdefb;
+        }
+        
+        .section-header h2 {
+            margin: 0;
+            font-size: 22px;
+            color: #1976d2;
+        }
+        
+        .section-content {
+            padding: 20px;
+        }
+        
+        .step-container {
+            margin-bottom: 40px;
+        }
+        
+        .step-container:last-child {
+            margin-bottom: 0;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            background-color: #1976d2;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            font-weight: bold;
+            font-size: 18px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        .step-title {
+            display: inline-block;
+            font-size: 20px;
+            color: #37474f;
+            vertical-align: middle;
+        }
+        
+        .step-description {
+            margin-left: 46px;
+            margin-top: 10px;
+            color: #546e7a;
+        }
+        
+        .doc-type {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .doc-type h4 {
+            color: #1976d2;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        
+        .doc-type p {
+            margin: 0 0 10px 0;
+        }
+        
+        .doc-requirements {
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            padding: 10px 15px;
+            margin-top: 10px;
+        }
+        
+        .doc-requirements h5 {
+            color: #455a64;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+        
+        .doc-requirements ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+        }
+        
+        .faq-question {
+            font-weight: 500;
+            color: #37474f;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+        
+        .faq-answer {
+            color: #546e7a;
+        }
+        
+        .tips-list {
+            padding-left: 20px;
+        }
+        
+        .tips-list li {
+            margin-bottom: 10px;
+        }
+        
+        .info-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid #1976d2;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .warning-box {
+            background-color: #fff8e1;
+            border-left: 4px solid #ffa000;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .toc {
+            background-color: #f5f9fd;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .toc h3 {
+            margin-top: 0;
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+        
+        .toc ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .toc li {
+            margin-bottom: 8px;
+        }
+        
+        .toc a {
+            color: #1976d2;
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .button {
+            display: inline-block;
+            background-color: #1976d2;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .button:hover {
+            background-color: #1565c0;
+        }
+        
+        @media (max-width: 768px) {
+            .guide-header h1 {
+                font-size: 28px;
+            }
+            
+            .guide-header p {
+                font-size: 16px;
+            }
+            
+            .section-header h2 {
+                font-size: 20px;
+            }
+            
+            .step-number {
+                width: 30px;
+                height: 30px;
+                line-height: 30px;
+                font-size: 16px;
+            }
+            
+            .step-title {
+                font-size: 18px;
+            }
+            
+            .step-description {
+                margin-left: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <h1>PACIFIQUE MS BINGO</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Accueil</a></li>
+                    <li><a href="/play.html">Jouer</a></li>
+                    <li><a href="/kyc.html">Vérification KYC</a></li>
+                    <li><a href="/kyc-guide.html" class="active">Guide KYC</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <div class="guide-container">
+            <div class="guide-header">
+                <h1>Guide Complet de Vérification KYC</h1>
+                <p>Tout ce que vous devez savoir sur le processus de vérification d'identité (Know Your Customer) pour jouer à PACIFIQUE MS BINGO en toute sécurité et conformité.</p>
+            </div>
+            
+            <div class="toc">
+                <h3>Table des matières</h3>
+                <ul>
+                    <li><a href="#what-is-kyc">Qu'est-ce que le KYC ?</a></li>
+                    <li><a href="#why-kyc">Pourquoi est-ce nécessaire ?</a></li>
+                    <li><a href="#responsible-gaming">Jeu Responsable et Auto-exclusion</a></li>
+                    <li><a href="#kyc-process">Processus de vérification KYC</a></li>
+                    <li><a href="#document-types">Types de documents acceptés</a></li>
+                    <li><a href="#verification-levels">Niveaux de vérification</a></li>
+                    <li><a href="#tips">Conseils pour une vérification rapide</a></li>
+                    <li><a href="#faq">Questions fréquentes</a></li>
+                </ul>
+            </div>
+            
+            <div id="what-is-kyc" class="guide-section">
+                <div class="section-header">
+                    <h2>Qu'est-ce que le KYC ?</h2>
+                </div>
+                <div class="section-content">
+                    <p>Le KYC (Know Your Customer) est un processus de vérification qui permet de confirmer votre identité et de s'assurer que vous êtes bien la personne que vous prétendez être. C'est une procédure standard dans le secteur des jeux d'argent en ligne et des services financiers.</p>
+                    
+                    <p>En complétant le processus KYC, vous nous permettez de :</p>
+                    <ul>
+                        <li>Vérifier votre identité réelle</li>
+                        <li>Confirmer votre âge légal pour jouer</li>
+                        <li>Vérifier votre adresse de résidence</li>
+                        <li>Protéger votre compte contre les accès non autorisés</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="why-kyc" class="guide-section">
+                <div class="section-header">
+                    <h2>Pourquoi est-ce nécessaire ?</h2>
+                </div>
+                <div class="section-content">
+                    <p>La vérification KYC est nécessaire pour plusieurs raisons importantes :</p>
+                    
+                    <div class="info-box">
+                        <strong>Conformité réglementaire :</strong> Les lois et réglementations en vigueur (comme celle de l'ANJ - Autorité Nationale des Jeux) exigent que nous vérifiions l'identité de nos joueurs pour prévenir le blanchiment d'argent et d'autres activités illégales.
+                    </div>
+                    
+                    <p><strong>Protection des mineurs :</strong> Nous devons nous assurer que tous nos joueurs ont l'âge légal pour participer aux jeux d'argent (18 ans minimum).</p>
+                    
+                    <p><strong>Sécurité des comptes :</strong> La vérification KYC contribue à protéger votre compte contre la fraude et le vol d'identité.</p>
+                    
+                    <p><strong>Jeu responsable :</strong> Le processus de vérification permet également de mettre en place des mesures de jeu responsable adaptées à chaque joueur.</p>
+                    
+                    <div class="warning-box">
+                        <strong>Important :</strong> Sans vérification KYC complète, certaines fonctionnalités de la plateforme peuvent être limitées, notamment les retraits de gains importants.
+                    </div>
+                </div>
+            </div>
+            
+            <div id="responsible-gaming" class="guide-section">
+                <div class="section-header">
+                    <h2>Jeu Responsable et Auto-exclusion</h2>
+                </div>
+                <div class="section-content">
+                    <p>Dans le cadre de notre engagement pour un jeu responsable, PACIFIQUE MS BINGO propose plusieurs outils que vous pouvez utiliser dès que votre identité est vérifiée :</p>
+                    
+                    <div class="doc-type">
+                        <h4>Limites de dépôt</h4>
+                        <p>Définissez des limites sur les montants que vous pouvez déposer quotidiennement, hebdomadairement ou mensuellement.</p>
+                        
+                        <div class="doc-requirements">
+                            <h5>Comment ça fonctionne :</h5>
+                            <ul>
+                                <li>Accédez à votre profil, section "Jeu responsable"</li>
+                                <li>Définissez vos limites personnelles</li>
+                                <li>Les limites sont appliquées immédiatement</li>
+                                <li>L'augmentation des limites prend 24h pour prendre effet</li>
+                                <li>La diminution des limites est immédiate</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="doc-type">
+                        <h4>Limites de temps de jeu</h4>
+                        <p>Définissez la durée maximale que vous souhaitez passer à jouer chaque jour.</p>
+                        
+                        <div class="doc-requirements">
+                            <h5>Comment ça fonctionne :</h5>
+                            <ul>
+                                <li>Vous recevrez des alertes lorsque vous approcherez de votre limite</li>
+                                <li>Une fois la limite atteinte, vous ne pourrez plus jouer jusqu'au lendemain</li>
+                                <li>Les limites peuvent être ajustées dans votre profil</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="doc-type">
+                        <h4>Auto-exclusion temporaire</h4>
+                        <p>Suspendez votre compte pour une période déterminée si vous estimez avoir besoin d'une pause.</p>
+                        
+                        <div class="doc-requirements">
+                            <h5>Périodes disponibles :</h5>
+                            <ul>
+                                <li>24 heures</li>
+                                <li>7 jours</li>
+                                <li>30 jours</li>
+                                <li>90 jours</li>
+                            </ul>
+                            <p>Durant cette période, vous ne pourrez pas vous connecter ni jouer sur la plateforme.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="doc-type">
+                        <h4>Auto-exclusion permanente</h4>
+                        <p>Fermez définitivement votre compte si nécessaire.</p>
+                        
+                        <div class="doc-requirements">
+                            <h5>Important à savoir :</h5>
+                            <ul>
+                                <li>Cette action est irréversible</li>
+                                <li>Votre compte ne pourra pas être réactivé</li>
+                                <li>Vos fonds seront remboursés selon nos conditions générales</li>
+                                <li>Vous ne pourrez pas créer un nouveau compte</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>Aide au jeu responsable :</strong> Si vous pensez avoir des difficultés avec le jeu, n'hésitez pas à contacter l'ANJ au 09-74-75-13-13 (appel non surtaxé) ou à consulter la page <a href="/self-exclusion.html" style="color: #1976d2; text-decoration: underline;">Auto-exclusion</a> pour plus d'informations.
+                    </div>
+                </div>
+            </div>
+            
+            <div id="kyc-process" class="guide-section">
+                <div class="section-header">
+                    <h2>Processus de vérification KYC</h2>
+                </div>
+                <div class="section-content">
+                    <p>Le processus de vérification KYC se déroule en plusieurs étapes :</p>
+                    
+                    <div class="step-container">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Création de compte</div>
+                        <div class="step-description">
+                            <p>Commencez par créer un compte sur PACIFIQUE MS BINGO en fournissant votre adresse e-mail, un nom d'utilisateur et un mot de passe sécurisé. Votre e-mail sera vérifié pour confirmer la première étape.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Initier la vérification KYC</div>
+                        <div class="step-description">
+                            <p>Après avoir créé votre compte, rendez-vous dans la section "Vérification KYC" de votre profil. Cliquez sur "Démarrer la vérification" pour commencer le processus.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Téléchargement des documents</div>
+                        <div class="step-description">
+                            <p>Téléchargez les documents requis selon le niveau de vérification souhaité. Ces documents peuvent inclure :</p>
+                            <ul>
+                                <li>Pièce d'identité (carte d'identité, passeport, permis de conduire)</li>
+                                <li>Justificatif de domicile (facture d'électricité, relevé bancaire)</li>
+                                <li>Selfie avec votre pièce d'identité</li>
+                            </ul>
+                            <p>Assurez-vous que vos documents sont clairement lisibles et non expirés.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">4</div>
+                        <div class="step-title">Vérification par notre équipe</div>
+                        <div class="step-description">
+                            <p>Notre équipe examinera vos documents soumis. Ce processus prend généralement 24 à 48 heures ouvrables. Vous serez informé par e-mail lorsque la vérification sera terminée.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">5</div>
+                        <div class="step-title">Validation de votre compte</div>
+                        <div class="step-description">
+                            <p>Une fois vos documents vérifiés et approuvés, votre compte sera validé au niveau de vérification correspondant. Vous aurez alors accès à toutes les fonctionnalités de la plateforme selon votre niveau de vérification.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="document-types" class="guide-section">
+                <div class="section-header">
+                    <h2>Types de documents acceptés</h2>
+                </div>
+                <div class="section-content">
+                    <p>Nous acceptons les types de documents suivants pour le processus de vérification KYC :</p>
+                    
+                    <div class="doc-type">
+                        <h4>Pièce d'identité</h4>
+                        <p>Document officiel avec photo prouvant votre identité.</p>
+                        
+                        <div class="doc-requirements">
+                            <h5>Documents acceptés :</h5>
+                            <ul>
+                                <li>Carte nationale d'identité</li>
+                                <li>Passeport</li>
+                                <li>Permis de conduire</li>
+                            </ul>
+                            
+                            <h5>Exigences :</h5>
+                            <ul>
+                                <li>Document valide (non expiré)</li>
+                                <li>Document clairement lisible (tous les détails visibles)</li>
+                                <li>Photo reconnaissable</li>
+                                <li>Toutes les informations visibles (nom, date de naissance, numéro, date d'expiration)</li>
+                                <li>Format : JPG, PNG, PDF (max. 5 MB)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="doc-type">
+                        <h4>Justificatif de domicile</h4>
+                        <p>Document prouvant votre adresse de résidence actuelle.</p>
+                        
+                        <div class="doc-requirements">
+                            <h5>Documents acceptés :</h5>
+                            <ul>
+                                <li>Facture d'électricité, d'eau ou de gaz (moins de 3 mois)</li>
+                                <li>Relevé bancaire (moins de 3 mois)</li>
+                                <li>Facture de téléphone fixe (moins de 3 mois)</li>
+                                <li>Avis d'imposition</li>
+                                <li>Attestation d'assurance habitation</li>
+                            </ul>
+                            
+                            <h5>Exigences :</h5>
+                            <ul>
+                                <li>Document daté de moins de 3 mois</li>
+                                <li>Nom et adresse complète visibles</li>
+                                <li>Document clairement lisible</li>
+                                <li>Format : JPG, PNG, PDF (max. 5 MB)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="doc-type">
+                        <h4>Selfie avec pièce d'identité</h4>
+                        <p>Photo de vous tenant votre pièce d'identité pour confirmer que vous êtes bien le propriétaire du document.</p>
+                        
+                        <div class="doc-requirements">
+                            <h5>Exigences :</h5>
+                            <ul>
+                                <li>Visage clairement visible</li>
+                                <li>Tenant votre pièce d'identité (la même que celle soumise précédemment)</li>
+                                <li>Les informations sur la pièce d'identité doivent être partiellement visibles</li>
+                                <li>Éclairage suffisant</li>
+                                <li>Format : JPG, PNG (max. 5 MB)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="verification-levels" class="guide-section">
+                <div class="section-header">
+                    <h2>Niveaux de vérification</h2>
+                </div>
+                <div class="section-content">
+                    <p>PACIFIQUE MS BINGO propose différents niveaux de vérification, chacun offrant différentes fonctionnalités et limites :</p>
+                    
+                    <div class="doc-type">
+                        <h4>Niveau Basic</h4>
+                        <p>Vérification minimale nécessaire pour jouer.</p>
+                        
+                        <div class="doc-requirements">
+                            <h5>Documents requis :</h5>
+                            <ul>
+                                <li>Email vérifié</li>
+                            </ul>
+                            
+                            <h5>Limites :</h5>
+                            <ul>
+                                <li>Dépôt limité à 1 000 francs par jour</li>
+                                <li>Retrait limité à 5 000 francs par mois</li>
+                                <li>Accès aux jeux réguliers uniquement</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="doc-type">
+                        <h4>Niveau Enhanced</h4>
+                        <p>Vérification intermédiaire pour un accès élargi.</p>
+                        
+                        <div class="doc-requirements">
+                            <h5>Documents requis :</h5>
+                            <ul>
+                                <li>Email vérifié</li>
+                                <li>Pièce d'identité valide</li>
+                            </ul>
+                            
+                            <h5>Limites :</h5>
+                            <ul>
+                                <li>Dépôt limité à 5 000 francs par jour</li>
+                                <li>Retrait limité à 25 000 francs par mois</li>
+                                <li>Accès aux jeux réguliers et spéciaux</li>
+                                <li>Possibilité de participer aux tournois</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="doc-type">
+                        <h4>Niveau Full</h4>
+                        <p>Vérification complète offrant un accès total à la plateforme.</p>
+                        
+                        <div class="doc-requirements">
+                            <h5>Documents requis :</h5>
+                            <ul>
+                                <li>Email vérifié</li>
+                                <li>Pièce d'identité valide</li>
+                                <li>Justificatif de domicile</li>
+                                <li>Selfie avec pièce d'identité</li>
+                            </ul>
+                            
+                            <h5>Avantages :</h5>
+                            <ul>
+                                <li>Aucune limite de dépôt*</li>
+                                <li>Retraits illimités*</li>
+                                <li>Accès à toutes les fonctionnalités</li>
+                                <li>Participation aux événements VIP</li>
+                                <li>Offres exclusives et bonus spéciaux</li>
+                                <li>Éligibilité au programme de fidélité premium</li>
+                                <li>* Sous réserve des limites de jeu responsable personnalisées</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tips" class="guide-section">
+                <div class="section-header">
+                    <h2>Conseils pour une vérification rapide</h2>
+                </div>
+                <div class="section-content">
+                    <p>Pour accélérer le processus de vérification KYC, suivez ces conseils :</p>
+                    
+                    <ul class="tips-list">
+                        <li><strong>Utilisez des documents récents</strong> - Les justificatifs de domicile doivent dater de moins de 3 mois.</li>
+                        <li><strong>Assurez-vous que tous les détails sont lisibles</strong> - Les documents flous ou partiellement visibles seront rejetés.</li>
+                        <li><strong>Soumettez des documents complets</strong> - Assurez-vous que toutes les informations nécessaires sont visibles (nom, date, numéro, etc.).</li>
+                        <li><strong>Vérifiez la taille des fichiers</strong> - Les fichiers ne doivent pas dépasser 5 MB.</li>
+                        <li><strong>Prenez des photos dans un environnement bien éclairé</strong> - Cela améliore la lisibilité des documents.</li>
+                        <li><strong>Utilisez les formats acceptés</strong> - JPG, PNG ou PDF selon le type de document.</li>
+                        <li><strong>Assurez-vous que les documents ne sont pas expirés</strong> - Les documents d'identité expirés seront rejetés.</li>
+                        <li><strong>Validez votre e-mail rapidement</strong> - C'est la première étape nécessaire pour débuter le processus.</li>
+                    </ul>
+                    
+                    <div class="info-box">
+                        <strong>Conseil :</strong> Si vous avez des difficultés à télécharger vos documents, essayez d'utiliser un autre navigateur ou de redimensionner vos images pour qu'elles soient plus légères tout en restant lisibles.
+                    </div>
+                </div>
+            </div>
+            
+            <div id="faq" class="guide-section">
+                <div class="section-header">
+                    <h2>Questions fréquentes</h2>
+                </div>
+                <div class="section-content">
+                    <div class="faq-item">
+                        <div class="faq-question">Combien de temps prend le processus de vérification KYC ?</div>
+                        <div class="faq-answer">
+                            <p>La vérification prend généralement 24 à 48 heures ouvrables après la soumission de tous les documents requis. Pendant les périodes de forte affluence, ce délai peut être légèrement plus long.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">Mes documents sont-ils conservés en sécurité ?</div>
+                        <div class="faq-answer">
+                            <p>Oui, nous prenons très au sérieux la sécurité de vos informations. Tous les documents sont stockés de manière sécurisée avec un chiffrement avancé et ne sont accessibles qu'au personnel autorisé. Nous respectons strictement les réglementations sur la protection des données (RGPD).</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">Que faire si mes documents sont rejetés ?</div>
+                        <div class="faq-answer">
+                            <p>Si vos documents sont rejetés, vous recevrez une notification avec la raison du rejet. Vous pourrez alors soumettre à nouveau des documents conformes aux exigences. Les raisons courantes de rejet incluent : document expiré, photo trop floue, informations partiellement masquées ou document incomplet.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">Puis-je jouer sans compléter la vérification KYC ?</div>
+                        <div class="faq-answer">
+                            <p>Vous pouvez accéder à certaines fonctionnalités de base avec seulement la vérification de votre e-mail (niveau Basic), mais pour profiter pleinement de la plateforme et effectuer des retraits importants, vous devrez compléter au moins le niveau Enhanced de vérification.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">Dois-je refaire la vérification KYC régulièrement ?</div>
+                        <div class="faq-answer">
+                            <p>Une fois votre vérification KYC complétée avec succès, elle reste généralement valide. Cependant, dans certains cas, nous pouvons vous demander de mettre à jour vos informations, notamment si vos documents approuvés sont expirés ou si vous souhaitez augmenter vos limites de dépôt/retrait.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">Puis-je utiliser mon téléphone pour prendre des photos de mes documents ?</div>
+                        <div class="faq-answer">
+                            <p>Oui, vous pouvez utiliser votre smartphone pour prendre des photos de vos documents. Assurez-vous simplement que les photos sont bien éclairées, nettes et que tous les détails sont clairement visibles. Évitez les reflets et assurez-vous que rien n'obstrue les informations importantes.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">J'habite à l'étranger. Quels documents puis-je fournir ?</div>
+                        <div class="faq-answer">
+                            <p>Nous acceptons les documents d'identité et justificatifs de domicile internationaux. Assurez-vous simplement qu'ils sont en français, en anglais, ou accompagnés d'une traduction officielle. Les passeports internationaux sont généralement les documents les plus facilement acceptés.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="guide-section">
+                <div class="section-header">
+                    <h2>Besoin d'aide supplémentaire ?</h2>
+                </div>
+                <div class="section-content">
+                    <p>Si vous avez d'autres questions ou rencontrez des difficultés avec le processus de vérification KYC, n'hésitez pas à contacter notre équipe de support. Nous sommes là pour vous aider à compléter votre vérification rapidement et sans problème.</p>
+                    
+                    <div class="button-container">
+                        <a href="/kyc.html" class="button">Commencer ma vérification KYC</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 PACIFIQUE MS BINGO. Tous droits réservés.</p>
+            <p><small>Jeu responsable : L'accès aux jeux d'argent est interdit aux mineurs. Jouer comporte des risques : isolement, endettement. Pour être aidé, contactez ANJ au 09-74-75-13-13 (appel non surtaxé)</small></p>
+        </div>
+    </footer>
+    
+    <script>
+        // Script pour le défilement fluide vers les sections
+        document.querySelectorAll('.toc a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 20,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

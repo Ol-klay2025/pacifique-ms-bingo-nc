@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS BINGO - Personnalisation</title>
+    
+    <!-- Styles CSS -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* Styles supplémentaires pour la page de personnalisation */
+        body {
+            font-family: 'Trebuchet MS', Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: white;
+            margin: 0;
+            padding: 0;
+            background-image: url('/img/bingo-crypto-bg.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Styles pour améliorer la lisibilité avec l'image de fond */
+        .customization-panel, header {
+            background-color: rgba(42, 42, 42, 0.85);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        header {
+            background-color: #0099cc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        h1, h2, h3 {
+            margin: 0;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        nav {
+            display: flex;
+            gap: 10px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            position: relative;
+        }
+        
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        nav a.active {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .customization-panel {
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .theme-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .theme-option {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            border: 2px solid transparent;
+            overflow: hidden;
+        }
+        
+        .theme-option.active {
+            border-color: #fff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .theme-option:hover {
+            transform: translateY(-5px);
+        }
+        
+        .theme-preview {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .theme-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 5px;
+            font-size: 10px;
+            text-align: center;
+        }
+        
+        .color-options {
+            margin-bottom: 20px;
+        }
+        
+        .color-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .color-label {
+            width: 120px;
+            font-size: 14px;
+        }
+        
+        .color-picker {
+            height: 30px;
+            border: none;
+            border-radius: 4px;
+            background-color: transparent;
+            cursor: pointer;
+        }
+        
+        .toggle-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .toggle-label {
+            margin-right: 10px;
+            flex-grow: 1;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #444;
+            transition: .4s;
+            border-radius: 10px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #0099cc;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+        }
+        
+        button {
+            background-color: #0099cc;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-right: 10px;
+        }
+        
+        button:hover {
+            background-color: #00b3ee;
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button.primary {
+            background-color: #0099cc;
+        }
+        
+        button.success {
+            background-color: #4CAF50;
+        }
+        
+        button.warning {
+            background-color: #ff9800;
+        }
+        
+        button.danger {
+            background-color: #f44336;
+        }
+        
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .preview-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 8px;
+        }
+        
+        .bingo-card-preview {
+            border: 2px solid #0099cc;
+            border-radius: 8px;
+            overflow: hidden;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        
+        .card-header-preview {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            background-color: #0099cc;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .header-cell-preview {
+            padding: 5px;
+            text-align: center;
+            font-size: 12px;
+        }
+        
+        .card-grid-preview {
+            display: grid;
+            grid-template-rows: repeat(5, 1fr);
+        }
+        
+        .card-row-preview {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+        }
+        
+        .card-cell-preview {
+            padding: 5px;
+            text-align: center;
+            border: 1px solid #444;
+            font-size: 14px;
+        }
+        
+        .card-cell-preview.empty-preview {
+            background-color: #4CAF50;
+            opacity: 0.5;
+        }
+        
+        .card-cell-preview.marked-preview {
+            background-color: #0099cc;
+            color: white;
+        }
+
+        /* Styles pour la section de sélection de région */
+        .region-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .region-option {
+            width: 100px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .region-option:hover {
+            transform: translateY(-3px);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .region-option.active {
+            border-color: #0099cc;
+            box-shadow: 0 0 10px rgba(0, 153, 204, 0.5);
+        }
+        
+        .region-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .region-name {
+            font-size: 12px;
+        }
+        
+        /* Styles pour les animations de test */
+        .test-animation-btn {
+            margin-top: 10px;
+            background-color: #ff9800;
+        }
+    </style>
+</head>
+<body data-theme="tropical">
+    <div class="container">
+        <header>
+            <h1>MS BINGO</h1>
+            <nav>
+                <a href="/profile">Profil</a>
+                <a href="/play">Jouer</a>
+                <a href="/customization" class="active">Personnalisation</a>
+                <a href="/social">Social</a>
+                <a href="#" id="logout-btn">Déconnexion</a>
+            </nav>
+        </header>
+        
+        <div class="customization-panel">
+            <h2>Thème du carton</h2>
+            <p>Choisissez parmi nos thèmes prédéfinis ou personnalisez votre propre thème</p>
+            
+            <div class="theme-options">
+                <div class="theme-option active" data-theme="tropical">
+                    <div class="theme-preview" style="background-color: #1e1e1e;"></div>
+                    <div class="theme-name">Tropical</div>
+                </div>
+                <div class="theme-option" data-theme="ocean">
+                    <div class="theme-preview" style="background-color: #1a3c5e;"></div>
+                    <div class="theme-name">Océanique</div>
+                </div>
+                <div class="theme-option" data-theme="beach">
+                    <div class="theme-preview" style="background-color: #3e2723;"></div>
+                    <div class="theme-name">Plage</div>
+                </div>
+                <div class="theme-option" data-theme="forest">
+                    <div class="theme-preview" style="background-color: #1b5e20;"></div>
+                    <div class="theme-name">Forêt</div>
+                </div>
+                <div class="theme-option" data-theme="volcano">
+                    <div class="theme-preview" style="background-color: #4e342e;"></div>
+                    <div class="theme-name">Volcan</div>
+                </div>
+                <div class="theme-option" data-theme="custom">
+                    <div class="theme-preview" style="background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);"></div>
+                    <div class="theme-name">Personnalisé</div>
+                </div>
+            </div>
+            
+            <div id="custom-theme-options" style="display: none;">
+                <h3>Options personnalisées</h3>
+                
+                <div class="color-options">
+                    <div class="color-option">
+                        <div class="color-label">Fond du carton:</div>
+                        <input type="color" class="color-picker" id="card-bg-color" value="#1e1e1e">
+                    </div>
+                    <div class="color-option">
+                        <div class="color-label">En-tête:</div>
+                        <input type="color" class="color-picker" id="header-color" value="#0099cc">
+                    </div>
+                    <div class="color-option">
+                        <div class="color-label">Cellules:</div>
+                        <input type="color" class="color-picker" id="cell-color" value="#333333">
+                    </div>
+                    <div class="color-option">
+                        <div class="color-label">Cellules vides:</div>
+                        <input type="color" class="color-picker" id="empty-cell-color" value="#4CAF50">
+                    </div>
+                    <div class="color-option">
+                        <div class="color-label">Cellules marquées:</div>
+                        <input type="color" class="color-picker" id="marked-cell-color" value="#0099cc">
+                    </div>
+                    <div class="color-option">
+                        <div class="color-label">Texte:</div>
+                        <input type="color" class="color-picker" id="text-color" value="#ffffff">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="customization-panel">
+            <h2>Région</h2>
+            <p>Choisissez votre région pour des animations de célébration localisées</p>
+            
+            <div class="region-options">
+                <div class="region-option" data-region="nc">
+                    <div class="region-icon">🇫🇷</div>
+                    <div class="region-name">Nouvelle-Calédonie</div>
+                </div>
+                <div class="region-option" data-region="pf">
+                    <div class="region-icon">🌺</div>
+                    <div class="region-name">Polynésie française</div>
+                </div>
+                <div class="region-option" data-region="wf">
+                    <div class="region-icon">🏝️</div>
+                    <div class="region-name">Wallis et Futuna</div>
+                </div>
+                <div class="region-option" data-region="vu">
+                    <div class="region-icon">🌴</div>
+                    <div class="region-name">Vanuatu</div>
+                </div>
+                <div class="region-option" data-region="fj">
+                    <div class="region-icon">🏄‍♂️</div>
+                    <div class="region-name">Fidji</div>
+                </div>
+                <div class="region-option active" data-region="default">
+                    <div class="region-icon">🌊</div>
+                    <div class="region-name">Pacifique</div>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button class="test-animation-btn" id="test-animation-btn">Tester l'animation</button>
+                <button class="test-animation-btn" id="test-share-btn" style="background-color: #0099cc;">Tester le partage</button>
+                <button class="test-animation-btn" id="social-settings-btn" style="background-color: #4CAF50;">Gérer mes comptes sociaux</button>
+            </div>
+        </div>
+        
+        <div class="customization-panel">
+            <h2>Options de jeu</h2>
+            
+            <div class="toggle-option">
+                <div class="toggle-label">Marquage automatique des numéros</div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="auto-marking" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            
+            <div class="toggle-option">
+                <div class="toggle-label">Sons de marquage</div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="marking-sound" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            
+            <div class="toggle-option">
+                <div class="toggle-label">Animation des cellules</div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="cell-animation" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="button-container" style="text-align: right; margin-top: 20px;">
+            <button class="danger" id="reset-btn">Réinitialiser</button>
+            <button class="success" id="save-btn">Enregistrer</button>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="/js/lib/confetti.min.js"></script>
+    <script src="/js/celebration-animations.js"></script>
+    <script src="/js/social-share.js"></script>
+    <script src="/js/social-integration.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Charger les préférences sauvegardées
+            let preferences = loadPreferences();
+            
+            // Appliquer les préférences à l'interface
+            applyPreferencesToUI(preferences);
+            
+            // Gérer le clic sur les options de thème
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Retirer la classe active de tous les thèmes
+                    document.querySelectorAll('.theme-option').forEach(opt => {
+                        opt.classList.remove('active');
+                    });
+                    
+                    // Ajouter la classe active au thème sélectionné
+                    this.classList.add('active');
+                    
+                    // Mettre à jour les préférences
+                    const themeName = this.getAttribute('data-theme');
+                    preferences.theme = themeName;
+                    
+                    // Si c'est un thème personnalisé, afficher les options
+                    if (themeName === 'custom') {
+                        document.getElementById('custom-theme-options').style.display = 'block';
+                    } else {
+                        document.getElementById('custom-theme-options').style.display = 'none';
+                    }
+                    
+                    // Appliquer le thème au body pour prévisualisation
+                    document.body.setAttribute('data-theme', themeName);
+                });
+            });
+
+            // Gérer le clic sur les options de région
+            document.querySelectorAll('.region-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Retirer la classe active de toutes les régions
+                    document.querySelectorAll('.region-option').forEach(opt => {
+                        opt.classList.remove('active');
+                    });
+                    
+                    // Ajouter la classe active à la région sélectionnée
+                    this.classList.add('active');
+                    
+                    // Mettre à jour les préférences
+                    const regionCode = this.getAttribute('data-region');
+                    preferences.region = regionCode;
+                });
+            });
+            
+            // Gérer les changements des options personnalisées
+            document.querySelectorAll('.color-picker').forEach(picker => {
+                picker.addEventListener('change', function() {
+                    const id = this.id;
+                    preferences.customColors = true;
+                    
+                    switch(id) {
+                        case 'card-bg-color':
+                            preferences.cardBgColor = this.value;
+                            break;
+                        case 'header-color':
+                            preferences.headerColor = this.value;
+                            break;
+                        case 'cell-color':
+                            preferences.cellColor = this.value;
+                            break;
+                        case 'empty-cell-color':
+                            preferences.emptyCellColor = this.value;
+                            break;
+                        case 'marked-cell-color':
+                            preferences.markedCellColor = this.value;
+                            break;
+                        case 'text-color':
+                            preferences.textColor = this.value;
+                            break;
+                    }
+                });
+            });
+            
+            // Gérer les changements des options de commutateur
+            document.getElementById('auto-marking').addEventListener('change', function() {
+                preferences.autoMarking = this.checked;
+            });
+            
+            document.getElementById('marking-sound').addEventListener('change', function() {
+                preferences.markingSound = this.checked;
+            });
+            
+            document.getElementById('cell-animation').addEventListener('change', function() {
+                preferences.cellAnimation = this.checked;
+            });
+            
+            // Gérer le clic sur le bouton d'enregistrement
+            document.getElementById('save-btn').addEventListener('click', function() {
+                savePreferences(preferences);
+                alert('Préférences enregistrées avec succès!');
+            });
+            
+            // Gérer le clic sur le bouton de réinitialisation
+            document.getElementById('reset-btn').addEventListener('click', function() {
+                if (confirm('Êtes-vous sûr de vouloir réinitialiser toutes vos préférences?')) {
+                    localStorage.removeItem('msBingoPreferences');
+                    localStorage.removeItem('userRegion');
+                    preferences = getDefaultPreferences();
+                    applyPreferencesToUI(preferences);
+                    alert('Préférences réinitialisées');
+                }
+            });
+            
+            // Gérer la déconnexion
+            document.getElementById('logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Êtes-vous sûr de vouloir vous déconnecter?')) {
+                    fetch('/api/logout', {
+                        method: 'POST',
+                        credentials: 'include'
+                    }).then(() => {
+                        window.location.href = '/';
+                    });
+                }
+            });
+
+            // Gérer le test d'animation
+            document.getElementById('test-animation-btn').addEventListener('click', function() {
+                // Utiliser la région sélectionnée
+                const selectedRegion = document.querySelector('.region-option.active').getAttribute('data-region');
+                
+                // Tester si window.triggerWinAnimation existe
+                if (typeof window.triggerWinAnimation === 'function') {
+                    // Déclencher l'animation
+                    const winType = Math.random() > 0.5 ? 'bingo' : 'quine';
+                    window.triggerWinAnimation(winType, selectedRegion);
+                } else {
+                    alert('Fonction d\'animation non disponible. Assurez-vous que le script celebration-animations.js est chargé.');
+                }
+            });
+            
+            // Gérer le test de partage social
+            document.getElementById('test-share-btn').addEventListener('click', function() {
+                // Utiliser la région sélectionnée
+                const selectedRegion = document.querySelector('.region-option.active').getAttribute('data-region');
+                
+                // Déterminer aléatoirement le type de victoire à partager
+                const winTypes = ['quine', 'bingo', 'jackpot'];
+                const randomIndex = Math.floor(Math.random() * winTypes.length);
+                const winType = winTypes[randomIndex];
+                
+                // Montants fictifs pour le test
+                const amounts = {
+                    'quine': 500,
+                    'bingo': 1500,
+                    'jackpot': 10000
+                };
+                
+                // Tester si la fonction de partage existe
+                if (typeof window.showShareModal === 'function') {
+                    // Ouvrir la modal de partage
+                    window.showShareModal(winType, amounts[winType], document.documentElement.lang || 'fr');
+                } else {
+                    alert('Fonction de partage non disponible. Assurez-vous que le script social-share.js est chargé.');
+                }
+            });
+            
+            // Gérer le clic sur le bouton de gestion des comptes sociaux
+            document.getElementById('social-settings-btn').addEventListener('click', function() {
+                if (typeof window.showSocialSettings === 'function') {
+                    window.showSocialSettings();
+                } else {
+                    alert('Fonction de gestion des comptes sociaux non disponible. Assurez-vous que le script social-integration.js est chargé.');
+                }
+            });
+        });
+        
+        /**
+         * Charge les préférences de l'utilisateur ou retourne les valeurs par défaut
+         */
+        function loadPreferences() {
+            const savedPreferences = localStorage.getItem('msBingoPreferences');
+            
+            if (savedPreferences) {
+                return JSON.parse(savedPreferences);
+            } else {
+                return getDefaultPreferences();
+            }
+        }
+        
+        /**
+         * Retourne les préférences par défaut
+         */
+        function getDefaultPreferences() {
+            return {
+                theme: 'tropical',
+                region: 'default',
+                autoMarking: true,
+                markingSound: true,
+                cellAnimation: true,
+                customColors: false,
+                cardBgColor: '#1e1e1e',
+                headerColor: '#0099cc',
+                cellColor: '#333333',
+                emptyCellColor: '#4CAF50',
+                markedCellColor: '#0099cc',
+                textColor: '#ffffff'
+            };
+        }
+        
+        /**
+         * Enregistre les préférences dans localStorage
+         */
+        function savePreferences(preferences) {
+            localStorage.setItem('msBingoPreferences', JSON.stringify(preferences));
+            
+            // Sauvegarder également la région pour les animations
+            localStorage.setItem('userRegion', preferences.region || 'default');
+        }
+        
+        /**
+         * Applique les préférences à l'interface utilisateur
+         */
+        function applyPreferencesToUI(preferences) {
+            // Appliquer le thème
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            const themeOption = document.querySelector(`.theme-option[data-theme="${preferences.theme || 'tropical'}"]`);
+            if (themeOption) {
+                themeOption.classList.add('active');
+            }
+            
+            document.body.setAttribute('data-theme', preferences.theme || 'tropical');
+            
+            // Afficher/masquer les options personnalisées
+            document.getElementById('custom-theme-options').style.display = preferences.theme === 'custom' ? 'block' : 'none';
+            
+            // Appliquer les options personnalisées
+            document.getElementById('card-bg-color').value = preferences.cardBgColor || '#1e1e1e';
+            document.getElementById('header-color').value = preferences.headerColor || '#0099cc';
+            document.getElementById('cell-color').value = preferences.cellColor || '#333333';
+            document.getElementById('empty-cell-color').value = preferences.emptyCellColor || '#4CAF50';
+            document.getElementById('marked-cell-color').value = preferences.markedCellColor || '#0099cc';
+            document.getElementById('text-color').value = preferences.textColor || '#ffffff';
+            
+            // Appliquer les options de commutateur
+            document.getElementById('auto-marking').checked = preferences.autoMarking !== false;
+            document.getElementById('marking-sound').checked = preferences.markingSound !== false;
+            document.getElementById('cell-animation').checked = preferences.cellAnimation !== false;
+
+            // Appliquer la région
+            document.querySelectorAll('.region-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            const regionOption = document.querySelector(`.region-option[data-region="${preferences.region || 'default'}"]`);
+            if (regionOption) {
+                regionOption.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>

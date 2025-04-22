@@ -1,0 +1,124 @@
+/**
+ * MS BINGO Pacifique - Styles pour l'annonceur moderne
+ * Version: 2.0 - Avril 2025
+ */
+
+#modern-announcer-container {
+    max-width: 680px;
+    margin: 0 auto 20px;
+    position: relative;
+    z-index: 10;
+}
+
+/* Palm leaves background pour créer une atmosphère Pacifique */
+.palm-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.palm-bg svg {
+    position: absolute;
+    opacity: 0.03;
+    fill: #007bff;
+}
+
+.palm-bg .palm-1 {
+    top: 10%;
+    left: 5%;
+    width: 250px;
+    transform: rotate(15deg);
+}
+
+.palm-bg .palm-2 {
+    top: 30%;
+    right: 5%;
+    width: 300px;
+    transform: rotate(-10deg);
+}
+
+.palm-bg .palm-3 {
+    bottom: 5%;
+    left: 15%;
+    width: 200px;
+    transform: rotate(30deg);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    #modern-announcer-container {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+    
+    .modern-announcer-number {
+        width: 80px !important;
+        height: 80px !important;
+        font-size: 2.5rem !important;
+    }
+    
+    .modern-announcer-history {
+        grid-template-columns: repeat(auto-fill, minmax(35px, 1fr)) !important;
+    }
+    
+    .modern-announcer-ball {
+        width: 35px !important;
+        height: 35px !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+/* Style pour désactiver l'ancien affichage sans le supprimer complètement */
+.drawn-numbers-container {
+    display: none !important;
+}
+
+/* Animation d'arrivée pour tout l'annonceur */
+@keyframes announcer-appear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#modern-announcer-container {
+    animation: announcer-appear 0.5s ease-out forwards;
+}
+
+/* Styles additionnels pour améliorer l'interface utilisateur globale */
+.bingo-hall {
+    position: relative;
+}
+
+.game-info-banner {
+    background: rgba(0, 123, 255, 0.1);
+    border-left: 4px solid #007bff;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 0 4px 4px 0;
+    color: #333;
+}
+
+.game-info-banner h3 {
+    margin: 0 0 5px 0;
+    font-size: 1rem;
+    color: #0056b3;
+}
+
+.game-info-banner p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Styles pour les SVG de feuilles de palmier */
+.palm-leaf {
+    fill: currentColor;
+}

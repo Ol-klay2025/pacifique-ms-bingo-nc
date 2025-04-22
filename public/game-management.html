@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PACIFIQUE MS BINGO - Gestion des Parties</title>
+  <style>
+    :root {
+      --primary: #FE6800;
+      --secondary: #0077c0;
+      --accent: #32E0C4;
+      --background: #111827;
+      --card-bg: #1f2937;
+      --text: #f3f4f6;
+      --text-dark: #1f2937;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+    }
+    
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .nav-tabs {
+      display: flex;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 2rem;
+    }
+    
+    .nav-tab {
+      padding: 0.75rem 1.5rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-tab.active {
+      border-bottom-color: var(--primary);
+      color: var(--primary);
+      font-weight: bold;
+    }
+    
+    .nav-tab:hover:not(.active) {
+      background-color: rgba(255,255,255,0.05);
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      margin-bottom: 1.5rem;
+    }
+    
+    .btn {
+      display: inline-block;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .btn:hover {
+      background-color: #e05a00;
+    }
+    
+    .btn-secondary {
+      background-color: var(--secondary);
+    }
+    
+    .btn-secondary:hover {
+      background-color: #0066a7;
+    }
+    
+    .btn-success {
+      background-color: var(--success);
+    }
+    
+    .btn-success:hover {
+      background-color: #0ca974;
+    }
+    
+    .btn-warning {
+      background-color: var(--warning);
+    }
+    
+    .btn-warning:hover {
+      background-color: #e08c00;
+    }
+    
+    .btn-danger {
+      background-color: var(--error);
+    }
+    
+    .btn-danger:hover {
+      background-color: #dc3030;
+    }
+    
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+    
+    .game-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    
+    .game-table th, .game-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .game-table th {
+      font-weight: bold;
+      color: rgba(255,255,255,0.7);
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-align: center;
+      width: 70px;
+    }
+    
+    .status-active {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+    
+    .status-pending {
+      background-color: rgba(245, 158, 11, 0.2);
+      color: #f59e0b;
+    }
+    
+    .status-completed {
+      background-color: rgba(107, 114, 128, 0.2);
+      color: #9ca3af;
+    }
+    
+    .status-cancelled {
+      background-color: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background-color: rgba(255,255,255,0.05);
+      color: var(--text);
+      font-size: 1rem;
+    }
+    
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal.show {
+      display: flex;
+    }
+    
+    .modal-content {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 2rem;
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 1rem;
+    }
+    
+    .modal-title {
+      font-weight: bold;
+      font-size: 1.25rem;
+      margin: 0;
+    }
+    
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text);
+    }
+    
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 1.5rem;
+      gap: 1rem;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+      
+      .nav-tabs {
+        flex-wrap: wrap;
+      }
+      
+      .game-table th, .game-table td {
+        padding: 0.5rem;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PACIFIQUE MS BINGO - Gestion des Parties</h1>
+  </header>
+  
+  <div class="container">
+    <div class="nav-tabs">
+      <div class="nav-tab active" data-tab="upcoming">Parties à venir</div>
+      <div class="nav-tab" data-tab="active">Parties en cours</div>
+      <div class="nav-tab" data-tab="completed">Historique</div>
+      <div class="nav-tab" data-tab="schedule">Horaires</div>
+    </div>
+    
+    <div class="tab-content active" id="upcoming-tab">
+      <div class="card">
+        <h2>Parties à venir</h2>
+        <button class="btn" id="newGameBtn">Nouvelle partie</button>
+        
+        <table class="game-table" id="upcomingGamesTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom</th>
+              <th>Type</th>
+              <th>Prix</th>
+              <th>Heure de début</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="upcomingGamesBody">
+            <!-- Le contenu sera chargé dynamiquement -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="tab-content" id="active-tab">
+      <div class="card">
+        <h2>Parties en cours</h2>
+        
+        <table class="game-table" id="activeGamesTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom</th>
+              <th>Type</th>
+              <th>Numéros tirés</th>
+              <th>Participants</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="activeGamesBody">
+            <!-- Le contenu sera chargé dynamiquement -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="tab-content" id="completed-tab">
+      <div class="card">
+        <h2>Historique des parties</h2>
+        
+        <table class="game-table" id="completedGamesTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom</th>
+              <th>Type</th>
+              <th>Date</th>
+              <th>Gagnant</th>
+              <th>Quine</th>
+              <th>Détails</th>
+            </tr>
+          </thead>
+          <tbody id="completedGamesBody">
+            <!-- Le contenu sera chargé dynamiquement -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="tab-content" id="schedule-tab">
+      <div class="card">
+        <h2>Horaires des parties</h2>
+        <p>Configuration des horaires de jeu réguliers et spéciaux.</p>
+        
+        <table class="game-table" id="scheduleTable">
+          <thead>
+            <tr>
+              <th>Heure</th>
+              <th>Type</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="scheduleBody">
+            <!-- Le contenu sera chargé dynamiquement -->
+          </tbody>
+        </table>
+        
+        <button class="btn" id="addScheduleBtn">Ajouter un horaire</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal pour créer/éditer une partie -->
+  <div class="modal" id="gameModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="gameModalTitle">Nouvelle partie</h2>
+        <button class="close-modal" id="closeGameModal">&times;</button>
+      </div>
+      
+      <form id="gameForm">
+        <input type="hidden" id="gameId" value="">
+        
+        <div class="form-group">
+          <label for="gameName">Nom de la partie</label>
+          <input type="text" id="gameName" required placeholder="ex: Partie régulière #125">
+        </div>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="gameType">Type</label>
+            <select id="gameType" required>
+              <option value="regular">Régulière (100 fr)</option>
+              <option value="special">Spéciale (300 fr)</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="gamePrice">Prix (en francs)</label>
+            <input type="number" id="gamePrice" required min="100" value="100">
+          </div>
+        </div>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="gameDate">Date</label>
+            <input type="date" id="gameDate" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="gameTime">Heure</label>
+            <input type="time" id="gameTime" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="jackpotEligible">Éligible au Jackpot</label>
+          <select id="jackpotEligible">
+            <option value="1">Oui</option>
+            <option value="0">Non</option>
+          </select>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelGameBtn">Annuler</button>
+          <button type="submit" class="btn btn-success">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Modal pour les horaires -->
+  <div class="modal" id="scheduleModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="scheduleModalTitle">Nouvel horaire</h2>
+        <button class="close-modal" id="closeScheduleModal">&times;</button>
+      </div>
+      
+      <form id="scheduleForm">
+        <input type="hidden" id="scheduleId" value="">
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="scheduleHour">Heure</label>
+            <select id="scheduleHour" required>
+              <option value="10">10:00</option>
+              <option value="11">11:00</option>
+              <option value="12">12:00</option>
+              <option value="13">13:00</option>
+              <option value="14">14:00</option>
+              <option value="15">15:00</option>
+              <option value="16">16:00</option>
+              <option value="17">17:00</option>
+              <option value="18">18:00</option>
+              <option value="19">19:00</option>
+              <option value="20">20:00</option>
+              <option value="21">21:00</option>
+              <option value="22">22:00</option>
+              <option value="23">23:00</option>
+              <option value="0">00:00</option>
+              <option value="1">01:00</option>
+              <option value="2">02:00</option>
+              <option value="3">03:00</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="scheduleType">Type</label>
+            <select id="scheduleType" required>
+              <option value="regular">Régulière (100 fr)</option>
+              <option value="special">Spéciale (300 fr)</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="scheduleActive">Statut</label>
+          <select id="scheduleActive">
+            <option value="1">Actif</option>
+            <option value="0">Inactif</option>
+          </select>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelScheduleBtn">Annuler</button>
+          <button type="submit" class="btn btn-success">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    // Changer les onglets
+    document.querySelectorAll('.nav-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        // Retirer la classe active de tous les onglets
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        
+        // Ajouter la classe active à l'onglet cliqué
+        this.classList.add('active');
+        
+        // Afficher le contenu de l'onglet
+        const tabId = this.getAttribute('data-tab');
+        document.getElementById(`${tabId}-tab`).classList.add('active');
+        
+        // Charger les données correspondantes
+        loadTabData(tabId);
+      });
+    });
+    
+    // Fonctions pour ouvrir/fermer les modales
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.add('show');
+    }
+    
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('show');
+    }
+    
+    // Événements pour les modales
+    document.getElementById('newGameBtn').addEventListener('click', function() {
+      // Réinitialiser le formulaire
+      document.getElementById('gameForm').reset();
+      document.getElementById('gameId').value = '';
+      document.getElementById('gameModalTitle').textContent = 'Nouvelle partie';
+      
+      // Définir la date d'aujourd'hui et l'heure suivante
+      const now = new Date();
+      const dateStr = now.toISOString().split('T')[0];
+      document.getElementById('gameDate').value = dateStr;
+      
+      // Heure suivante
+      const nextHour = new Date(now);
+      nextHour.setHours(nextHour.getHours() + 1);
+      nextHour.setMinutes(0);
+      nextHour.setSeconds(0);
+      const timeStr = nextHour.toTimeString().split(' ')[0].substring(0, 5);
+      document.getElementById('gameTime').value = timeStr;
+      
+      openModal('gameModal');
+    });
+    
+    document.getElementById('closeGameModal').addEventListener('click', function() {
+      closeModal('gameModal');
+    });
+    
+    document.getElementById('cancelGameBtn').addEventListener('click', function() {
+      closeModal('gameModal');
+    });
+    
+    document.getElementById('addScheduleBtn').addEventListener('click', function() {
+      // Réinitialiser le formulaire
+      document.getElementById('scheduleForm').reset();
+      document.getElementById('scheduleId').value = '';
+      document.getElementById('scheduleModalTitle').textContent = 'Nouvel horaire';
+      openModal('scheduleModal');
+    });
+    
+    document.getElementById('closeScheduleModal').addEventListener('click', function() {
+      closeModal('scheduleModal');
+    });
+    
+    document.getElementById('cancelScheduleBtn').addEventListener('click', function() {
+      closeModal('scheduleModal');
+    });
+    
+    // Soumission des formulaires
+    document.getElementById('gameForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const gameId = document.getElementById('gameId').value;
+      const gameName = document.getElementById('gameName').value;
+      const gameType = document.getElementById('gameType').value;
+      const gamePrice = document.getElementById('gamePrice').value;
+      const gameDate = document.getElementById('gameDate').value;
+      const gameTime = document.getElementById('gameTime').value;
+      const jackpotEligible = document.getElementById('jackpotEligible').value;
+      
+      // Combiner date et heure
+      const startTime = new Date(`${gameDate}T${gameTime}`);
+      
+      // Créer l'objet de données
+      const gameData = {
+        name: gameName,
+        type: gameType,
+        price: gamePrice,
+        start_time: startTime.toISOString(),
+        jackpot_eligible: jackpotEligible
+      };
+      
+      // Détermine si c'est une création ou une mise à jour
+      const url = gameId ? `/api/games/${gameId}` : '/api/games';
+      const method = gameId ? 'PUT' : 'POST';
+      
+      // Simuler la soumission (à remplacer par un vrai appel API)
+      console.log('Envoi des données:', method, url, gameData);
+      
+      // Pour la démo, simplement fermer la modale et actualiser
+      closeModal('gameModal');
+      loadTabData('upcoming');
+      
+      // Afficher un message de confirmation
+      alert(gameId ? 'Partie mise à jour avec succès' : 'Nouvelle partie créée avec succès');
+    });
+    
+    document.getElementById('scheduleForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const scheduleId = document.getElementById('scheduleId').value;
+      const scheduleHour = document.getElementById('scheduleHour').value;
+      const scheduleType = document.getElementById('scheduleType').value;
+      const scheduleActive = document.getElementById('scheduleActive').value;
+      
+      // Créer l'objet de données
+      const scheduleData = {
+        hour: scheduleHour,
+        minute: 0,
+        type: scheduleType,
+        active: scheduleActive
+      };
+      
+      // Détermine si c'est une création ou une mise à jour
+      const url = scheduleId ? `/api/game-schedule/${scheduleId}` : '/api/game-schedule';
+      const method = scheduleId ? 'PUT' : 'POST';
+      
+      // Simuler la soumission (à remplacer par un vrai appel API)
+      console.log('Envoi des données:', method, url, scheduleData);
+      
+      // Pour la démo, simplement fermer la modale et actualiser
+      closeModal('scheduleModal');
+      loadTabData('schedule');
+      
+      // Afficher un message de confirmation
+      alert(scheduleId ? 'Horaire mis à jour avec succès' : 'Nouvel horaire créé avec succès');
+    });
+    
+    // Fonction pour charger les données selon l'onglet
+    function loadTabData(tabId) {
+      // Simuler le chargement des données depuis l'API
+      switch(tabId) {
+        case 'upcoming':
+          loadUpcomingGames();
+          break;
+        case 'active':
+          loadActiveGames();
+          break;
+        case 'completed':
+          loadCompletedGames();
+          break;
+        case 'schedule':
+          loadSchedule();
+          break;
+      }
+    }
+    
+    // Simuler le chargement des parties à venir
+    function loadUpcomingGames() {
+      // Dans une version réelle, ceci serait une requête fetch vers l'API
+      const upcomingGames = [
+        {
+          id: 125,
+          name: 'Partie régulière #125',
+          type: 'regular',
+          price: 100,
+          start_time: '2025-04-11T10:00:00Z',
+          status: 'pending'
+        },
+        {
+          id: 126,
+          name: 'Partie spéciale #26',
+          type: 'special',
+          price: 300,
+          start_time: '2025-04-11T14:00:00Z',
+          status: 'pending'
+        }
+      ];
+      
+      const tbody = document.getElementById('upcomingGamesBody');
+      tbody.innerHTML = '';
+      
+      upcomingGames.forEach(game => {
+        const startTime = new Date(game.start_time);
+        const formattedTime = startTime.toLocaleString('fr-FR', {
+          day: '2-digit',
+          month: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+        
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${game.id}</td>
+          <td>${game.name}</td>
+          <td>${game.type === 'regular' ? 'Régulière' : 'Spéciale'}</td>
+          <td>${game.price} fr</td>
+          <td>${formattedTime}</td>
+          <td><span class="status-badge status-pending">À venir</span></td>
+          <td class="action-buttons">
+            <button class="btn btn-sm btn-secondary" onclick="editGame(${game.id})">Modifier</button>
+            <button class="btn btn-sm btn-danger" onclick="cancelGame(${game.id})">Annuler</button>
+          </td>
+        `;
+        
+        tbody.appendChild(tr);
+      });
+    }
+    
+    // Simuler le chargement des parties en cours
+    function loadActiveGames() {
+      // Dans une version réelle, ceci serait une requête fetch vers l'API
+      const activeGames = [
+        {
+          id: 124,
+          name: 'Partie régulière #124',
+          type: 'regular',
+          drawn_numbers: [12, 34, 56],
+          participants: 8
+        }
+      ];
+      
+      const tbody = document.getElementById('activeGamesBody');
+      tbody.innerHTML = '';
+      
+      if (activeGames.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td colspan="6" style="text-align: center;">Aucune partie en cours</td>
+        `;
+        tbody.appendChild(tr);
+        return;
+      }
+      
+      activeGames.forEach(game => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${game.id}</td>
+          <td>${game.name}</td>
+          <td>${game.type === 'regular' ? 'Régulière' : 'Spéciale'}</td>
+          <td>${game.drawn_numbers.join(', ')}</td>
+          <td>${game.participants}</td>
+          <td class="action-buttons">
+            <button class="btn btn-sm btn-success" onclick="manageGame(${game.id})">Gérer</button>
+            <button class="btn btn-sm btn-warning" onclick="pauseGame(${game.id})">Pause</button>
+            <button class="btn btn-sm btn-danger" onclick="endGame(${game.id})">Terminer</button>
+          </td>
+        `;
+        
+        tbody.appendChild(tr);
+      });
+    }
+    
+    // Simuler le chargement des parties terminées
+    function loadCompletedGames() {
+      // Dans une version réelle, ceci serait une requête fetch vers l'API
+      const completedGames = [
+        {
+          id: 123,
+          name: 'Partie régulière #123',
+          type: 'regular',
+          end_time: '2025-04-10T08:15:00Z',
+          winner: 'testuser',
+          quine_winner: 'organisateur'
+        }
+      ];
+      
+      const tbody = document.getElementById('completedGamesBody');
+      tbody.innerHTML = '';
+      
+      completedGames.forEach(game => {
+        const endTime = new Date(game.end_time);
+        const formattedTime = endTime.toLocaleString('fr-FR', {
+          day: '2-digit',
+          month: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+        
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${game.id}</td>
+          <td>${game.name}</td>
+          <td>${game.type === 'regular' ? 'Régulière' : 'Spéciale'}</td>
+          <td>${formattedTime}</td>
+          <td>${game.winner || '-'}</td>
+          <td>${game.quine_winner || '-'}</td>
+          <td>
+            <button class="btn btn-sm btn-secondary" onclick="viewGameDetails(${game.id})">Détails</button>
+          </td>
+        `;
+        
+        tbody.appendChild(tr);
+      });
+    }
+    
+    // Simuler le chargement des horaires
+    function loadSchedule() {
+      // Dans une version réelle, ceci serait une requête fetch vers l'API
+      const schedules = [
+        { id: 1, hour: 10, minute: 0, type: 'regular', active: 1 },
+        { id: 2, hour: 11, minute: 0, type: 'regular', active: 1 },
+        { id: 3, hour: 12, minute: 0, type: 'regular', active: 1 },
+        { id: 4, hour: 13, minute: 0, type: 'regular', active: 1 },
+        { id: 5, hour: 14, minute: 0, type: 'special', active: 1 },
+        { id: 6, hour: 15, minute: 0, type: 'regular', active: 1 },
+        { id: 7, hour: 16, minute: 0, type: 'regular', active: 1 },
+        { id: 8, hour: 17, minute: 0, type: 'regular', active: 1 },
+        { id: 9, hour: 18, minute: 0, type: 'special', active: 1 },
+        { id: 10, hour: 19, minute: 0, type: 'regular', active: 1 },
+        { id: 11, hour: 20, minute: 0, type: 'regular', active: 1 },
+        { id: 12, hour: 21, minute: 0, type: 'regular', active: 1 },
+        { id: 13, hour: 22, minute: 0, type: 'special', active: 1 },
+        { id: 14, hour: 23, minute: 0, type: 'regular', active: 1 },
+        { id: 15, hour: 0, minute: 0, type: 'regular', active: 1 },
+        { id: 16, hour: 1, minute: 0, type: 'regular', active: 1 },
+        { id: 17, hour: 2, minute: 0, type: 'special', active: 1 },
+        { id: 18, hour: 3, minute: 0, type: 'regular', active: 1 }
+      ];
+      
+      const tbody = document.getElementById('scheduleBody');
+      tbody.innerHTML = '';
+      
+      schedules.forEach(schedule => {
+        const formattedHour = `${schedule.hour.toString().padStart(2, '0')}:${schedule.minute.toString().padStart(2, '0')}`;
+        
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${formattedHour}</td>
+          <td>${schedule.type === 'regular' ? 'Régulière (100 fr)' : 'Spéciale (300 fr)'}</td>
+          <td>
+            <span class="status-badge ${schedule.active ? 'status-active' : 'status-cancelled'}">
+              ${schedule.active ? 'Actif' : 'Inactif'}
+            </span>
+          </td>
+          <td class="action-buttons">
+            <button class="btn btn-sm btn-secondary" onclick="editSchedule(${schedule.id})">Modifier</button>
+            <button class="btn btn-sm btn-${schedule.active ? 'warning' : 'success'}" onclick="toggleSchedule(${schedule.id}, ${!schedule.active})">
+              ${schedule.active ? 'Désactiver' : 'Activer'}
+            </button>
+          </td>
+        `;
+        
+        tbody.appendChild(tr);
+      });
+    }
+    
+    // Fonctions pour les actions sur les jeux (à implémenter)
+    function editGame(id) {
+      console.log('Modifier la partie', id);
+      alert('Fonctionnalité à implémenter: Modifier la partie ' + id);
+    }
+    
+    function cancelGame(id) {
+      console.log('Annuler la partie', id);
+      if (confirm('Êtes-vous sûr de vouloir annuler cette partie ?')) {
+        alert('La partie ' + id + ' a été annulée');
+        loadTabData('upcoming');
+      }
+    }
+    
+    function manageGame(id) {
+      console.log('Gérer la partie', id);
+      window.location.href = `/game-session.html?id=${id}`;
+    }
+    
+    function pauseGame(id) {
+      console.log('Mettre en pause la partie', id);
+      alert('La partie ' + id + ' a été mise en pause');
+    }
+    
+    function endGame(id) {
+      console.log('Terminer la partie', id);
+      if (confirm('Êtes-vous sûr de vouloir terminer cette partie ?')) {
+        alert('La partie ' + id + ' a été terminée');
+        loadTabData('active');
+      }
+    }
+    
+    function viewGameDetails(id) {
+      console.log('Voir les détails de la partie', id);
+      alert('Fonctionnalité à implémenter: Voir les détails de la partie ' + id);
+    }
+    
+    function editSchedule(id) {
+      console.log('Modifier l\'horaire', id);
+      alert('Fonctionnalité à implémenter: Modifier l\'horaire ' + id);
+    }
+    
+    function toggleSchedule(id, active) {
+      console.log('Changer l\'état de l\'horaire', id, 'à', active);
+      alert('L\'horaire ' + id + ' a été ' + (active ? 'activé' : 'désactivé'));
+      loadTabData('schedule');
+    }
+    
+    // Charger les parties à venir au démarrage
+    loadUpcomingGames();
+    
+    // Navigation
+    document.addEventListener('DOMContentLoaded', function() {
+      const header = document.querySelector('header');
+      
+      // Ajouter les liens de navigation
+      const nav = document.createElement('nav');
+      nav.style.marginTop = '1rem';
+      nav.innerHTML = `
+        <a href="/organizer" style="color: white; margin-right: 1rem; text-decoration: none;">Tableau de bord</a>
+        <a href="/game-management.html" style="color: white; margin-right: 1rem; text-decoration: underline; font-weight: bold;">Gestion des parties</a>
+        <a href="/play" style="color: white; margin-right: 1rem; text-decoration: none;">Interface joueur</a>
+        <a href="/" style="color: white; margin-right: 1rem; text-decoration: none;" onclick="logout(); return false;">Déconnexion</a>
+      `;
+      
+      header.appendChild(nav);
+    });
+    
+    // Déconnexion
+    async function logout() {
+      try {
+        await fetch('/api/logout', { 
+          method: 'POST',
+          credentials: 'include'
+        });
+        window.location.href = '/';
+      } catch (error) {
+        alert('Erreur lors de la déconnexion');
+      }
+    }
+  </script>
+</body>
+</html>

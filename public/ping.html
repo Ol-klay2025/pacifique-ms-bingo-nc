@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS BINGO PACIFIQUE - Statut</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f8ff;
+            color: #333;
+        }
+        .status {
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+        }
+        h1 {
+            color: #006699;
+        }
+        .status-ok {
+            color: #009900;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        .links {
+            margin-top: 20px;
+        }
+        .links a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #006699;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .links a:hover {
+            background-color: #004466;
+        }
+    </style>
+</head>
+<body>
+    <div class="status">
+        <h1>MS BINGO PACIFIQUE</h1>
+        <p class="status-ok">✅ SERVEUR EN LIGNE</p>
+        <p>Le serveur est opérationnel et fonctionne correctement.</p>
+        <p id="timestamp">Dernière vérification: --:--:--</p>
+        
+        <div class="links">
+            <a href="/play.html">Interface de jeu</a>
+            <a href="/organizer.html">Interface organisateur</a>
+        </div>
+        
+        <div class="links">
+            <a href="/direct-play">Accès direct au jeu</a>
+            <a href="/direct-organizer">Accès direct organisateur</a>
+        </div>
+    </div>
+
+    <script>
+        // Mise à jour de l'horodatage
+        function updateTimestamp() {
+            const now = new Date();
+            document.getElementById('timestamp').textContent = 
+                `Dernière vérification: ${now.toLocaleTimeString()}`;
+        }
+        
+        // Vérification périodique du statut du serveur
+        function checkServerStatus() {
+            fetch('/api/health')
+                .then(response => response.json())
+                .then(data => {
+                    updateTimestamp();
+                    console.log('Serveur en ligne:', data);
+                })
+                .catch(error => {
+                    console.error('Erreur de connexion:', error);
+                });
+        }
+        
+        // Initialisation
+        updateTimestamp();
+        checkServerStatus();
+        
+        // Vérification périodique toutes les 30 secondes
+        setInterval(checkServerStatus, 30000);
+    </script>
+</body>
+</html>

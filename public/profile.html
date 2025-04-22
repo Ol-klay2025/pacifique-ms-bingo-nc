@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PACIFIQUE MS BINGO - Profil Utilisateur</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Trebuchet+MS:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Trebuchet MS', sans-serif;
+      background: linear-gradient(to bottom, #00796b, #009688, #4db6ac, #b2dfdb);
+      color: #333;
+      min-height: 100vh;
+      padding-bottom: 50px;
+    }
+    
+    .header {
+      background-color: rgba(0, 121, 107, 0.8);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 1;
+    }
+    
+    .header-logo {
+      width: 120px;
+      margin-bottom: 10px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .profile-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      padding: 30px;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, #00796b, #4db6ac);
+    }
+    
+    h1, h2, h3 {
+      color: #00796b;
+      margin-bottom: 20px;
+    }
+    
+    .profile-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: #e0f2f1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      color: #00796b;
+      margin-right: 20px;
+      border: 3px solid #00796b;
+    }
+    
+    .profile-info h2 {
+      margin-bottom: 10px;
+    }
+    
+    .profile-stats {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    
+    .stat-card {
+      background-color: #e0f2f1;
+      padding: 20px;
+      border-radius: 10px;
+      flex: 1;
+      min-width: 200px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stat-value {
+      font-size: 28px;
+      font-weight: bold;
+      color: #00796b;
+      margin-bottom: 5px;
+    }
+    
+    .stat-label {
+      color: #616161;
+      font-size: 14px;
+    }
+    
+    .challenges-section {
+      margin-bottom: 30px;
+    }
+    
+    .challenge-card {
+      background-color: #f5f5f5;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .challenge-info {
+      flex: 1;
+    }
+    
+    .challenge-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .challenge-progress {
+      width: 100%;
+      height: 12px;
+      background-color: #e0e0e0;
+      border-radius: 6px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background-color: #00796b;
+      border-radius: 6px;
+    }
+    
+    .challenge-reward {
+      background-color: #00796b;
+      color: white;
+      border-radius: 5px;
+      padding: 5px 10px;
+      font-weight: bold;
+      margin-left: 15px;
+    }
+    
+    .completed {
+      background-color: #4caf50;
+    }
+    
+    .history-section {
+      margin-bottom: 30px;
+    }
+    
+    .game-history {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .game-history th {
+      background-color: #00796b;
+      color: white;
+      text-align: left;
+      padding: 12px;
+    }
+    
+    .game-history td {
+      padding: 12px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .game-history tr:nth-child(even) {
+      background-color: #f5f5f5;
+    }
+    
+    .game-history tr:hover {
+      background-color: #e0f2f1;
+    }
+    
+    .win {
+      color: #4caf50;
+      font-weight: bold;
+    }
+    
+    .loss {
+      color: #f44336;
+    }
+    
+    .settings-section {
+      margin-bottom: 30px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #00796b;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+    
+    input:focus, select:focus {
+      border-color: #00796b;
+      outline: none;
+    }
+    
+    .theme-selector {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    
+    .theme-option {
+      width: 100px;
+      height: 100px;
+      border-radius: 10px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .theme-option:hover {
+      transform: scale(1.05);
+    }
+    
+    .theme-tropical {
+      background: linear-gradient(to bottom, #00897b, #4db6ac);
+    }
+    
+    .theme-ocean {
+      background: linear-gradient(to bottom, #0288d1, #29b6f6);
+    }
+    
+    .theme-beach {
+      background: linear-gradient(to bottom, #ffa000, #ffcc80);
+    }
+    
+    .theme-forest {
+      background: linear-gradient(to bottom, #388e3c, #81c784);
+    }
+    
+    .theme-volcano {
+      background: linear-gradient(to bottom, #d32f2f, #ef9a9a);
+    }
+    
+    .theme-active {
+      border: 3px solid #00796b;
+    }
+    
+    .theme-active::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 24px;
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+    
+    button {
+      background-color: #00796b;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #00695c;
+    }
+    
+    .nav-bar {
+      background-color: white;
+      border-radius: 10px;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .nav-item {
+      padding: 10px 15px;
+      border-radius: 5px;
+      color: #00796b;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    
+    .nav-item:hover {
+      background-color: #e0f2f1;
+    }
+    
+    .nav-item.active {
+      background-color: #00796b;
+      color: white;
+    }
+    
+    .loading {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0;
+    }
+    
+    .loading-spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-top: 4px solid #00796b;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @media (max-width: 768px) {
+      .profile-header {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .profile-avatar {
+        margin-right: 0;
+        margin-bottom: 20px;
+      }
+      
+      .stat-card {
+        min-width: 100%;
+      }
+      
+      .nav-bar {
+        overflow-x: auto;
+        padding: 10px;
+      }
+      
+      .nav-item {
+        white-space: nowrap;
+        padding: 8px 12px;
+      }
+    }
+    
+    .palm-decoration {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      height: 150px;
+      background-image: url('assets/palm-silhouette.png');
+      background-repeat: repeat-x;
+      background-position: bottom center;
+      background-size: contain;
+      z-index: -1;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <div class="palm-decoration"></div>
+  
+  <div class="header">
+    <img src="assets/logo.png" alt="PACIFIQUE MS BINGO Logo" class="header-logo">
+    <h1>Profil Utilisateur</h1>
+  </div>
+  
+  <div class="container">
+    <div class="nav-bar">
+      <a href="/" class="nav-item">Accueil</a>
+      <a href="/play" class="nav-item">Jouer</a>
+      <a href="/profile" class="nav-item active">Profil</a>
+      <a href="/customization" class="nav-item">Personnalisation</a>
+      <a href="/social" class="nav-item">Social</a>
+      <a href="#" class="nav-item" id="logout-btn">Déconnexion</a>
+    </div>
+    
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="profile-avatar" id="avatar">U</div>
+        <div class="profile-info">
+          <h2 id="username">Chargement...</h2>
+          <p>Membre depuis <span id="member-since">...</span></p>
+        </div>
+      </div>
+      
+      <div class="profile-stats">
+        <div class="stat-card">
+          <div class="stat-value" id="balance">0</div>
+          <div class="stat-label">Solde (FR)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="games-played">0</div>
+          <div class="stat-label">Parties jouées</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="quines-won">0</div>
+          <div class="stat-label">Quines gagnées</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="bingos-won">0</div>
+          <div class="stat-label">Bingos gagnés</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="profile-card challenges-section">
+      <h2>Défis quotidiens</h2>
+      <div id="challenges-container">
+        <div class="challenge-card">
+          <div class="challenge-info">
+            <div class="challenge-title">Jouer 3 parties</div>
+            <div class="challenge-progress">
+              <div class="progress-bar" style="width: 66%;"></div>
+            </div>
+            <div>2/3 complété</div>
+          </div>
+          <div class="challenge-reward">200 FR</div>
+        </div>
+        
+        <div class="challenge-card">
+          <div class="challenge-info">
+            <div class="challenge-title">Gagner une quine</div>
+            <div class="challenge-progress">
+              <div class="progress-bar" style="width: 0%;"></div>
+            </div>
+            <div>0/1 complété</div>
+          </div>
+          <div class="challenge-reward">300 FR</div>
+        </div>
+        
+        <div class="challenge-card">
+          <div class="challenge-info">
+            <div class="challenge-title">Gagner un bingo</div>
+            <div class="challenge-progress">
+              <div class="progress-bar" style="width: 0%;"></div>
+            </div>
+            <div>0/1 complété</div>
+          </div>
+          <div class="challenge-reward">500 FR</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="profile-card history-section">
+      <h2>Historique de jeu</h2>
+      <table class="game-history">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type de jeu</th>
+            <th>Cartes achetées</th>
+            <th>Résultat</th>
+            <th>Gains</th>
+          </tr>
+        </thead>
+        <tbody id="history-tbody">
+          <tr>
+            <td>11/04/2025</td>
+            <td>Régulier</td>
+            <td>2</td>
+            <td class="win">Quine</td>
+            <td>300 FR</td>
+          </tr>
+          <tr>
+            <td>10/04/2025</td>
+            <td>Spécial</td>
+            <td>3</td>
+            <td class="loss">-</td>
+            <td>0 FR</td>
+          </tr>
+          <tr>
+            <td>10/04/2025</td>
+            <td>Régulier</td>
+            <td>1</td>
+            <td class="win">Bingo</td>
+            <td>1,200 FR</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="profile-card settings-section">
+      <h2>Paramètres</h2>
+      
+      <div class="form-group">
+        <label for="language">Langue</label>
+        <select id="language">
+          <option value="fr" selected>Français</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="votre@email.com">
+      </div>
+      
+      <div class="form-group">
+        <label>Thème préféré</label>
+        <div class="theme-selector">
+          <div class="theme-option theme-tropical theme-active" data-theme="tropical"></div>
+          <div class="theme-option theme-ocean" data-theme="ocean"></div>
+          <div class="theme-option theme-beach" data-theme="beach"></div>
+          <div class="theme-option theme-forest" data-theme="forest"></div>
+          <div class="theme-option theme-volcano" data-theme="volcano"></div>
+        </div>
+      </div>
+      
+      <button id="save-settings">Enregistrer les paramètres</button>
+    </div>
+    
+    <div class="profile-card">
+      <h2>Sécurité</h2>
+      
+      <div class="form-group">
+        <label for="current-password">Mot de passe actuel</label>
+        <input type="password" id="current-password" placeholder="Entrez votre mot de passe actuel">
+      </div>
+      
+      <div class="form-group">
+        <label for="new-password">Nouveau mot de passe</label>
+        <input type="password" id="new-password" placeholder="Entrez un nouveau mot de passe">
+      </div>
+      
+      <div class="form-group">
+        <label for="confirm-password">Confirmer le mot de passe</label>
+        <input type="password" id="confirm-password" placeholder="Confirmez votre nouveau mot de passe">
+      </div>
+      
+      <div class="form-group" id="password-strength" style="display: none;">
+        <label>Force du mot de passe</label>
+        <div class="challenge-progress">
+          <div class="progress-bar" id="password-strength-bar" style="width: 0%;"></div>
+        </div>
+        <div id="password-strength-text">Faible</div>
+      </div>
+      
+      <button id="change-password">Changer le mot de passe</button>
+    </div>
+  </div>
+  
+  <div class="loading" id="loading">
+    <div class="loading-spinner"></div>
+    <div>Chargement en cours...</div>
+  </div>
+  
+  <script>
+    // Fonction pour afficher l'initiale de l'utilisateur dans l'avatar
+    function updateAvatar(username) {
+      if (username) {
+        document.getElementById('avatar').textContent = username.charAt(0).toUpperCase();
+      }
+    }
+    
+    // Charger les données de l'utilisateur
+    async function loadUserData() {
+      try {
+        const response = await fetch('/api/user');
+        
+        if (response.status === 401) {
+          // Non authentifié, rediriger vers la page de connexion
+          window.location.href = '/auth.html';
+          return;
+        }
+        
+        if (!response.ok) {
+          throw new Error('Erreur lors du chargement des données');
+        }
+        
+        const userData = await response.json();
+        
+        // Mettre à jour les informations de profil
+        document.getElementById('username').textContent = userData.username;
+        updateAvatar(userData.username);
+        document.getElementById('balance').textContent = userData.balance.toLocaleString();
+        
+        // Date d'inscription fictive pour la démo
+        document.getElementById('member-since').textContent = '10 avril 2025';
+        
+        // Charger les statistiques du joueur (exemple fictif)
+        document.getElementById('games-played').textContent = '5';
+        document.getElementById('quines-won').textContent = '1';
+        document.getElementById('bingos-won').textContent = '1';
+        
+        // Exemple de chargement du langage préféré
+        if (userData.language) {
+          document.getElementById('language').value = userData.language;
+        }
+        
+        // Exemple de chargement de l'email
+        if (userData.email) {
+          document.getElementById('email').value = userData.email;
+        }
+        
+      } catch (error) {
+        console.error('Erreur:', error);
+        alert('Une erreur est survenue lors du chargement de votre profil.');
+      }
+    }
+    
+    // Fonction de déconnexion
+    async function logout() {
+      try {
+        const response = await fetch('/api/logout', {
+          method: 'POST'
+        });
+        
+        if (response.ok) {
+          window.location.href = '/';
+        } else {
+          throw new Error('Erreur lors de la déconnexion');
+        }
+      } catch (error) {
+        console.error('Erreur:', error);
+        alert('Une erreur est survenue lors de la déconnexion.');
+      }
+    }
+    
+    // Gestion des thèmes
+    function setupThemeSelection() {
+      const themeOptions = document.querySelectorAll('.theme-option');
+      
+      themeOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          // Supprimer la classe active de toutes les options
+          themeOptions.forEach(o => o.classList.remove('theme-active'));
+          
+          // Ajouter la classe active à l'option sélectionnée
+          this.classList.add('theme-active');
+        });
+      });
+    }
+    
+    // Enregistrement des paramètres
+    async function saveSettings() {
+      const loading = document.getElementById('loading');
+      loading.style.display = 'flex';
+      
+      try {
+        const language = document.getElementById('language').value;
+        const email = document.getElementById('email').value;
+        const selectedTheme = document.querySelector('.theme-option.theme-active').dataset.theme;
+        
+        // Simuler un délai pour montrer le chargement
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Cette partie serait normalement une requête API
+        console.log('Paramètres enregistrés:', { language, email, theme: selectedTheme });
+        
+        alert('Paramètres enregistrés avec succès !');
+      } catch (error) {
+        console.error('Erreur:', error);
+        alert('Une erreur est survenue lors de l\'enregistrement des paramètres.');
+      } finally {
+        loading.style.display = 'none';
+      }
+    }
+    
+    // Évaluer la force du mot de passe
+    function evaluatePasswordStrength(password) {
+      let strength = 0;
+      
+      if (!password) return { score: strength, message: "Faible" };
+      
+      // Longueur
+      if (password.length >= 8) strength += 20;
+      if (password.length >= 12) strength += 10;
+      
+      // Complexité
+      if (/[a-z]/.test(password)) strength += 10; // minuscules
+      if (/[A-Z]/.test(password)) strength += 15; // majuscules
+      if (/[0-9]/.test(password)) strength += 15; // chiffres
+      if (/[^a-zA-Z0-9]/.test(password)) strength += 20; // caractères spéciaux
+      
+      // Mots de passe communs ou motifs simples
+      if (/^12345|password|qwerty|azerty|motdepasse/i.test(password)) strength = 10;
+      
+      let message = "Faible";
+      if (strength >= 80) message = "Très fort";
+      else if (strength >= 60) message = "Fort";
+      else if (strength >= 40) message = "Moyen";
+      else if (strength >= 20) message = "Faible";
+      
+      return { score: strength, message };
+    }
+    
+    // Fonction pour changer le mot de passe
+    async function changePassword() {
+      const loading = document.getElementById('loading');
+      loading.style.display = 'flex';
+      
+      // Récupérer les valeurs des champs
+      const currentPassword = document.getElementById('current-password').value;
+      const newPassword = document.getElementById('new-password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      
+      // Vérifier que tous les champs sont remplis
+      if (!currentPassword || !newPassword || !confirmPassword) {
+        alert('Veuillez remplir tous les champs');
+        loading.style.display = 'none';
+        return;
+      }
+      
+      // Vérifier que les deux nouveaux mots de passe correspondent
+      if (newPassword !== confirmPassword) {
+        alert('Les nouveaux mots de passe ne correspondent pas');
+        loading.style.display = 'none';
+        return;
+      }
+      
+      // Vérifier la force du mot de passe
+      const { score } = evaluatePasswordStrength(newPassword);
+      if (score < 40) {
+        if (!confirm('Ce mot de passe est faible. Êtes-vous sûr de vouloir continuer?')) {
+          loading.style.display = 'none';
+          return;
+        }
+      }
+      
+      try {
+        // Envoyer la requête au serveur
+        const response = await fetch('/api/change-password', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            currentPassword,
+            newPassword
+          })
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Erreur lors du changement de mot de passe');
+        }
+        
+        // Réinitialiser les champs
+        document.getElementById('current-password').value = '';
+        document.getElementById('new-password').value = '';
+        document.getElementById('confirm-password').value = '';
+        document.getElementById('password-strength').style.display = 'none';
+        
+        alert('Mot de passe modifié avec succès!');
+      } catch (error) {
+        console.error('Erreur:', error);
+        alert(error.message || 'Une erreur est survenue lors du changement de mot de passe.');
+      } finally {
+        loading.style.display = 'none';
+      }
+    }
+    
+    // Exécuter lorsque le DOM est chargé
+    document.addEventListener('DOMContentLoaded', function() {
+      // Charger les données utilisateur
+      loadUserData();
+      
+      // Configuration de la sélection de thème
+      setupThemeSelection();
+      
+      // Gestionnaire d'événement pour le bouton de déconnexion
+      document.getElementById('logout-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        logout();
+      });
+      
+      // Gestionnaire d'événement pour le bouton d'enregistrement
+      document.getElementById('save-settings').addEventListener('click', saveSettings);
+      
+      // Gestionnaire d'événement pour le bouton de changement de mot de passe
+      document.getElementById('change-password').addEventListener('click', changePassword);
+      
+      // Évaluer la force du mot de passe en temps réel
+      const newPasswordInput = document.getElementById('new-password');
+      newPasswordInput.addEventListener('input', function() {
+        const password = this.value;
+        const passwordStrength = document.getElementById('password-strength');
+        
+        if (password) {
+          passwordStrength.style.display = 'block';
+          
+          const { score, message } = evaluatePasswordStrength(password);
+          
+          const passwordStrengthBar = document.getElementById('password-strength-bar');
+          passwordStrengthBar.style.width = `${score}%`;
+          
+          // Changer la couleur en fonction de la force
+          if (score >= 80) passwordStrengthBar.style.backgroundColor = '#4caf50'; // Très fort (vert)
+          else if (score >= 60) passwordStrengthBar.style.backgroundColor = '#8bc34a'; // Fort (vert clair)
+          else if (score >= 40) passwordStrengthBar.style.backgroundColor = '#ffeb3b'; // Moyen (jaune)
+          else if (score >= 20) passwordStrengthBar.style.backgroundColor = '#ff9800'; // Faible (orange)
+          else passwordStrengthBar.style.backgroundColor = '#f44336'; // Très faible (rouge)
+          
+          document.getElementById('password-strength-text').textContent = message;
+        } else {
+          passwordStrength.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

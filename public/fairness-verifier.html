@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérificateur d'Équité - PACIFIQUE MS BINGO</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/fairness-verifier.css">
+    
+    <!-- Graphiques -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <h1>PACIFIQUE MS BINGO</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Accueil</a></li>
+                    <li><a href="/play.html">Jouer</a></li>
+                    <li><a href="/fairness-verifier.html" class="active">Vérificateur d'Équité</a></li>
+                    <li><a href="/blockchain-visualizer.html">Visualiseur Blockchain</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <div class="fairness-container">
+            <div class="fairness-header">
+                <h1>Vérificateur d'Équité des Tirages</h1>
+                <p>Notre générateur de nombres aléatoires certifié garantit l'équité des tirages. Utilisez cet outil pour vérifier et analyser l'équité des parties de bingo récentes.</p>
+            </div>
+            
+            <div class="fairness-controls">
+                <div class="game-selector">
+                    <select id="game-select">
+                        <option value="">Sélectionnez une partie...</option>
+                        <option value="game-live">Partie en cours</option>
+                        <option value="game-test">Partie de test</option>
+                        <option value="game-custom">Partie personnalisée</option>
+                    </select>
+                </div>
+                
+                <div class="action-buttons">
+                    <button id="verify-btn" class="action-button primary">Vérifier l'équité</button>
+                    <button id="simulate-btn" class="action-button secondary">Simuler des tirages</button>
+                </div>
+            </div>
+            
+            <div id="fairness-report-container">
+                <!-- Le rapport sera inséré ici par JavaScript -->
+                <div class="fairness-report error">
+                    Sélectionnez une partie et cliquez sur "Vérifier l'équité" pour générer un rapport.
+                </div>
+            </div>
+            
+            <div class="distribution-chart">
+                <h3>Distribution des Numéros Tirés</h3>
+                <div class="chart-container">
+                    <canvas id="distribution-chart"></canvas>
+                </div>
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-color actual"></div>
+                        <span>Distribution réelle</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color expected"></div>
+                        <span>Distribution attendue</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-columns">
+                <div class="footer-column">
+                    <h3>À propos</h3>
+                    <p>PACIFIQUE MS BINGO est une plateforme de jeu en ligne certifiée offrant une expérience de bingo équitable et sécurisée.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Liens utiles</h3>
+                    <ul>
+                        <li><a href="/play.html">Jouer</a></li>
+                        <li><a href="/organizer.html">Interface organisateur</a></li>
+                        <li><a href="/fairness-verifier.html">Vérificateur d'équité</a></li>
+                        <li><a href="/blockchain-visualizer.html">Visualiseur blockchain</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Assistance</h3>
+                    <ul>
+                        <li><a href="#">Règles du jeu</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contactez-nous</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 PACIFIQUE MS BINGO - Tous droits réservés</p>
+                <p>Licence ANJ en cours d'approbation</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="/js/certified-rng.js"></script>
+    <script src="/js/fairness-verifier.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser le RNG pour les démonstrations
+            const rng = new CertifiedRandomNumberGenerator({
+                minValue: 1,
+                maxValue: 90,
+                logResults: false
+            });
+            
+            // Initialiser le vérificateur d'équité
+            const verifier = new FairnessVerifier({
+                rngInstance: rng,
+                logResults: false
+            });
+            
+            // Gérer la sélection de partie
+            const gameSelect = document.getElementById('game-select');
+            const verifyBtn = document.getElementById('verify-btn');
+            const simulateBtn = document.getElementById('simulate-btn');
+            const reportContainer = document.getElementById('fairness-report-container');
+            
+            // Fonction pour mettre à jour le graphique de distribution
+            function updateDistributionChart(distributionData) {
+                const ctx = document.getElementById('distribution-chart').getContext('2d');
+                
+                // Préparer les données
+                const labels = Object.keys(distributionData).map(Number).sort((a, b) => a - b);
+                const actualData = labels.map(num => distributionData[num]);
+                
+                // Distribution théorique (uniforme)
+                const totalDraws = actualData.reduce((a, b) => a + b, 0);
+                const expectedFrequency = totalDraws / labels.length;
+                const expectedData = Array(labels.length).fill(expectedFrequency);
+                
+                // Créer ou mettre à jour le graphique
+                if (window.distributionChart) {
+                    window.distributionChart.data.labels = labels;
+                    window.distributionChart.data.datasets[0].data = actualData;
+                    window.distributionChart.data.datasets[1].data = expectedData;
+                    window.distributionChart.update();
+                } else {
+                    window.distributionChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: 'Distribution réelle',
+                                    data: actualData,
+                                    backgroundColor: '#2196f3',
+                                    borderColor: '#1976d2',
+                                    borderWidth: 1
+                                },
+                                {
+                                    label: 'Distribution attendue',
+                                    data: expectedData,
+                                    backgroundColor: '#90caf9',
+                                    borderColor: '#64b5f6',
+                                    borderWidth: 1,
+                                    type: 'line'
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Fréquence'
+                                    }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Numéro'
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        title: function(tooltipItems) {
+                                            return `Numéro ${tooltipItems[0].label}`;
+                                        },
+                                        label: function(context) {
+                                            const label = context.dataset.label || '';
+                                            return `${label}: ${context.raw.toFixed(1)}`;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+            
+            // Fonction pour simuler des tirages
+            function simulateDraws(count = 100) {
+                for (let i = 0; i < count; i++) {
+                    rng.generateNumber();
+                }
+                
+                return generateReport();
+            }
+            
+            // Fonction pour générer le rapport
+            async function generateReport() {
+                try {
+                    // Générer le rapport
+                    const report = await verifier.generateFairnessReport();
+                    
+                    // Mettre à jour l'interface avec le rapport
+                    reportContainer.innerHTML = verifier.generateVisualReport();
+                    
+                    // Mettre à jour le graphique de distribution
+                    if (report.distribution) {
+                        updateDistributionChart(report.distribution);
+                    }
+                    
+                    // Configurer les boutons dans le rapport
+                    const downloadBtn = document.querySelector('.download-report');
+                    const verifyAgainBtn = document.querySelector('.verify-again');
+                    
+                    if (downloadBtn) {
+                        downloadBtn.addEventListener('click', function() {
+                            const reportJson = verifier.exportReportJSON();
+                            const blob = new Blob([reportJson], { type: 'application/json' });
+                            const url = URL.createObjectURL(blob);
+                            
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `fairness-report-${report.gameId}.json`;
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(url);
+                        });
+                    }
+                    
+                    if (verifyAgainBtn) {
+                        verifyAgainBtn.addEventListener('click', generateReport);
+                    }
+                    
+                    return report;
+                } catch (error) {
+                    console.error('Erreur lors de la génération du rapport:', error);
+                    reportContainer.innerHTML = `
+                        <div class="fairness-report error">
+                            Une erreur est survenue lors de la génération du rapport: ${error.message}
+                        </div>
+                    `;
+                }
+            }
+            
+            // Événements pour les boutons
+            verifyBtn.addEventListener('click', function() {
+                const selectedGame = gameSelect.value;
+                if (!selectedGame) {
+                    alert('Veuillez sélectionner une partie à vérifier');
+                    return;
+                }
+                
+                if (rng.draws.length === 0) {
+                    // Si aucun tirage n'a été effectué, simuler quelques-uns
+                    simulateDraws(50);
+                } else {
+                    generateReport();
+                }
+            });
+            
+            simulateBtn.addEventListener('click', function() {
+                simulateDraws(50);
+            });
+            
+            // Initialiser le graphique avec des données vides
+            updateDistributionChart({});
+        });
+    </script>
+</body>
+</html>

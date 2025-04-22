@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS BINGO - Gestion des fonds</title>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0099cc;
+            --secondary-color: #4CAF50;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --border-radius: 8px;
+            --transition-speed: 0.3s;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            line-height: 1.6;
+            background-image: url('/images/pacifique-bingo-background.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.65);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+            background-color: rgba(26, 26, 26, 0.8);
+            border-radius: var(--border-radius);
+            padding: 15px 20px;
+        }
+        
+        header h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+        }
+        
+        header nav {
+            display: flex;
+            gap: 10px;
+        }
+        
+        header nav a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            transition: background-color var(--transition-speed);
+            font-weight: 500;
+        }
+        
+        header nav a:hover, header nav a.active {
+            background-color: var(--primary-color);
+        }
+        
+        .balance-card {
+            background-color: rgba(26, 26, 26, 0.8);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .balance-card .label {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #ccc;
+        }
+        
+        .balance-card .amount {
+            font-size: 40px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .balance-card .balance-details {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+        }
+        
+        .balance-detail {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .balance-detail .label {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .balance-detail .value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #f8f9fa;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background-color: rgba(26, 26, 26, 0.8);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-title {
+            color: var(--primary-color);
+            font-size: 22px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-title i {
+            margin-right: 10px;
+            font-size: 26px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #ccc;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #444;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+            color: #ffffff;
+            font-size: 16px;
+            transition: border-color var(--transition-speed);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .btn:hover {
+            background-color: #007ba1;
+        }
+        
+        .btn-success {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-success:hover {
+            background-color: #3d8b40;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-full {
+            width: 100%;
+        }
+        
+        .form-footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .form-footer .btn {
+            margin-top: 10px;
+        }
+        
+        .payment-methods {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .payment-method {
+            flex: 1;
+            min-width: 120px;
+            padding: 15px;
+            border: 2px solid #444;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+        }
+        
+        .payment-method:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(0, 153, 204, 0.1);
+        }
+        
+        .payment-method.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(0, 153, 204, 0.2);
+        }
+        
+        .payment-method img {
+            height: 30px;
+            margin-bottom: 8px;
+        }
+        
+        .payment-method .name {
+            font-size: 14px;
+            color: #ccc;
+        }
+        
+        .transaction-history {
+            margin-top: 40px;
+        }
+        
+        .transaction-history h2 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        th {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--primary-color);
+        }
+        
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .transaction-type {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .transaction-type.deposit {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .transaction-type.withdrawal {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .transaction-type.purchase {
+            background-color: var(--warning-color);
+            color: white;
+        }
+        
+        .transaction-type.winning {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .transaction-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .transaction-status.completed {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .transaction-status.pending {
+            background-color: var(--warning-color);
+            color: white;
+        }
+        
+        .transaction-status.failed {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 20px;
+        }
+        
+        .pagination button {
+            background-color: rgba(26, 26, 26, 0.8);
+            border: 1px solid #444;
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+        }
+        
+        .pagination button.active {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .amount-input-container {
+            position: relative;
+        }
+        
+        .amount-input-container .currency-symbol {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ccc;
+        }
+        
+        .quick-amounts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .quick-amount {
+            padding: 8px 15px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid #444;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all var(--transition-speed);
+        }
+        
+        .quick-amount:hover {
+            background-color: rgba(0, 153, 204, 0.1);
+            border-color: var(--primary-color);
+        }
+        
+        .verification-notice {
+            background-color: rgba(243, 156, 18, 0.1);
+            border: 1px solid var(--warning-color);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--warning-color);
+        }
+        
+        .verification-notice a {
+            color: var(--warning-color);
+            text-decoration: underline;
+            font-weight: 500;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow: auto;
+        }
+        
+        .modal-content {
+            background-color: #222;
+            margin: 5% auto;
+            padding: 25px;
+            width: 80%;
+            max-width: 600px;
+            border-radius: var(--border-radius);
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #888;
+            transition: color var(--transition-speed);
+        }
+        
+        .close-modal:hover {
+            color: #fff;
+        }
+        
+        .modal-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .confirmation-content {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .confirmation-content .amount {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 20px 0;
+        }
+        
+        .confirmation-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .tab-container {
+            margin-bottom: 20px;
+        }
+        
+        .tab-nav {
+            display: flex;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .tab-nav button {
+            background: none;
+            border: none;
+            color: #ffffff;
+            padding: 12px 15px;
+            cursor: pointer;
+            flex-grow: 1;
+            font-size: 16px;
+            transition: all var(--transition-speed);
+        }
+        
+        .tab-nav button:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .tab-nav button.active {
+            background-color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .bank-account-form {
+            margin-top: 20px;
+        }
+        
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: var(--border-radius);
+            color: white;
+        }
+        
+        .alert-success {
+            background-color: rgba(76, 175, 80, 0.2);
+            border: 1px solid var(--secondary-color);
+            color: var(--secondary-color);
+        }
+        
+        .alert-danger {
+            background-color: rgba(231, 76, 60, 0.2);
+            border: 1px solid var(--danger-color);
+            color: var(--danger-color);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #888;
+        }
+        
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .limits-info {
+            background-color: rgba(0, 153, 204, 0.1);
+            border: 1px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .limits-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .limits-info ul {
+            list-style: none;
+        }
+        
+        .limits-info li {
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .limits-info .limit-label {
+            color: #ccc;
+        }
+        
+        .limits-info .limit-value {
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MS BINGO</h1>
+            <nav>
+                <a href="/play.html">Jouer</a>
+                <a href="/profile.html">Profil</a>
+                <a href="/banking.html" class="active">Gestion des fonds</a>
+                <a href="/kyc.html">Vérification KYC</a>
+                <a href="/logout.html">Déconnexion</a>
+            </nav>
+        </header>
+        
+        <div class="balance-card">
+            <div class="label">Solde disponible</div>
+            <div class="amount" id="user-balance">12,500 ₣</div>
+            <div class="balance-details">
+                <div class="balance-detail">
+                    <div class="label">Dépôts</div>
+                    <div class="value" id="deposits-total">15,000 ₣</div>
+                </div>
+                <div class="balance-detail">
+                    <div class="label">Retraits</div>
+                    <div class="value" id="withdrawals-total">5,000 ₣</div>
+                </div>
+                <div class="balance-detail">
+                    <div class="label">Gains</div>
+                    <div class="value" id="winnings-total">2,500 ₣</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Avertissement de vérification KYC si nécessaire -->
+        <div class="verification-notice" id="kyc-notice">
+            <p>Votre niveau de vérification actuel est <strong>Basique</strong>. Pour des dépôts ou retraits supérieurs à 500,000 ₣, veuillez compléter la <a href="/kyc.html">vérification KYC avancée</a>.</p>
+        </div>
+        
+        <div class="limits-info">
+            <h3>Limites de transaction</h3>
+            <ul>
+                <li>
+                    <span class="limit-label">Dépôt minimum</span>
+                    <span class="limit-value">1,000 ₣</span>
+                </li>
+                <li>
+                    <span class="limit-label">Dépôt maximum (par transaction)</span>
+                    <span class="limit-value">500,000 ₣</span>
+                </li>
+                <li>
+                    <span class="limit-label">Retrait minimum</span>
+                    <span class="limit-value">5,000 ₣</span>
+                </li>
+                <li>
+                    <span class="limit-label">Retrait maximum (par transaction)</span>
+                    <span class="limit-value">500,000 ₣</span>
+                </li>
+                <li>
+                    <span class="limit-label">Limite quotidienne de dépôt</span>
+                    <span class="limit-value">1,000,000 ₣</span>
+                </li>
+                <li>
+                    <span class="limit-label">Limite quotidienne de retrait</span>
+                    <span class="limit-value">750,000 ₣</span>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="main-content">
+            <div class="card">
+                <h2 class="card-title">Dépôt de fonds</h2>
+                
+                <!-- Tabs pour les différentes méthodes de dépôt -->
+                <div class="tab-container">
+                    <div class="tab-nav">
+                        <button class="tab-btn active" data-tab="credit-card">Carte bancaire</button>
+                        <button class="tab-btn" data-tab="bank-transfer">Virement bancaire</button>
+                        <button class="tab-btn" data-tab="mobile-money">Mobile Money</button>
+                    </div>
+                    
+                    <!-- Formulaire pour la carte bancaire -->
+                    <div class="tab-content active" id="credit-card-tab">
+                        <form id="credit-card-form">
+                            <div class="form-group">
+                                <label class="form-label" for="cc-amount">Montant du dépôt</label>
+                                <div class="amount-input-container">
+                                    <input type="number" id="cc-amount" class="form-control" placeholder="Entrez le montant" min="1000" max="500000" required>
+                                    <span class="currency-symbol">₣</span>
+                                </div>
+                            </div>
+                            
+                            <div class="quick-amounts">
+                                <div class="quick-amount" data-amount="10000">10,000 ₣</div>
+                                <div class="quick-amount" data-amount="25000">25,000 ₣</div>
+                                <div class="quick-amount" data-amount="50000">50,000 ₣</div>
+                                <div class="quick-amount" data-amount="100000">100,000 ₣</div>
+                                <div class="quick-amount" data-amount="250000">250,000 ₣</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="cc-name">Nom sur la carte</label>
+                                <input type="text" id="cc-name" class="form-control" placeholder="Ex: Jean Dupont" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="cc-number">Numéro de carte</label>
+                                <input type="text" id="cc-number" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                            </div>
+                            
+                            <div class="form-group" style="display: flex; gap: 15px;">
+                                <div style="flex: 1;">
+                                    <label class="form-label" for="cc-expiry">Date d'expiration</label>
+                                    <input type="text" id="cc-expiry" class="form-control" placeholder="MM/AA" maxlength="5" required>
+                                </div>
+                                <div style="flex: 1;">
+                                    <label class="form-label" for="cc-cvv">CVV</label>
+                                    <input type="text" id="cc-cvv" class="form-control" placeholder="123" maxlength="3" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-footer">
+                                <button type="submit" class="btn btn-success btn-full">Effectuer le dépôt</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Formulaire pour le virement bancaire -->
+                    <div class="tab-content" id="bank-transfer-tab">
+                        <div class="bank-info">
+                            <p>Pour effectuer un dépôt par virement bancaire, veuillez utiliser les informations suivantes:</p>
+                            <div class="form-group">
+                                <label class="form-label">Bénéficiaire</label>
+                                <input type="text" class="form-control" value="MS BINGO Pacifique" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">IBAN</label>
+                                <input type="text" class="form-control" value="FR76 3000 6000 0112 3456 7890 120" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">BIC/SWIFT</label>
+                                <input type="text" class="form-control" value="PACIFBPPXXX" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Banque</label>
+                                <input type="text" class="form-control" value="Banque Pacifique" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Référence</label>
+                                <input type="text" class="form-control" value="MS-BINGO-12345" readonly>
+                                <small style="color: #ccc; display: block; margin-top: 5px;">Utilisez cette référence pour que nous puissions identifier votre paiement</small>
+                            </div>
+                        </div>
+                        
+                        <div class="bank-account-form">
+                            <h3 style="margin-bottom: 15px; color: var(--primary-color);">Notifier un virement</h3>
+                            <form id="bank-transfer-form">
+                                <div class="form-group">
+                                    <label class="form-label" for="bt-amount">Montant du virement</label>
+                                    <div class="amount-input-container">
+                                        <input type="number" id="bt-amount" class="form-control" placeholder="Entrez le montant" min="1000" max="500000" required>
+                                        <span class="currency-symbol">₣</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="bt-date">Date du virement</label>
+                                    <input type="date" id="bt-date" class="form-control" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="bt-reference">Référence du virement</label>
+                                    <input type="text" id="bt-reference" class="form-control" placeholder="Ex: VIR12345678" required>
+                                </div>
+                                
+                                <div class="form-footer">
+                                    <button type="submit" class="btn btn-success btn-full">Notifier le virement</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Formulaire pour le mobile money -->
+                    <div class="tab-content" id="mobile-money-tab">
+                        <form id="mobile-money-form">
+                            <div class="form-group">
+                                <label class="form-label" for="mm-provider">Fournisseur</label>
+                                <select id="mm-provider" class="form-control" required>
+                                    <option value="">Sélectionnez un fournisseur</option>
+                                    <option value="mpacific">M-Pacific</option>
+                                    <option value="orangemoney">Orange Money</option>
+                                    <option value="moov">Moov Money</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="mm-phone">Numéro de téléphone</label>
+                                <input type="tel" id="mm-phone" class="form-control" placeholder="+687 XX XX XX" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="mm-amount">Montant du dépôt</label>
+                                <div class="amount-input-container">
+                                    <input type="number" id="mm-amount" class="form-control" placeholder="Entrez le montant" min="1000" max="500000" required>
+                                    <span class="currency-symbol">₣</span>
+                                </div>
+                            </div>
+                            
+                            <div class="quick-amounts">
+                                <div class="quick-amount" data-amount="5000">5,000 ₣</div>
+                                <div class="quick-amount" data-amount="10000">10,000 ₣</div>
+                                <div class="quick-amount" data-amount="25000">25,000 ₣</div>
+                                <div class="quick-amount" data-amount="50000">50,000 ₣</div>
+                            </div>
+                            
+                            <div class="form-footer">
+                                <button type="submit" class="btn btn-success btn-full">Effectuer le dépôt</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title">Retrait de fonds</h2>
+                
+                <!-- Tabs pour les différentes méthodes de retrait -->
+                <div class="tab-container">
+                    <div class="tab-nav">
+                        <button class="tab-btn active" data-tab="bank-account">Compte bancaire</button>
+                        <button class="tab-btn" data-tab="mobile-wallet">Portefeuille mobile</button>
+                    </div>
+                    
+                    <!-- Formulaire pour le retrait vers un compte bancaire -->
+                    <div class="tab-content active" id="bank-account-tab">
+                        <form id="bank-withdrawal-form">
+                            <div class="form-group">
+                                <label class="form-label" for="ba-amount">Montant du retrait</label>
+                                <div class="amount-input-container">
+                                    <input type="number" id="ba-amount" class="form-control" placeholder="Entrez le montant" min="5000" max="500000" required>
+                                    <span class="currency-symbol">₣</span>
+                                </div>
+                            </div>
+                            
+                            <div class="quick-amounts">
+                                <div class="quick-amount" data-amount="10000">10,000 ₣</div>
+                                <div class="quick-amount" data-amount="25000">25,000 ₣</div>
+                                <div class="quick-amount" data-amount="50000">50,000 ₣</div>
+                                <div class="quick-amount" data-amount="100000">100,000 ₣</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="ba-holder">Titulaire du compte</label>
+                                <input type="text" id="ba-holder" class="form-control" placeholder="Ex: Jean Dupont" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="ba-iban">IBAN</label>
+                                <input type="text" id="ba-iban" class="form-control" placeholder="Ex: FR76 1234 5678 9012 3456 7890 123" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="ba-bic">BIC/SWIFT</label>
+                                <input type="text" id="ba-bic" class="form-control" placeholder="Ex: CEPAFRPP123" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="ba-bank">Banque</label>
+                                <input type="text" id="ba-bank" class="form-control" placeholder="Ex: Banque Pacifique" required>
+                            </div>
+                            
+                            <div class="form-footer">
+                                <button type="submit" class="btn btn-danger btn-full">Demander le retrait</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Formulaire pour le retrait vers un portefeuille mobile -->
+                    <div class="tab-content" id="mobile-wallet-tab">
+                        <form id="mobile-withdrawal-form">
+                            <div class="form-group">
+                                <label class="form-label" for="mw-provider">Fournisseur</label>
+                                <select id="mw-provider" class="form-control" required>
+                                    <option value="">Sélectionnez un fournisseur</option>
+                                    <option value="mpacific">M-Pacific</option>
+                                    <option value="orangemoney">Orange Money</option>
+                                    <option value="moov">Moov Money</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="mw-phone">Numéro de téléphone</label>
+                                <input type="tel" id="mw-phone" class="form-control" placeholder="+687 XX XX XX" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="mw-amount">Montant du retrait</label>
+                                <div class="amount-input-container">
+                                    <input type="number" id="mw-amount" class="form-control" placeholder="Entrez le montant" min="5000" max="500000" required>
+                                    <span class="currency-symbol">₣</span>
+                                </div>
+                            </div>
+                            
+                            <div class="quick-amounts">
+                                <div class="quick-amount" data-amount="5000">5,000 ₣</div>
+                                <div class="quick-amount" data-amount="10000">10,000 ₣</div>
+                                <div class="quick-amount" data-amount="25000">25,000 ₣</div>
+                                <div class="quick-amount" data-amount="50000">50,000 ₣</div>
+                            </div>
+                            
+                            <div class="form-footer">
+                                <button type="submit" class="btn btn-danger btn-full">Demander le retrait</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="transaction-history">
+            <h2>Historique des transactions</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Montant</th>
+                        <th>Méthode</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody id="transaction-history-body">
+                    <!-- Transactions générées dynamiquement -->
+                </tbody>
+            </table>
+            
+            <div class="pagination" id="transaction-pagination">
+                <!-- Pagination générée dynamiquement -->
+            </div>
+        </div>
+        
+        <!-- Modal de confirmation de dépôt -->
+        <div class="modal" id="deposit-confirmation-modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2 class="modal-title">Confirmation de dépôt</h2>
+                
+                <div class="confirmation-content">
+                    <p>Vous êtes sur le point d'effectuer un dépôt de:</p>
+                    <div class="amount" id="confirm-deposit-amount">50,000 ₣</div>
+                    <p>Veuillez confirmer cette opération.</p>
+                </div>
+                
+                <div class="confirmation-actions">
+                    <button class="btn btn-danger" id="cancel-deposit-btn">Annuler</button>
+                    <button class="btn btn-success" id="confirm-deposit-btn">Confirmer</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal de confirmation de retrait -->
+        <div class="modal" id="withdrawal-confirmation-modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2 class="modal-title">Confirmation de retrait</h2>
+                
+                <div class="confirmation-content">
+                    <p>Vous êtes sur le point d'effectuer un retrait de:</p>
+                    <div class="amount" id="confirm-withdrawal-amount">25,000 ₣</div>
+                    <p>Veuillez confirmer cette opération.</p>
+                </div>
+                
+                <div class="confirmation-actions">
+                    <button class="btn btn-danger" id="cancel-withdrawal-btn">Annuler</button>
+                    <button class="btn btn-success" id="confirm-withdrawal-btn">Confirmer</button>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2025 MS BINGO. Tous droits réservés. <a href="/terms.html">Conditions d'utilisation</a> | <a href="/privacy.html">Politique de confidentialité</a> | <a href="/responsible-gaming.html">Jeu responsable</a></p>
+        </footer>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialisation
+            setupTabs();
+            setupQuickAmounts();
+            setupFormSubmissions();
+            setupModalHandlers();
+            loadTransactionHistory();
+            
+            // Test d'affichage des notifications
+            //showKYCNotice('Basique');
+            //showAlert('alert-success', 'Votre dépôt de 50,000 ₣ a été effectué avec succès!');
+        });
+        
+        // Configuration des onglets
+        function setupTabs() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Récupérer l'ID de l'onglet à afficher
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Récupérer le parent de l'onglet
+                    const tabContainer = this.closest('.tab-container');
+                    
+                    // Désactiver tous les onglets et contenus dans ce conteneur
+                    tabContainer.querySelectorAll('.tab-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    tabContainer.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Activer l'onglet cliqué
+                    this.classList.add('active');
+                    tabContainer.querySelector(`#${tabId}-tab`).classList.add('active');
+                });
+            });
+        }
+        
+        // Configuration des montants rapides
+        function setupQuickAmounts() {
+            const quickAmounts = document.querySelectorAll('.quick-amount');
+            
+            quickAmounts.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Récupérer le montant
+                    const amount = this.getAttribute('data-amount');
+                    
+                    // Trouver l'input de montant le plus proche
+                    const amountInput = this.closest('form').querySelector('input[type="number"]');
+                    
+                    // Mettre à jour la valeur
+                    if (amountInput) {
+                        amountInput.value = amount;
+                    }
+                });
+            });
+        }
+        
+        // Configuration des soumissions de formulaire
+        function setupFormSubmissions() {
+            // Formulaire de carte de crédit
+            document.getElementById('credit-card-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Récupérer le montant
+                const amount = document.getElementById('cc-amount').value;
+                
+                // Afficher la modal de confirmation
+                document.getElementById('confirm-deposit-amount').textContent = formatAmount(amount) + ' ₣';
+                document.getElementById('deposit-confirmation-modal').style.display = 'block';
+            });
+            
+            // Formulaire de virement bancaire
+            document.getElementById('bank-transfer-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Récupérer le montant
+                const amount = document.getElementById('bt-amount').value;
+                
+                // Traiter directement la notification de virement
+                processDeposit('bank_transfer', amount);
+            });
+            
+            // Formulaire de mobile money
+            document.getElementById('mobile-money-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Récupérer le montant
+                const amount = document.getElementById('mm-amount').value;
+                
+                // Afficher la modal de confirmation
+                document.getElementById('confirm-deposit-amount').textContent = formatAmount(amount) + ' ₣';
+                document.getElementById('deposit-confirmation-modal').style.display = 'block';
+            });
+            
+            // Formulaire de retrait vers un compte bancaire
+            document.getElementById('bank-withdrawal-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Récupérer le montant
+                const amount = document.getElementById('ba-amount').value;
+                
+                // Afficher la modal de confirmation
+                document.getElementById('confirm-withdrawal-amount').textContent = formatAmount(amount) + ' ₣';
+                document.getElementById('withdrawal-confirmation-modal').style.display = 'block';
+            });
+            
+            // Formulaire de retrait vers un portefeuille mobile
+            document.getElementById('mobile-withdrawal-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Récupérer le montant
+                const amount = document.getElementById('mw-amount').value;
+                
+                // Afficher la modal de confirmation
+                document.getElementById('confirm-withdrawal-amount').textContent = formatAmount(amount) + ' ₣';
+                document.getElementById('withdrawal-confirmation-modal').style.display = 'block';
+            });
+        }
+        
+        // Configuration des gestionnaires de modals
+        function setupModalHandlers() {
+            // Fermer les modals
+            document.querySelectorAll('.close-modal').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    this.closest('.modal').style.display = 'none';
+                });
+            });
+            
+            // Fermer en cliquant à l'extérieur
+            window.addEventListener('click', function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = 'none';
+                }
+            });
+            
+            // Boutons de confirmation pour le dépôt
+            document.getElementById('confirm-deposit-btn').addEventListener('click', function() {
+                const amountText = document.getElementById('confirm-deposit-amount').textContent;
+                const amount = parseFloat(amountText.replace(/[^\d]/g, ''));
+                
+                // Déterminer la méthode de paiement
+                let method = 'credit_card';
+                
+                // Traiter le dépôt
+                processDeposit(method, amount);
+                
+                // Fermer la modal
+                document.getElementById('deposit-confirmation-modal').style.display = 'none';
+            });
+            
+            document.getElementById('cancel-deposit-btn').addEventListener('click', function() {
+                document.getElementById('deposit-confirmation-modal').style.display = 'none';
+            });
+            
+            // Boutons de confirmation pour le retrait
+            document.getElementById('confirm-withdrawal-btn').addEventListener('click', function() {
+                const amountText = document.getElementById('confirm-withdrawal-amount').textContent;
+                const amount = parseFloat(amountText.replace(/[^\d]/g, ''));
+                
+                // Déterminer la méthode de retrait
+                let method = 'bank_transfer';
+                
+                // Traiter le retrait
+                processWithdrawal(method, amount);
+                
+                // Fermer la modal
+                document.getElementById('withdrawal-confirmation-modal').style.display = 'none';
+            });
+            
+            document.getElementById('cancel-withdrawal-btn').addEventListener('click', function() {
+                document.getElementById('withdrawal-confirmation-modal').style.display = 'none';
+            });
+        }
+        
+        // Traiter un dépôt
+        function processDeposit(method, amount) {
+            // Dans un environnement de production, envoyer une requête à l'API
+            // Pour l'exemple, on simule une réponse positive
+            
+            // Simuler un peu de latence
+            setTimeout(() => {
+                // Mettre à jour le solde affiché
+                const currentBalance = parseBalance(document.getElementById('user-balance').textContent);
+                document.getElementById('user-balance').textContent = formatAmount(currentBalance + parseFloat(amount)) + ' ₣';
+                
+                // Mettre à jour le total des dépôts
+                const depositsTotal = parseBalance(document.getElementById('deposits-total').textContent);
+                document.getElementById('deposits-total').textContent = formatAmount(depositsTotal + parseFloat(amount)) + ' ₣';
+                
+                // Ajouter la transaction à l'historique
+                addTransactionToHistory({
+                    date: new Date(),
+                    type: 'deposit',
+                    amount: parseFloat(amount),
+                    method: formatMethod(method),
+                    status: 'completed'
+                });
+                
+                // Afficher un message de succès
+                showAlert('alert-success', `Votre dépôt de ${formatAmount(amount)} ₣ a été traité avec succès!`);
+                
+                // Vérifier si un niveau de KYC plus élevé est nécessaire
+                if (amount >= 500000) {
+                    showKYCNotice('Avancé');
+                }
+                
+                // Enregistrer la transaction côté serveur (envoi à l'API)
+                sendTransactionToServer('deposit', method, amount);
+                
+                // Réinitialiser les formulaires
+                document.getElementById('credit-card-form').reset();
+                document.getElementById('bank-transfer-form').reset();
+                document.getElementById('mobile-money-form').reset();
+                
+            }, 1000);
+        }
+        
+        // Traiter un retrait
+        function processWithdrawal(method, amount) {
+            // Dans un environnement de production, envoyer une requête à l'API
+            // Pour l'exemple, on simule une réponse positive
+            
+            // Simuler un peu de latence
+            setTimeout(() => {
+                // Vérifier si le solde est suffisant
+                const currentBalance = parseBalance(document.getElementById('user-balance').textContent);
+                
+                if (currentBalance < amount) {
+                    showAlert('alert-danger', 'Solde insuffisant pour effectuer ce retrait.');
+                    return;
+                }
+                
+                // Mettre à jour le solde affiché
+                document.getElementById('user-balance').textContent = formatAmount(currentBalance - parseFloat(amount)) + ' ₣';
+                
+                // Mettre à jour le total des retraits
+                const withdrawalsTotal = parseBalance(document.getElementById('withdrawals-total').textContent);
+                document.getElementById('withdrawals-total').textContent = formatAmount(withdrawalsTotal + parseFloat(amount)) + ' ₣';
+                
+                // Ajouter la transaction à l'historique
+                addTransactionToHistory({
+                    date: new Date(),
+                    type: 'withdrawal',
+                    amount: parseFloat(amount),
+                    method: formatMethod(method),
+                    status: 'pending'
+                });
+                
+                // Afficher un message de succès
+                showAlert('alert-success', `Votre demande de retrait de ${formatAmount(amount)} ₣ a été enregistrée avec succès! Elle sera traitée dans les 24-48h.`);
+                
+                // Vérifier si un niveau de KYC plus élevé est nécessaire
+                if (amount >= 500000) {
+                    showKYCNotice('Avancé');
+                }
+                
+                // Enregistrer la transaction côté serveur (envoi à l'API)
+                sendTransactionToServer('withdrawal', method, amount);
+                
+                // Réinitialiser les formulaires
+                document.getElementById('bank-withdrawal-form').reset();
+                document.getElementById('mobile-withdrawal-form').reset();
+                
+            }, 1000);
+        }
+        
+        // Envoyer la transaction au serveur
+        function sendTransactionToServer(type, method, amount) {
+            // Dans un environnement de production, envoyer une requête à l'API
+            console.log(`Transaction envoyée au serveur: ${type}, ${method}, ${amount}`);
+            
+            // Exemple de requête fetch (à adapter selon l'API réelle)
+            /*
+            fetch('/api/transactions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    type,
+                    method,
+                    amount,
+                    timestamp: Date.now()
+                })
+            })
+            .then(response => response.json())
+            .then(data => console.log('Transaction enregistrée:', data))
+            .catch(error => console.error('Erreur:', error));
+            */
+        }
+        
+        // Charger l'historique des transactions
+        function loadTransactionHistory() {
+            // Dans un environnement de production, récupérer les transactions depuis l'API
+            // Pour l'exemple, on utilise des données fictives
+            
+            const transactions = [
+                {
+                    date: new Date(Date.now() - 2 * 3600 * 1000), // 2 heures avant
+                    type: 'deposit',
+                    amount: 50000,
+                    method: 'Carte bancaire',
+                    status: 'completed'
+                },
+                {
+                    date: new Date(Date.now() - 1 * 24 * 3600 * 1000), // 1 jour avant
+                    type: 'purchase',
+                    amount: 10000,
+                    method: 'Solde du compte',
+                    status: 'completed'
+                },
+                {
+                    date: new Date(Date.now() - 2 * 24 * 3600 * 1000), // 2 jours avant
+                    type: 'winning',
+                    amount: 25000,
+                    method: 'Gain de jeu',
+                    status: 'completed'
+                },
+                {
+                    date: new Date(Date.now() - 3 * 24 * 3600 * 1000), // 3 jours avant
+                    type: 'withdrawal',
+                    amount: 30000,
+                    method: 'Virement bancaire',
+                    status: 'completed'
+                },
+                {
+                    date: new Date(Date.now() - 7 * 24 * 3600 * 1000), // 7 jours avant
+                    type: 'deposit',
+                    amount: 100000,
+                    method: 'Virement bancaire',
+                    status: 'completed'
+                }
+            ];
+            
+            // Afficher les transactions
+            displayTransactions(transactions);
+        }
+        
+        // Afficher les transactions dans le tableau
+        function displayTransactions(transactions) {
+            const tbody = document.getElementById('transaction-history-body');
+            tbody.innerHTML = '';
+            
+            transactions.forEach(transaction => {
+                const row = document.createElement('tr');
+                
+                // Formater la date
+                const formattedDate = `${transaction.date.toLocaleDateString()} ${transaction.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+                
+                // Classe pour le type
+                const typeClass = transaction.type.toLowerCase();
+                
+                // Classe pour le statut
+                const statusClass = transaction.status.toLowerCase();
+                
+                // Formater le signe pour les montants
+                let amountPrefix = '';
+                if (transaction.type === 'deposit' || transaction.type === 'winning') {
+                    amountPrefix = '+';
+                } else if (transaction.type === 'withdrawal' || transaction.type === 'purchase') {
+                    amountPrefix = '-';
+                }
+                
+                row.innerHTML = `
+                    <td>${formattedDate}</td>
+                    <td><span class="transaction-type ${typeClass}">${formatTransactionType(transaction.type)}</span></td>
+                    <td>${amountPrefix}${formatAmount(transaction.amount)} ₣</td>
+                    <td>${transaction.method}</td>
+                    <td><span class="transaction-status ${statusClass}">${formatStatus(transaction.status)}</span></td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Ajouter une transaction à l'historique
+        function addTransactionToHistory(transaction) {
+            const tbody = document.getElementById('transaction-history-body');
+            const row = document.createElement('tr');
+            
+            // Formater la date
+            const formattedDate = `${transaction.date.toLocaleDateString()} ${transaction.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+            
+            // Classe pour le type
+            const typeClass = transaction.type.toLowerCase();
+            
+            // Classe pour le statut
+            const statusClass = transaction.status.toLowerCase();
+            
+            // Formater le signe pour les montants
+            let amountPrefix = '';
+            if (transaction.type === 'deposit' || transaction.type === 'winning') {
+                amountPrefix = '+';
+            } else if (transaction.type === 'withdrawal' || transaction.type === 'purchase') {
+                amountPrefix = '-';
+            }
+            
+            row.innerHTML = `
+                <td>${formattedDate}</td>
+                <td><span class="transaction-type ${typeClass}">${formatTransactionType(transaction.type)}</span></td>
+                <td>${amountPrefix}${formatAmount(transaction.amount)} ₣</td>
+                <td>${transaction.method}</td>
+                <td><span class="transaction-status ${statusClass}">${formatStatus(transaction.status)}</span></td>
+            `;
+            
+            // Insérer en haut du tableau
+            tbody.insertBefore(row, tbody.firstChild);
+        }
+        
+        // Formater le type de transaction
+        function formatTransactionType(type) {
+            const typeMap = {
+                'deposit': 'Dépôt',
+                'withdrawal': 'Retrait',
+                'purchase': 'Achat',
+                'winning': 'Gain'
+            };
+            
+            return typeMap[type] || type;
+        }
+        
+        // Formater la méthode de paiement
+        function formatMethod(method) {
+            const methodMap = {
+                'credit_card': 'Carte bancaire',
+                'bank_transfer': 'Virement bancaire',
+                'mobile_money': 'Mobile Money',
+                'mpacific': 'M-Pacific',
+                'orangemoney': 'Orange Money',
+                'moov': 'Moov Money'
+            };
+            
+            return methodMap[method] || method;
+        }
+        
+        // Formater le statut
+        function formatStatus(status) {
+            const statusMap = {
+                'completed': 'Terminé',
+                'pending': 'En attente',
+                'failed': 'Échoué'
+            };
+            
+            return statusMap[status] || status;
+        }
+        
+        // Formater les montants
+        function formatAmount(amount) {
+            return parseFloat(amount).toLocaleString('fr-FR');
+        }
+        
+        // Extraire le montant numérique d'une chaîne formatée
+        function parseBalance(balanceString) {
+            return parseFloat(balanceString.replace(/[^\d]/g, ''));
+        }
+        
+        // Afficher une alerte
+        function showAlert(type, message) {
+            // Supprimer les alertes existantes
+            const existingAlerts = document.querySelectorAll('.alert');
+            existingAlerts.forEach(alert => alert.remove());
+            
+            // Créer une nouvelle alerte
+            const alert = document.createElement('div');
+            alert.className = `alert ${type}`;
+            alert.textContent = message;
+            
+            // Insérer l'alerte au-dessus de main-content
+            const mainContent = document.querySelector('.main-content');
+            mainContent.parentNode.insertBefore(alert, mainContent);
+            
+            // Faire disparaître l'alerte après 5 secondes
+            setTimeout(() => {
+                alert.style.opacity = '0';
+                setTimeout(() => {
+                    alert.remove();
+                }, 500);
+            }, 5000);
+        }
+        
+        // Afficher l'avertissement KYC
+        function showKYCNotice(requiredLevel) {
+            const kycNotice = document.getElementById('kyc-notice');
+            
+            if (requiredLevel === 'Avancé') {
+                kycNotice.innerHTML = `
+                    <p>Pour les transactions de grande valeur, vous devez compléter la <strong>vérification KYC avancée</strong>. 
+                    <a href="/kyc.html">Cliquez ici pour compléter votre vérification</a>.</p>
+                `;
+                kycNotice.style.display = 'block';
+            } else {
+                kycNotice.innerHTML = `
+                    <p>Votre niveau de vérification actuel est <strong>${requiredLevel}</strong>. Pour des dépôts ou retraits supérieurs à 500,000 ₣, veuillez compléter la <a href="/kyc.html">vérification KYC avancée</a>.</p>
+                `;
+                kycNotice.style.display = 'block';
+            }
+        }
+    </script>
+    
+    <!-- Script RGPD pour la gestion des consentements cookies -->
+    <script src="/js/cookie-consent.js"></script>
+</body>
+</html>

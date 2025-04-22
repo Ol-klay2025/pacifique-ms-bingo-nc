@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord de Surveillance - PACIFIQUE MS BINGO</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f9fd;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dashboard-header h1 {
+            margin: 0;
+            color: #0d47a1;
+            font-size: 24px;
+        }
+        
+        .refresh-button {
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .refresh-button:hover {
+            background-color: #1976d2;
+        }
+        
+        .status-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .status-card {
+            flex: 1;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .status-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #546e7a;
+            margin-bottom: 10px;
+        }
+        
+        .status-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .status-value.green {
+            color: #4caf50;
+        }
+        
+        .status-value.amber {
+            color: #ff9800;
+        }
+        
+        .status-value.red {
+            color: #f44336;
+        }
+        
+        .status-subtext {
+            font-size: 12px;
+            color: #78909c;
+            margin-top: 5px;
+        }
+        
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .chart-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .chart-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #37474f;
+            margin: 0;
+        }
+        
+        .chart-container {
+            height: 250px;
+        }
+        
+        .logs-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .log-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .log-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #37474f;
+            margin: 0;
+        }
+        
+        .log-content {
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        
+        .log-entry {
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+        
+        .log-entry.error {
+            color: #d32f2f;
+        }
+        
+        .log-entry.warning {
+            color: #f57c00;
+        }
+        
+        .log-entry.info {
+            color: #0288d1;
+        }
+        
+        @media (max-width: 768px) {
+            .status-bar {
+                flex-wrap: wrap;
+            }
+            
+            .status-card {
+                min-width: calc(50% - 15px);
+            }
+            
+            .charts-container,
+            .logs-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    
+    <!-- Graphiques -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <h1>PACIFIQUE MS BINGO</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Accueil</a></li>
+                    <li><a href="/play.html">Jouer</a></li>
+                    <li><a href="/organizer.html">Administration</a></li>
+                    <li><a href="/monitoring-dashboard.html" class="active">Surveillance</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h1>Tableau de Bord de Surveillance</h1>
+                <button id="refresh-btn" class="refresh-button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4C7.58 4 4.01 7.58 4.01 12C4.01 16.42 7.58 20 12 20C15.73 20 18.84 17.45 19.73 14H17.65C16.83 16.33 14.61 18 12 18C8.69 18 6 15.31 6 12C6 8.69 8.69 6 12 6C13.66 6 15.14 6.69 16.22 7.78L13 11H20V4L17.65 6.35Z" fill="white"/>
+                    </svg>
+                    Actualiser
+                </button>
+            </div>
+            
+            <div class="status-bar">
+                <div class="status-card">
+                    <div class="status-label">CPU</div>
+                    <div id="cpu-value" class="status-value green">0%</div>
+                    <div id="cpu-subtext" class="status-subtext">Normal</div>
+                </div>
+                
+                <div class="status-card">
+                    <div class="status-label">Mémoire</div>
+                    <div id="memory-value" class="status-value green">0%</div>
+                    <div id="memory-subtext" class="status-subtext">Normal</div>
+                </div>
+                
+                <div class="status-card">
+                    <div class="status-label">Requêtes</div>
+                    <div id="requests-value" class="status-value green">0/s</div>
+                    <div id="requests-subtext" class="status-subtext">Total: 0</div>
+                </div>
+                
+                <div class="status-card">
+                    <div class="status-label">Erreurs</div>
+                    <div id="errors-value" class="status-value green">0%</div>
+                    <div id="errors-subtext" class="status-subtext">Total: 0</div>
+                </div>
+            </div>
+            
+            <div class="charts-container">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h2 class="chart-title">Utilisation CPU</h2>
+                        <span id="cpu-time">Dernière mise à jour: --:--:--</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="cpu-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h2 class="chart-title">Utilisation Mémoire</h2>
+                        <span id="memory-time">Dernière mise à jour: --:--:--</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="memory-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h2 class="chart-title">Requêtes par seconde</h2>
+                        <span id="requests-time">Dernière mise à jour: --:--:--</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="requests-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h2 class="chart-title">Temps de réponse</h2>
+                        <span id="response-time">Dernière mise à jour: --:--:--</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="response-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="logs-container">
+                <div class="log-card">
+                    <div class="log-header">
+                        <h2 class="log-title">Alertes récentes</h2>
+                        <span id="alerts-count">0 alertes</span>
+                    </div>
+                    <div id="alerts-log" class="log-content"></div>
+                </div>
+                
+                <div class="log-card">
+                    <div class="log-header">
+                        <h2 class="log-title">Erreurs récentes</h2>
+                        <span id="errors-count">0 erreurs</span>
+                    </div>
+                    <div id="errors-log" class="log-content"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-columns">
+                <div class="footer-column">
+                    <h3>À propos</h3>
+                    <p>PACIFIQUE MS BINGO est une plateforme de jeu en ligne certifiée offrant une expérience de bingo équitable et sécurisée.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Liens utiles</h3>
+                    <ul>
+                        <li><a href="/play.html">Jouer</a></li>
+                        <li><a href="/organizer.html">Interface organisateur</a></li>
+                        <li><a href="/fairness-verifier.html">Vérificateur d'équité</a></li>
+                        <li><a href="/blockchain-visualizer.html">Visualiseur blockchain</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Assistance</h3>
+                    <ul>
+                        <li><a href="#">Règles du jeu</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contactez-nous</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 PACIFIQUE MS BINGO - Tous droits réservés</p>
+                <p>Licence ANJ en cours d'approbation</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Paramètres des graphiques
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 500
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: false
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        display: true,
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            };
+            
+            // Créer les graphiques
+            const cpuChart = new Chart(document.getElementById('cpu-chart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'CPU (%)',
+                        data: [],
+                        borderColor: '#2196f3',
+                        backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    ...chartOptions,
+                    scales: {
+                        ...chartOptions.scales,
+                        y: {
+                            ...chartOptions.scales.y,
+                            max: 100
+                        }
+                    }
+                }
+            });
+            
+            const memoryChart = new Chart(document.getElementById('memory-chart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Mémoire (%)',
+                        data: [],
+                        borderColor: '#4caf50',
+                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    ...chartOptions,
+                    scales: {
+                        ...chartOptions.scales,
+                        y: {
+                            ...chartOptions.scales.y,
+                            max: 100
+                        }
+                    }
+                }
+            });
+            
+            const requestsChart = new Chart(document.getElementById('requests-chart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Requêtes/s',
+                        data: [],
+                        borderColor: '#ff9800',
+                        backgroundColor: 'rgba(255, 152, 0, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: chartOptions
+            });
+            
+            const responseChart = new Chart(document.getElementById('response-chart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Temps moyen (ms)',
+                        data: [],
+                        borderColor: '#9c27b0',
+                        backgroundColor: 'rgba(156, 39, 176, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: chartOptions
+            });
+            
+            // Fonction pour mettre à jour le statut
+            function updateStatusClass(element, value, thresholds) {
+                if (value >= thresholds.high) {
+                    element.className = 'status-value red';
+                    return 'Critique';
+                } else if (value >= thresholds.medium) {
+                    element.className = 'status-value amber';
+                    return 'Élevé';
+                } else {
+                    element.className = 'status-value green';
+                    return 'Normal';
+                }
+            }
+            
+            // Fonction pour formater le temps
+            function formatTime(timestamp) {
+                const date = new Date(timestamp);
+                return date.toLocaleTimeString();
+            }
+            
+            // Variables pour simuler les données
+            let simulatedData = {
+                cpuHistory: [],
+                memoryHistory: [],
+                requestHistory: [],
+                responseHistory: [],
+                requestCount: 0,
+                errorCount: 0,
+                startTime: Date.now() - 3600000 // Démarré il y a 1 heure
+            };
+            
+            // Fonction pour charger les données
+            function loadData() {
+                // Dans une implémentation réelle, charger depuis l'API
+                fetch('/api/monitoring/stats')
+                    .then(response => {
+                        if (!response.ok) {
+                            // Si l'API n'est pas disponible, utiliser des données simulées
+                            return simulateData();
+                        }
+                        return response.json();
+                    })
+                    .then(updateDashboard)
+                    .catch(error => {
+                        console.error('Erreur lors du chargement des données:', error);
+                        simulateData();
+                    });
+            }
+            
+            // Fonction pour simuler des données (pour la démonstration)
+            function simulateData() {
+                const now = Date.now();
+                
+                // Simuler l'historique si vide
+                if (simulatedData.cpuHistory.length === 0) {
+                    for (let i = 0; i < 20; i++) {
+                        const timeOffset = (20 - i) * 60000; // 1 minute d'intervalle
+                        simulatedData.cpuHistory.push({
+                            timestamp: now - timeOffset,
+                            value: Math.random() * 30 + 10 // 10-40%
+                        });
+                        
+                        simulatedData.memoryHistory.push({
+                            timestamp: now - timeOffset,
+                            value: Math.random() * 20 + 40 // 40-60%
+                        });
+                        
+                        simulatedData.requestHistory.push({
+                            timestamp: now - timeOffset,
+                            value: Math.random() * 5 + 2 // 2-7 req/s
+                        });
+                        
+                        simulatedData.responseHistory.push({
+                            timestamp: now - timeOffset,
+                            value: Math.random() * 100 + 50 // 50-150ms
+                        });
+                    }
+                } else {
+                    // Ajouter une nouvelle valeur
+                    simulatedData.cpuHistory.push({
+                        timestamp: now,
+                        value: Math.min(95, Math.max(5, simulatedData.cpuHistory[simulatedData.cpuHistory.length - 1].value + (Math.random() * 10 - 5)))
+                    });
+                    
+                    simulatedData.memoryHistory.push({
+                        timestamp: now,
+                        value: Math.min(95, Math.max(20, simulatedData.memoryHistory[simulatedData.memoryHistory.length - 1].value + (Math.random() * 8 - 4)))
+                    });
+                    
+                    simulatedData.requestHistory.push({
+                        timestamp: now,
+                        value: Math.max(0, simulatedData.requestHistory[simulatedData.requestHistory.length - 1].value + (Math.random() * 2 - 1))
+                    });
+                    
+                    simulatedData.responseHistory.push({
+                        timestamp: now,
+                        value: Math.max(20, simulatedData.responseHistory[simulatedData.responseHistory.length - 1].value + (Math.random() * 40 - 20))
+                    });
+                    
+                    // Limiter à 20 points
+                    if (simulatedData.cpuHistory.length > 20) {
+                        simulatedData.cpuHistory.shift();
+                        simulatedData.memoryHistory.shift();
+                        simulatedData.requestHistory.shift();
+                        simulatedData.responseHistory.shift();
+                    }
+                }
+                
+                // Incrémenter les compteurs
+                simulatedData.requestCount += Math.floor(Math.random() * 10);
+                simulatedData.errorCount += Math.random() > 0.8 ? 1 : 0;
+                
+                return simulatedData;
+            }
+            
+            // Fonction pour mettre à jour le tableau de bord
+            function updateDashboard(data) {
+                // Mettre à jour les valeurs actuelles
+                const cpuValue = document.getElementById('cpu-value');
+                const memoryValue = document.getElementById('memory-value');
+                const requestsValue = document.getElementById('requests-value');
+                const errorsValue = document.getElementById('errors-value');
+                
+                const cpuSubtext = document.getElementById('cpu-subtext');
+                const memorySubtext = document.getElementById('memory-subtext');
+                const requestsSubtext = document.getElementById('requests-subtext');
+                const errorsSubtext = document.getElementById('errors-subtext');
+                
+                // Si des données simulées sont utilisées
+                if (!data.cpuUsage) {
+                    data = {
+                        cpuUsage: data.cpuHistory[data.cpuHistory.length - 1].value,
+                        memoryUsage: data.memoryHistory[data.memoryHistory.length - 1].value,
+                        requestsPerSecond: data.requestHistory[data.requestHistory.length - 1].value,
+                        requestCount: data.requestCount,
+                        errorCount: data.errorCount,
+                        errorRate: (data.errorCount / data.requestCount) * 100 || 0,
+                        responseTimeAvg: data.responseHistory[data.responseHistory.length - 1].value,
+                        uptime: formatUptime(Date.now() - data.startTime),
+                        cpuHistory: data.cpuHistory,
+                        memoryHistory: data.memoryHistory,
+                        requestsPerSecond: data.requestHistory,
+                        responseTimeAvg: data.responseHistory
+                    };
+                }
+                
+                // Valeurs actuelles
+                cpuValue.textContent = `${data.cpuUsage.toFixed(1)}%`;
+                memoryValue.textContent = `${data.memoryUsage.toFixed(1)}%`;
+                requestsValue.textContent = `${data.requestsPerSecond.toFixed(1)}/s`;
+                errorsValue.textContent = `${data.errorRate.toFixed(1)}%`;
+                
+                // Statut textuel
+                cpuSubtext.textContent = updateStatusClass(cpuValue, data.cpuUsage, { medium: 70, high: 90 });
+                memorySubtext.textContent = updateStatusClass(memoryValue, data.memoryUsage, { medium: 75, high: 90 });
+                requestsSubtext.textContent = `Total: ${data.requestCount.toLocaleString()}`;
+                errorsSubtext.textContent = `Total: ${data.errorCount.toLocaleString()}`;
+                updateStatusClass(errorsValue, data.errorRate, { medium: 5, high: 10 });
+                
+                // Mettre à jour les graphiques
+                updateChart(cpuChart, data.cpuHistory || [], 'CPU (%)', '#cpu-time');
+                updateChart(memoryChart, data.memoryHistory || [], 'Mémoire (%)', '#memory-time');
+                updateChart(requestsChart, data.requestsPerSecond || [], 'Requêtes/s', '#requests-time');
+                updateChart(responseChart, data.responseTimeAvg || [], 'Temps (ms)', '#response-time');
+                
+                // Dans une implémentation réelle, charger les logs d'alerte et d'erreur
+                simulateAlertLogs();
+                simulateErrorLogs();
+            }
+            
+            // Mise à jour d'un graphique
+            function updateChart(chart, dataHistory, label, timeElementId) {
+                if (!dataHistory || dataHistory.length === 0) {
+                    return;
+                }
+                
+                // Extraire les labels et valeurs
+                const labels = dataHistory.map(d => formatTime(d.timestamp));
+                const values = dataHistory.map(d => d.value);
+                
+                // Mettre à jour le graphique
+                chart.data.labels = labels;
+                chart.data.datasets[0].data = values;
+                chart.data.datasets[0].label = label;
+                chart.update();
+                
+                // Mettre à jour l'horodatage
+                if (timeElementId) {
+                    const timeElement = document.getElementById(timeElementId.substring(1));
+                    if (timeElement) {
+                        timeElement.textContent = `Dernière mise à jour: ${formatTime(Date.now())}`;
+                    }
+                }
+            }
+            
+            // Formater le temps écoulé
+            function formatUptime(ms) {
+                const seconds = Math.floor(ms / 1000) % 60;
+                const minutes = Math.floor(ms / 60000) % 60;
+                const hours = Math.floor(ms / 3600000) % 24;
+                const days = Math.floor(ms / 86400000);
+                
+                return `${days}j ${hours}h ${minutes}m ${seconds}s`;
+            }
+            
+            // Simuler des logs d'alerte
+            function simulateAlertLogs() {
+                const alertsLog = document.getElementById('alerts-log');
+                const alertsCount = document.getElementById('alerts-count');
+                
+                // Dans une implémentation réelle, charger depuis l'API
+                const alertEntries = [
+                    '[2025-04-13T10:15:23.456Z] Alerte CPU: Utilisation à 92.3% (seuil: 90%)',
+                    '[2025-04-13T09:42:17.123Z] Alerte mémoire: Utilisation à 87.5% (seuil: 85%)',
+                    '[2025-04-13T08:37:05.789Z] Alerte temps de réponse: 1243.8ms (seuil: 1000ms)',
+                    '[2025-04-12T22:14:53.234Z] Alerte erreur critique: TypeError - Cannot read property of undefined',
+                    '[2025-04-12T16:29:41.567Z] Alerte taux d\'erreurs: 6.7% (seuil: 5%)'
+                ];
+                
+                alertsLog.innerHTML = '';
+                alertEntries.forEach(entry => {
+                    const logEntry = document.createElement('div');
+                    logEntry.className = 'log-entry warning';
+                    logEntry.textContent = entry;
+                    alertsLog.appendChild(logEntry);
+                });
+                
+                alertsCount.textContent = `${alertEntries.length} alertes`;
+            }
+            
+            // Simuler des logs d'erreur
+            function simulateErrorLogs() {
+                const errorsLog = document.getElementById('errors-log');
+                const errorsCount = document.getElementById('errors-count');
+                
+                // Dans une implémentation réelle, charger depuis l'API
+                const errorEntries = [
+                    '[2025-04-13T11:23:45.678Z] 500 POST /api/game/join - 192.168.1.42',
+                    '[2025-04-13T10:17:36.123Z] TypeError: Cannot read property \'id\' of undefined\n    at GameController.joinGame (/server/controllers/gameController.js:85:23)\nRequête: POST /api/game/join - 192.168.1.57',
+                    '[2025-04-13T09:05:12.456Z] 404 GET /api/user/profile/123 - 192.168.1.36',
+                    '[2025-04-13T08:42:31.789Z] 500 POST /api/payment/process - 192.168.1.29',
+                    '[2025-04-12T23:59:18.234Z] Réponse lente (2341ms) - GET /api/stats/daily - 192.168.1.18'
+                ];
+                
+                errorsLog.innerHTML = '';
+                errorEntries.forEach(entry => {
+                    const logEntry = document.createElement('div');
+                    logEntry.className = 'log-entry error';
+                    logEntry.textContent = entry;
+                    errorsLog.appendChild(logEntry);
+                });
+                
+                errorsCount.textContent = `${errorEntries.length} erreurs`;
+            }
+            
+            // Bouton d'actualisation
+            document.getElementById('refresh-btn').addEventListener('click', loadData);
+            
+            // Charger les données initiales
+            loadData();
+            
+            // Actualiser automatiquement toutes les 30 secondes
+            setInterval(loadData, 30000);
+        });
+    </script>
+</body>
+</html>

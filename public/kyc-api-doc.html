@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS BINGO KYC API - Documentation</title>
+    <style>
+        :root {
+            --primary-color: #1976d2;
+            --secondary-color: #0d47a1;
+            --background-color: #f5f9ff;
+            --text-color: #333333;
+            --code-bg: #f0f4f8;
+            --method-get: #28a745;
+            --method-post: #007bff;
+            --method-put: #fd7e14;
+            --method-delete: #dc3545;
+            --header-bg: #e1f5fe;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            padding: 0;
+            margin: 0;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        section {
+            margin-bottom: 3rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--header-bg);
+        }
+        
+        h3 {
+            color: var(--secondary-color);
+            margin: 1.5rem 0 1rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        .api-key-box {
+            background-color: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .endpoint {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .endpoint:last-child {
+            border-bottom: none;
+        }
+        
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .method {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            color: white;
+            margin-right: 1rem;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .method.get {
+            background-color: var(--method-get);
+        }
+        
+        .method.post {
+            background-color: var(--method-post);
+        }
+        
+        .method.put {
+            background-color: var(--method-put);
+        }
+        
+        .method.delete {
+            background-color: var(--method-delete);
+        }
+        
+        .url {
+            font-family: monospace;
+            font-size: 1rem;
+            background-color: var(--code-bg);
+            padding: 0.5rem;
+            border-radius: 4px;
+            flex-grow: 1;
+            overflow-x: auto;
+        }
+        
+        .description {
+            margin-bottom: 1rem;
+        }
+        
+        .params-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        
+        .param-name {
+            width: 20%;
+        }
+        
+        .param-type {
+            width: 15%;
+        }
+        
+        .param-required {
+            width: 15%;
+        }
+        
+        .param-description {
+            width: 50%;
+        }
+        
+        .param {
+            display: flex;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .param:nth-child(even) {
+            background-color: #f0f0f0;
+        }
+        
+        .required {
+            color: var(--method-post);
+            font-weight: bold;
+        }
+        
+        .optional {
+            color: #6c757d;
+        }
+        
+        .response-example {
+            background-color: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+        
+        pre {
+            margin: 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        
+        .request-example {
+            background-color: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .nav {
+            background-color: white;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .nav-list {
+            list-style: none;
+            display: flex;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+        
+        .nav-item {
+            margin-right: 1.5rem;
+            white-space: nowrap;
+        }
+        
+        .nav-item a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-item a:hover {
+            color: var(--primary-color);
+        }
+        
+        .response-code {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .response-200 {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+        
+        .response-400 {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+        }
+        
+        .response-401 {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+        
+        .response-500 {
+            background-color: rgba(108, 117, 125, 0.1);
+            color: #6c757d;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            margin-top: 2rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 768px) {
+            .endpoint-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .method {
+                margin-bottom: 0.5rem;
+            }
+            
+            .params-header, .param {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-gap: 0.5rem;
+            }
+            
+            .param-name, .param-type, .param-required, .param-description {
+                width: 100%;
+            }
+            
+            .param-type, .param-required {
+                grid-column: 2;
+            }
+            
+            .param-description {
+                grid-column: 1 / -1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>MS BINGO KYC API</h1>
+            <div class="subtitle">Documentation officielle pour l'intégration avec le système de vérification KYC</div>
+        </div>
+    </header>
+    
+    <div class="nav">
+        <div class="nav-container">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="#introduction">Introduction</a></li>
+                <li class="nav-item"><a href="#authentication">Authentification</a></li>
+                <li class="nav-item"><a href="#documents">Documents API</a></li>
+                <li class="nav-item"><a href="#history">Historique API</a></li>
+                <li class="nav-item"><a href="#stats">Statistiques API</a></li>
+                <li class="nav-item"><a href="#errors">Gestion des erreurs</a></li>
+                <li class="nav-item"><a href="#examples">Exemples d'intégration</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <main>
+        <section id="introduction">
+            <h2>Introduction</h2>
+            <p>L'API de KYC (Know Your Customer) de MS BINGO permet aux systèmes externes d'accéder aux données de vérification d'identité, y compris les documents soumis, l'historique des vérifications et les statistiques globales.</p>
+            <p>Cette API est conçue pour être utilisée par :</p>
+            <ul>
+                <li>Les systèmes de conformité internes</li>
+                <li>Les outils d'audit</li>
+                <li>Les systèmes de reporting réglementaire</li>
+                <li>Les plateformes de gestion des risques</li>
+            </ul>
+            <p>Toutes les requêtes doivent être effectuées via HTTPS et nécessitent une clé d'API valide.</p>
+        </section>
+        
+        <section id="authentication">
+            <h2>Authentification</h2>
+            <p>L'API utilise désormais l'authentification par JWT (JSON Web Token) pour une sécurité renforcée. L'authentification se fait en deux étapes :</p>
+            
+            <h3>1. Obtention d'un token JWT</h3>
+            <p>Pour obtenir un token JWT, vous devez d'abord effectuer une demande d'authentification avec vos identifiants et votre clé API :</p>
+            
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    <span class="url">/api/v1/kyc/auth/token</span>
+                </div>
+                <div class="description">
+                    <p>Génère un token JWT valide pour 24 heures.</p>
+                </div>
+                
+                <h4>Payload de la requête</h4>
+                <div class="request-example">
+<pre>{
+  "username": "your-username",
+  "password": "your-password",
+  "api_key": "your-api-key"
+}</pre>
+                </div>
+                
+                <h4>Exemple de requête</h4>
+                <div class="request-example">
+<pre>curl -X POST "https://api.ms-bingo.com/api/v1/kyc/auth/token" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "api-client",
+    "password": "ms-bingo-secure-2025",
+    "api_key": "ms-bingo-kyc-api-2025"
+  }'</pre>
+                </div>
+                
+                <h4>Réponse</h4>
+                <div class="response-example">
+<pre>{
+  "success": true,
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "expiresIn": 86400,
+  "tokenType": "Bearer"
+}</pre>
+                </div>
+            </div>
+            
+            <h3>2. Utilisation du token JWT pour les requêtes API</h3>
+            <p>Une fois que vous avez obtenu votre token JWT, vous devez l'inclure dans toutes vos requêtes API en utilisant l'en-tête <code>Authorization</code> ou le paramètre de requête <code>token</code>.</p>
+            
+            <h4>Méthode 1 : Utilisation de l'en-tête Authorization (recommandée)</h4>
+            <div class="api-key-box">
+                <strong>Exemple :</strong> <code>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code>
+            </div>
+            
+            <h4>Méthode 2 : Utilisation du paramètre token dans l'URL</h4>
+            <div class="api-key-box">
+                <strong>Exemple :</strong> <code>https://api.ms-bingo.com/api/v1/kyc/export/documents?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code>
+            </div>
+            
+            <p><strong>Note de sécurité :</strong> Protégez vos identifiants et votre token JWT. Le token a une durée de validité de 24 heures, après quoi vous devrez en générer un nouveau.</p>
+            
+            <h3>Sécurité IP (Optionnelle)</h3>
+            <p>Pour une sécurité renforcée, l'API limite également l'accès en fonction des adresses IP. Vous devrez peut-être demander l'ajout de votre adresse IP à notre liste blanche si vous recevez des erreurs 403 Forbidden.</p>
+            
+            <h3>Obtention des identifiants API</h3>
+            <p>Pour obtenir des identifiants API, veuillez contacter notre équipe technique à <a href="mailto:api@ms-bingo.com">api@ms-bingo.com</a>. Vous devrez fournir :</p>
+            <ul>
+                <li>Nom de votre organisation</li>
+                <li>Objectif de l'intégration</li>
+                <li>Adresses IP qui utiliseront l'API</li>
+                <li>Coordonnées du responsable technique</li>
+            </ul>
+        </section>
+        
+        <section id="documents">
+            <h2>Documents API</h2>
+            <p>Cette API permet d'accéder aux documents soumis pour vérification KYC.</p>
+            
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    <span class="url">/api/v1/kyc/export/documents</span>
+                </div>
+                <div class="description">
+                    <p>Récupère les documents KYC soumis avec options de filtrage.</p>
+                </div>
+                
+                <h3>Authentification</h3>
+                <p>Cette API nécessite un token JWT valide dans l'en-tête <code>Authorization</code>. Consultez la section <a href="#authentication">Authentification</a> pour plus de détails.</p>
+                
+                <h3>Paramètres de requête</h3>
+                <div class="params-header">
+                    <div class="param-name">Nom</div>
+                    <div class="param-type">Type</div>
+                    <div class="param-required">Obligatoire</div>
+                    <div class="param-description">Description</div>
+                </div>
+                
+                <div class="param">
+                    <div class="param-name">api_key</div>
+                    <div class="param-type">string</div>
+                    <div class="param-required required">Oui</div>
+                    <div class="param-description">Votre clé API d'accès</div>
+                </div>
+                
+                <div class="param">
+                    <div class="param-name">status</div>
+                    <div class="param-type">string</div>
+                    <div class="param-required optional">Non</div>
+                    <div class="param-description">Filtre par statut (pending, approved, rejected, flagged)</div>
+                </div>
+                
+                <div class="param">
+                    <div class="param-name">risk_level</div>
+                    <div class="param-type">string</div>
+                    <div class="param-required optional">Non</div>
+                    <div class="param-description">Filtre par niveau de risque (low, medium, high)</div>
+                </div>
+                
+                <div class="param">
+                    <div class="param-name">start_date</div>
+                    <div class="param-type">string (ISO date)</div>
+                    <div class="param-required optional">Non</div>
+                    <div class="param-description">Date de début pour les documents soumis (format: YYYY-MM-DD)</div>
+                </div>
+                
+                <div class="param">
+                    <div class="param-name">end_date</div>
+                    <div class="param-type">string (ISO date)</div>
+                    <div class="param-required optional">Non</div>
+                    <div class="param-description">Date de fin pour les documents soumis (format: YYYY-MM-DD)</div>
+                </div>
+                
+                <div class="param">
+                    <div class="param-name">limit</div>
+                    <div class="param-type">integer</div>
+                    <div class="param-required optional">Non</div>
+                    <div class="param-description">Nombre maximum de résultats à retourner (défaut: 50, max: 200)</div>
+                </div>
+                
+                <div class="param">
+                    <div class="param-name">offset</div>
+                    <div class="param-type">integer</div>
+                    <div class="param-required optional">Non</div>
+                    <div class="param-description">Index de départ pour la pagination (défaut: 0)</div>
+                </div>
+                
+                <h3>Exemple de requête</h3>
+                <div class="request-example">
+                    <pre>curl -X GET "https://api.ms-bingo.com/api/v1/kyc/export/documents?risk_level=high&limit=10" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</pre>
+                </div>
+                
+                <h3>Réponse</h3>
+                <p><span class="response-code response-200">200 OK</span> Retourne la liste des documents filtrés.</p>
+                
+                <div class="response-example">
+<pre>{
+  "meta": {
+    "total_count": 28,
+    "returned_count": 10,
+    "limit": 10,
+    "offset": 0
+  },
+  "documents": [
+    {
+      "id": 5,
+      "userId": 105,
+      "username": "joueur5",
+      "documentType": "passport",
+      "documentNumber": "P123456789",
+      "expiryDate": "2029-01-30",
+      "country": "WF",
+      "uploadDate": "2024-03-15T10:45:00Z",
+      "flagDate": "2024-03-15T16:20:00Z",
+      "flagReason": "Document potentiellement modifié",
+      "riskLevel": "high"
+    },
+    // Plus de documents...
+  ]
+}</pre>
+                </div>
+            </div>
+        </section>
+        
+        <section id="history">
+            <h2>Historique API</h2>
+            <p>Cette API permet d'accéder à l'historique des vérifications KYC.</p>
+            
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    <span class="url">/api/v1/kyc/export/history</span>
+                </div>
+                <div class="description">
+                    <p>Récupère l'historique des vérifications KYC avec options de filtrage.</p>
+                </div>
+                
+                <h3>Paramètres de requête</h3>
+                <div class="params-header">
+                    <div class="param-name">Nom</div>
+                    <div class="param-type">Type</div>
+                    <div class="param-required">Obligatoire</div>
+                    <div class="param-description">Description</div>
+                </div>
+                
+                <div class="param">
+                    <div class="param-name">api_key</div>
+                    <div class="param-type">string</div>
+                    <div class="param-required required">Oui</div>
+                    <div class="param-description">Votre clé API d'accès</div>
+                </div>
+                
+                <div class="param">
+                    <div class="param-name">action</div>
+                    <div class="param-type">string</div>
+                    <div class="param-required optional">Non</div>
+                    <div class="param-description">Filtre par action (approved, rejected, flagged, commented)</div>
+                </div>
+                
+                <div class="param">
+                    <div class="param-name">admin</div>
+                    <div class="param-type">string</div>
+                    <div class="param-required optional">Non</div>
+                    <div class="param-description">Filtre par administrateur ayant effectué l'action</div>
+                </div>
+                
+                <div class="param">
+                    <div class="param-name">username</div>
+                    <div class="param-type">string</div>
+                    <div class="param-required optional">Non</div>
+                    <div class="param-description">Filtre par nom d'utilisateur concerné</div>
+                </div>
+                
+                <div class="param">
+                    <div class="param-name">start_date</div>
+                    <div class="param-type">string (ISO date)</div>
+                    <div class="param-required optional">Non</div>
+                    <div class="param-description">Date de début pour les actions (format: YYYY-MM-DD)</div>
+                </div>
+                
+                <div class="param">
+                    <div class="param-name">end_date</div>
+                    <div class="param-type">string (ISO date)</div>
+                    <div class="param-required optional">Non</div>
+                    <div class="param-description">Date de fin pour les actions (format: YYYY-MM-DD)</div>
+                </div>
+                
+                <div class="param">
+                    <div class="param-name">limit</div>
+                    <div class="param-type">integer</div>
+                    <div class="param-required optional">Non</div>
+                    <div class="param-description">Nombre maximum de résultats à retourner (défaut: 50, max: 200)</div>
+                </div>
+                
+                <div class="param">
+                    <div class="param-name">offset</div>
+                    <div class="param-type">integer</div>
+                    <div class="param-required optional">Non</div>
+                    <div class="param-description">Index de départ pour la pagination (défaut: 0)</div>
+                </div>
+                
+                <h3>Exemple de requête</h3>
+                <div class="request-example">
+                    <pre>curl -X GET "https://api.ms-bingo.com/api/v1/kyc/export/history?action=rejected&start_date=2024-04-01" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</pre>
+                </div>
+                
+                <h3>Réponse</h3>
+                <p><span class="response-code response-200">200 OK</span> Retourne l'historique des vérifications filtré.</p>
+                
+                <div class="response-example">
+<pre>{
+  "meta": {
+    "total_count": 15,
+    "returned_count": 15,
+    "limit": 50,
+    "offset": 0
+  },
+  "history": [
+    {
+      "id": 2,
+      "date": "2024-04-10T11:45:00Z",
+      "admin": "admin-2",
+      "action": "rejected",
+      "username": "joueur7",
+      "documentId": 7,
+      "documentType": "residence_proof",
+      "details": "Document expiré"
+    },
+    // Plus d'entrées d'historique...
+  ]
+}</pre>
+                </div>
+            </div>
+        </section>
+        
+        <section id="stats">
+            <h2>Statistiques API</h2>
+            <p>Cette API permet d'accéder aux statistiques globales de vérification KYC.</p>
+            
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    <span class="url">/api/v1/kyc/export/stats</span>
+                </div>
+                <div class="description">
+                    <p>Récupère les statistiques globales de vérification KYC.</p>
+                </div>
+                
+                <h3>Paramètres de requête</h3>
+                <div class="params-header">
+                    <div class="param-name">Nom</div>
+                    <div class="param-type">Type</div>
+                    <div class="param-required">Obligatoire</div>
+                    <div class="param-description">Description</div>
+                </div>
+                
+                <div class="param">
+                    <div class="param-name">api_key</div>
+                    <div class="param-type">string</div>
+                    <div class="param-required required">Oui</div>
+                    <div class="param-description">Votre clé API d'accès</div>
+                </div>
+                
+                <div class="param">
+                    <div class="param-name">period</div>
+                    <div class="param-type">string</div>
+                    <div class="param-required optional">Non</div>
+                    <div class="param-description">Période des statistiques (daily, weekly, monthly, all_time - défaut: all_time)</div>
+                </div>
+                
+                <h3>Exemple de requête</h3>
+                <div class="request-example">
+                    <pre>curl -X GET "https://api.ms-bingo.com/api/v1/kyc/export/stats?period=monthly" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</pre>
+                </div>
+                
+                <h3>Réponse</h3>
+                <p><span class="response-code response-200">200 OK</span> Retourne les statistiques globales.</p>
+                
+                <div class="response-example">
+<pre>{
+  "meta": {
+    "period": "monthly",
+    "generated_at": "2024-04-13T12:30:45Z"
+  },
+  "stats": {
+    "verified_documents_count": 45,
+    "approved_documents_count": 32,
+    "rejected_documents_count": 13,
+    "flagged_documents_count": 8,
+    "average_processing_time_hours": 8,
+    "high_risk_documents_count": 10,
+    "medium_risk_documents_count": 16,
+    "low_risk_documents_count": 19,
+    "duplicate_documents_count": 5,
+    "verification_rate_per_day": 4.5
+  }
+}</pre>
+                </div>
+            </div>
+        </section>
+        
+        <section id="errors">
+            <h2>Gestion des erreurs</h2>
+            <p>L'API utilise les codes de statut HTTP standard pour indiquer le succès ou l'échec des requêtes.</p>
+            
+            <h3>Codes de statut</h3>
+            <ul>
+                <li><span class="response-code response-200">200 OK</span> La requête a réussi.</li>
+                <li><span class="response-code response-400">400 Bad Request</span> Paramètres invalides ou manquants.</li>
+                <li><span class="response-code response-401">401 Unauthorized</span> Token JWT invalide ou manquant.</li>
+                <li><span class="response-code response-500">500 Internal Server Error</span> Erreur serveur.</li>
+            </ul>
+            
+            <h3>Format des erreurs</h3>
+            <p>Les réponses d'erreur suivent un format JSON standard :</p>
+            
+            <div class="response-example">
+<pre>{
+  "error": "Unauthorized",
+  "message": "Token JWT invalide ou manquant"
+}</pre>
+            </div>
+        </section>
+        
+        <section id="examples">
+            <h2>Exemples d'intégration</h2>
+            
+            <h3>Exemple en JavaScript (Node.js)</h3>
+            <div class="response-example">
+<pre>const axios = require('axios');
+
+// Étape 1: Obtenir un token JWT
+async function getJwtToken() {
+  try {
+    const authResponse = await axios.post('https://api.ms-bingo.com/api/v1/kyc/auth/token', {
+      username: 'api-client',
+      password: 'ms-bingo-secure-2025',
+      api_key: 'ms-bingo-kyc-api-2025'
+    });
+    
+    return authResponse.data.token;
+  } catch (error) {
+    console.error('Erreur lors de l\'authentification:', error.response?.data || error.message);
+    throw error;
+  }
+}
+
+// Étape 2: Utiliser le token pour accéder aux documents
+async function fetchKycDocuments() {
+  try {
+    // Obtenir un token JWT
+    const token = await getJwtToken();
+    
+    // Utiliser le token pour l'authentification
+    const response = await axios.get('https://api.ms-bingo.com/api/v1/kyc/export/documents', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      params: {
+        risk_level: 'high',
+        limit: 10
+      }
+    });
+    
+    console.log('Documents à haut risque:', response.data);
+  } catch (error) {
+    console.error('Erreur lors de la récupération des documents:', error.response?.data || error.message);
+  }
+}
+
+fetchKycDocuments();</pre>
+            </div>
+            
+            <h3>Exemple en Python</h3>
+            <div class="response-example">
+<pre>import requests
+
+# Étape 1: Obtenir un token JWT
+def get_jwt_token():
+    auth_url = 'https://api.ms-bingo.com/api/v1/kyc/auth/token'
+    auth_data = {
+        'username': 'api-client',
+        'password': 'ms-bingo-secure-2025',
+        'api_key': 'ms-bingo-kyc-api-2025'
+    }
+    
+    try:
+        auth_response = requests.post(auth_url, json=auth_data)
+        auth_response.raise_for_status()
+        return auth_response.json()['token']
+    except requests.exceptions.RequestException as e:
+        print(f"Erreur lors de l'authentification: {e}")
+        raise e
+
+# Étape 2: Utiliser le token pour accéder à l'historique KYC
+def fetch_kyc_history():
+    try:
+        # Obtenir un token JWT
+        token = get_jwt_token()
+        
+        # Utiliser le token pour récupérer l'historique
+        url = 'https://api.ms-bingo.com/api/v1/kyc/export/history'
+        headers = {
+            'Authorization': f'Bearer {token}'
+        }
+        params = {
+            'action': 'rejected',
+            'start_date': '2024-04-01'
+        }
+        
+        response = requests.get(url, headers=headers, params=params)
+        response.raise_for_status()
+        history_data = response.json()
+        print(f"Documents rejetés depuis le 1er avril: {len(history_data['history'])}")
+        return history_data
+    except requests.exceptions.RequestException as e:
+        print(f"Erreur lors de la récupération de l'historique: {e}")
+        return None
+
+fetch_kyc_history()</pre>
+            </div>
+            
+            <h3>Exemple en PHP</h3>
+            <div class="response-example">
+<pre>&lt;?php
+// Étape 1: Obtenir un token JWT
+function getJwtToken() {
+    $authUrl = 'https://api.ms-bingo.com/api/v1/kyc/auth/token';
+    $authData = json_encode([
+        'username' => 'api-client',
+        'password' => 'ms-bingo-secure-2025',
+        'api_key' => 'ms-bingo-kyc-api-2025'
+    ]);
+    
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $authUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $authData);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        'Content-Length: ' . strlen($authData)
+    ]);
+    
+    $response = curl_exec($ch);
+    
+    if (curl_errno($ch)) {
+        echo 'Erreur cURL lors de l\'authentification: ' . curl_error($ch);
+        return null;
+    }
+    
+    curl_close($ch);
+    $authResult = json_decode($response, true);
+    
+    return $authResult['token'] ?? null;
+}
+
+// Étape 2: Utiliser le token pour accéder aux statistiques
+function getKycStats($period = 'monthly') {
+    // Obtenir un token JWT
+    $token = getJwtToken();
+    if (!$token) {
+        echo 'Impossible d\'obtenir un token JWT';
+        return null;
+    }
+    
+    $url = 'https://api.ms-bingo.com/api/v1/kyc/export/stats';
+    $params = [
+        'period' => $period
+    ];
+    
+    $url .= '?' . http_build_query($params);
+    
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Authorization: Bearer ' . $token
+    ]);
+    
+    $response = curl_exec($ch);
+    
+    if (curl_errno($ch)) {
+        echo 'Erreur cURL: ' . curl_error($ch);
+        return null;
+    }
+    
+    curl_close($ch);
+    return json_decode($response, true);
+}
+
+$stats = getKycStats('monthly');
+if ($stats) {
+    echo "Documents vérifiés ce mois: " . $stats['stats']['verified_documents_count'];
+}
+?&gt;</pre>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 MS BINGO - Documentation de l'API KYC</p>
+            <p>Pour toute assistance technique, contactez <a href="mailto:api-support@ms-bingo.com" style="color: white;">api-support@ms-bingo.com</a></p>
+        </div>
+    </footer>
+</body>
+</html>

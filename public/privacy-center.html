@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS BINGO - Centre de confidentialité</title>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0099cc;
+            --secondary-color: #4CAF50;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --border-radius: 8px;
+            --transition-speed: 0.3s;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            line-height: 1.6;
+            background-image: url('/images/pacifique-bingo-background.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.65);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+            background-color: rgba(26, 26, 26, 0.8);
+            border-radius: var(--border-radius);
+            padding: 15px 20px;
+        }
+        
+        header h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+        }
+        
+        header nav {
+            display: flex;
+            gap: 10px;
+        }
+        
+        header nav a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            transition: background-color var(--transition-speed);
+            font-weight: 500;
+        }
+        
+        header nav a:hover, header nav a.active {
+            background-color: var(--primary-color);
+        }
+        
+        .privacy-content {
+            background-color: rgba(26, 26, 26, 0.8);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .privacy-content h2 {
+            color: var(--primary-color);
+            font-size: 24px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .privacy-content h3 {
+            color: var(--light-color);
+            font-size: 20px;
+            margin: 25px 0 15px;
+        }
+        
+        .privacy-content p {
+            margin-bottom: 15px;
+        }
+        
+        .tab-container {
+            margin-bottom: 20px;
+        }
+        
+        .tab-nav {
+            display: flex;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .tab-nav button {
+            background: none;
+            border: none;
+            color: #ffffff;
+            padding: 12px 15px;
+            cursor: pointer;
+            flex-grow: 1;
+            font-size: 16px;
+            transition: all var(--transition-speed);
+        }
+        
+        .tab-nav button:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .tab-nav button.active {
+            background-color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color var(--transition-speed);
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: #007ba1;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #3d8b40;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-color);
+        }
+        
+        .btn-warning:hover {
+            background-color: #d35400;
+        }
+        
+        .request-form {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px 15px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 16px;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        textarea.form-input {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .card {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--light-color);
+        }
+        
+        .request-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background-color: var(--warning-color);
+            color: white;
+        }
+        
+        .status-processing {
+            background-color: var(--info-color);
+            color: white;
+        }
+        
+        .status-completed {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .status-rejected {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: var(--border-radius);
+        }
+        
+        .alert-success {
+            background-color: rgba(76, 175, 80, 0.2);
+            border: 1px solid var(--secondary-color);
+            color: var(--secondary-color);
+        }
+        
+        .alert-danger {
+            background-color: rgba(231, 76, 60, 0.2);
+            border: 1px solid var(--danger-color);
+            color: var(--danger-color);
+        }
+        
+        .alert-warning {
+            background-color: rgba(243, 156, 18, 0.2);
+            border: 1px solid var(--warning-color);
+            color: var(--warning-color);
+        }
+        
+        .timeline {
+            padding-left: 30px;
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 9px;
+            width: 2px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -30px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+        }
+        
+        .timeline-content {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: var(--border-radius);
+        }
+        
+        .timeline-date {
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 5px;
+        }
+        
+        .data-category {
+            margin-bottom: 20px;
+        }
+        
+        .data-header {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .data-header h4 {
+            margin: 0;
+            color: var(--light-color);
+        }
+        
+        .data-content {
+            background-color: rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .data-content.active {
+            display: block;
+        }
+        
+        .privacy-links {
+            margin-top: 30px;
+        }
+        
+        .privacy-links h3 {
+            margin-bottom: 15px;
+        }
+        
+        .privacy-links ul {
+            list-style-type: none;
+        }
+        
+        .privacy-links li {
+            margin-bottom: 10px;
+        }
+        
+        .privacy-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color var(--transition-speed);
+        }
+        
+        .privacy-links a:hover {
+            text-decoration: underline;
+            color: #fff;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow: auto;
+        }
+        
+        .modal-content {
+            background-color: #222;
+            margin: 5% auto;
+            padding: 25px;
+            width: 80%;
+            max-width: 600px;
+            border-radius: var(--border-radius);
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #888;
+            transition: color var(--transition-speed);
+        }
+        
+        .close-modal:hover {
+            color: #fff;
+        }
+        
+        .modal-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ccc;
+            font-size: 14px;
+            margin-top: 50px;
+        }
+        
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .footer-links {
+            margin-top: 10px;
+        }
+        
+        .footer-links a {
+            margin: 0 10px;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            header nav {
+                margin-top: 15px;
+            }
+            
+            .privacy-content {
+                padding: 20px;
+            }
+            
+            .tab-nav {
+                flex-direction: column;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .form-actions .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MS BINGO</h1>
+            <nav>
+                <a href="/">Accueil</a>
+                <a href="/play.html">Jouer</a>
+                <a href="/profile.html">Mon Profil</a>
+                <a href="/contact.html">Contact</a>
+            </nav>
+        </header>
+        
+        <div class="privacy-content">
+            <h2>Centre de confidentialité</h2>
+            <p>Gérez vos données personnelles et exercez vos droits en matière de protection des données.</p>
+            
+            <div class="tab-container">
+                <div class="tab-nav">
+                    <button class="tab-btn active" data-tab="overview">Vue d'ensemble</button>
+                    <button class="tab-btn" data-tab="data-access">Accès aux données</button>
+                    <button class="tab-btn" data-tab="data-deletion">Suppression des données</button>
+                    <button class="tab-btn" data-tab="requests">Mes demandes</button>
+                </div>
+                
+                <!-- Onglet Vue d'ensemble -->
+                <div id="overview-tab" class="tab-content active">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Vos droits en matière de protection des données</div>
+                        </div>
+                        <p>Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez des droits suivants concernant vos données personnelles :</p>
+                        <ul>
+                            <li><strong>Droit d'accès :</strong> Vous pouvez obtenir une copie de vos données personnelles.</li>
+                            <li><strong>Droit de rectification :</strong> Vous pouvez faire corriger les données inexactes.</li>
+                            <li><strong>Droit à l'effacement :</strong> Vous pouvez demander la suppression de vos données dans certaines circonstances.</li>
+                            <li><strong>Droit à la limitation du traitement :</strong> Vous pouvez demander la restriction du traitement.</li>
+                            <li><strong>Droit à la portabilité :</strong> Vous pouvez recevoir vos données dans un format structuré.</li>
+                            <li><strong>Droit d'opposition :</strong> Vous pouvez vous opposer au traitement de vos données.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Données que nous collectons</div>
+                        </div>
+                        <div class="data-category">
+                            <div class="data-header">
+                                <h4>Données de profil</h4>
+                                <span class="toggle-btn">+</span>
+                            </div>
+                            <div class="data-content">
+                                <p>Ces données comprennent votre nom d'utilisateur, adresse e-mail, et préférences de compte.</p>
+                                <p>Ces informations sont utilisées pour vous identifier sur la plateforme et vous contacter.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="data-category">
+                            <div class="data-header">
+                                <h4>Données d'authentification et de sécurité</h4>
+                                <span class="toggle-btn">+</span>
+                            </div>
+                            <div class="data-content">
+                                <p>Ces données comprennent votre mot de passe (crypté), l'historique des connexions, et informations sur les appareils utilisés.</p>
+                                <p>Ces informations sont utilisées pour sécuriser votre compte et détecter les activités suspectes.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="data-category">
+                            <div class="data-header">
+                                <h4>Données de jeu</h4>
+                                <span class="toggle-btn">+</span>
+                            </div>
+                            <div class="data-content">
+                                <p>Ces données comprennent votre historique de jeu, cartes achetées, gains et performances.</p>
+                                <p>Ces informations sont utilisées pour gérer les parties, attribuer les gains et améliorer votre expérience de jeu.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="data-category">
+                            <div class="data-header">
+                                <h4>Données financières</h4>
+                                <span class="toggle-btn">+</span>
+                            </div>
+                            <div class="data-content">
+                                <p>Ces données comprennent votre historique de transactions, méthodes de paiement et solde.</p>
+                                <p>Ces informations sont utilisées pour traiter les paiements, gérer votre solde et respecter les obligations légales.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="data-category">
+                            <div class="data-header">
+                                <h4>Données KYC</h4>
+                                <span class="toggle-btn">+</span>
+                            </div>
+                            <div class="data-content">
+                                <p>Ces données comprennent les documents d'identité que vous avez fournis pour la vérification de votre compte.</p>
+                                <p>Ces informations sont utilisées pour vérifier votre identité conformément aux exigences réglementaires.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="privacy-links">
+                        <h3>Ressources utiles</h3>
+                        <ul>
+                            <li><a href="/privacy-policy.html">Politique de confidentialité</a></li>
+                            <li><a href="/cookies-policy.html">Politique de cookies</a></li>
+                            <li><a href="/terms.html">Conditions d'utilisation</a></li>
+                            <li><a href="/faq-privacy.html">FAQ sur la protection des données</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Onglet Accès aux données -->
+                <div id="data-access-tab" class="tab-content">
+                    <h3>Demander une copie de vos données</h3>
+                    <p>Vous pouvez demander une copie de toutes les données personnelles que nous détenons vous concernant. Une fois la demande traitée, vous pourrez télécharger vos données au format JSON.</p>
+                    
+                    <div class="alert alert-info">
+                        <p>Le traitement de votre demande peut prendre jusqu'à 30 jours. Vous serez notifié par e-mail lorsque vos données seront prêtes.</p>
+                    </div>
+                    
+                    <div class="request-form">
+                        <form id="data-access-form">
+                            <div class="form-group">
+                                <label for="data-access-reason" class="form-label">Raison de la demande (facultatif)</label>
+                                <textarea id="data-access-reason" name="reason" class="form-input" placeholder="Veuillez indiquer pourquoi vous souhaitez accéder à vos données..."></textarea>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Soumettre la demande</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Onglet Suppression des données -->
+                <div id="data-deletion-tab" class="tab-content">
+                    <h3>Demander la suppression de vos données (droit à l'oubli)</h3>
+                    <p>Vous pouvez demander la suppression de vos données personnelles. Cette action est irréversible et entraînera la fermeture de votre compte.</p>
+                    
+                    <div class="alert alert-warning">
+                        <p><strong>Attention :</strong> Certaines données peuvent être conservées même après votre demande de suppression pour respecter nos obligations légales, notamment :</p>
+                        <ul>
+                            <li>Les données relatives aux transactions financières (conservation obligatoire de 5 ans)</li>
+                            <li>Les documents d'identité vérifiés dans le cadre du KYC</li>
+                            <li>Les données liées aux alertes de sécurité ou de fraude actives</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="request-form">
+                        <form id="data-deletion-form">
+                            <div class="form-group">
+                                <label for="data-deletion-reason" class="form-label">Raison de la suppression</label>
+                                <select id="data-deletion-reason" name="reason" class="form-input" required>
+                                    <option value="">Sélectionnez une raison</option>
+                                    <option value="no_longer_use">Je n'utilise plus le service</option>
+                                    <option value="privacy_concerns">Préoccupations concernant la confidentialité</option>
+                                    <option value="data_concerns">Préoccupations concernant l'utilisation des données</option>
+                                    <option value="account_closure">Je ferme mon compte</option>
+                                    <option value="other">Autre raison</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="data-deletion-feedback" class="form-label">Commentaires supplémentaires (facultatif)</label>
+                                <textarea id="data-deletion-feedback" name="feedback" class="form-input" placeholder="Merci de nous faire part de vos commentaires..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="data-deletion-confirm" class="form-label">
+                                    <input type="checkbox" id="data-deletion-confirm" required>
+                                    Je comprends que cette action est irréversible et entraînera la fermeture de mon compte.
+                                </label>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn" onclick="document.getElementById('deletion-confirm-modal').style.display = 'block';">Soumettre la demande</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Modal de confirmation pour la suppression -->
+                    <div id="deletion-confirm-modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-modal" onclick="document.getElementById('deletion-confirm-modal').style.display = 'none';">&times;</span>
+                            <h3 class="modal-title">Confirmation de suppression</h3>
+                            <p>Êtes-vous sûr de vouloir demander la suppression de votre compte et de vos données personnelles ? Cette action est irréversible.</p>
+                            <p>Après confirmation, votre demande sera traitée dans un délai de 30 jours. Vous perdrez immédiatement l'accès à votre compte une fois la demande traitée.</p>
+                            <div class="form-actions" style="margin-top: 20px;">
+                                <button type="button" class="btn" onclick="document.getElementById('deletion-confirm-modal').style.display = 'none';">Annuler</button>
+                                <button type="button" class="btn btn-danger" id="confirm-deletion-btn">Confirmer la suppression</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Onglet Mes demandes -->
+                <div id="requests-tab" class="tab-content">
+                    <h3>Historique de vos demandes</h3>
+                    <p>Consultez l'état de vos demandes d'accès et de suppression de données.</p>
+                    
+                    <div id="requests-container">
+                        <!-- Les demandes seront insérées ici dynamiquement -->
+                        <div class="alert alert-info" id="no-requests-message" style="display: none;">
+                            <p>Vous n'avez pas encore effectué de demande.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2025 Pacifique MS Bingo. Tous droits réservés.</p>
+            <div class="footer-links">
+                <a href="/terms.html">Conditions d'utilisation</a>
+                <a href="/privacy-policy.html">Politique de confidentialité</a>
+                <a href="/cookies-policy.html">Politique de cookies</a>
+                <a href="/contact.html">Contact</a>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestion des onglets
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+                    
+                    // Activer le bouton
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    // Afficher le contenu correspondant
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+            
+            // Gestion des accordéons pour les catégories de données
+            const dataHeaders = document.querySelectorAll('.data-header');
+            
+            dataHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const toggleBtn = header.querySelector('.toggle-btn');
+                    
+                    if (content.classList.contains('active')) {
+                        content.classList.remove('active');
+                        toggleBtn.textContent = '+';
+                    } else {
+                        content.classList.add('active');
+                        toggleBtn.textContent = '-';
+                    }
+                });
+            });
+            
+            // Formulaire d'accès aux données
+            const dataAccessForm = document.getElementById('data-access-form');
+            
+            if (dataAccessForm) {
+                dataAccessForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const reason = document.getElementById('data-access-reason').value;
+                    
+                    try {
+                        const response = await fetch('/api/gdpr/request-data', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ reason })
+                        });
+                        
+                        const result = await response.json();
+                        
+                        if (response.ok) {
+                            alert('Votre demande d\'accès aux données a été soumise avec succès. Vous serez notifié lorsque vos données seront prêtes.');
+                            dataAccessForm.reset();
+                            loadRequests(); // Recharger les demandes
+                        } else {
+                            alert(`Erreur: ${result.error || 'Une erreur est survenue'}`);
+                        }
+                    } catch (error) {
+                        console.error('Erreur lors de la soumission de la demande:', error);
+                        alert('Une erreur est survenue lors de la soumission de votre demande. Veuillez réessayer plus tard.');
+                    }
+                });
+            }
+            
+            // Formulaire de suppression des données
+            const confirmDeletionBtn = document.getElementById('confirm-deletion-btn');
+            
+            if (confirmDeletionBtn) {
+                confirmDeletionBtn.addEventListener('click', async () => {
+                    const reason = document.getElementById('data-deletion-reason').value;
+                    const feedback = document.getElementById('data-deletion-feedback').value;
+                    const confirmed = document.getElementById('data-deletion-confirm').checked;
+                    
+                    if (!reason || !confirmed) {
+                        alert('Veuillez sélectionner une raison et confirmer que vous comprenez les conséquences.');
+                        return;
+                    }
+                    
+                    try {
+                        const response = await fetch('/api/gdpr/request-deletion', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ reason, feedback })
+                        });
+                        
+                        const result = await response.json();
+                        
+                        if (response.ok) {
+                            alert('Votre demande de suppression des données a été soumise avec succès. Vous serez notifié lorsque votre demande sera traitée.');
+                            document.getElementById('data-deletion-form').reset();
+                            document.getElementById('deletion-confirm-modal').style.display = 'none';
+                            loadRequests(); // Recharger les demandes
+                        } else {
+                            alert(`Erreur: ${result.error || 'Une erreur est survenue'}`);
+                        }
+                    } catch (error) {
+                        console.error('Erreur lors de la soumission de la demande:', error);
+                        alert('Une erreur est survenue lors de la soumission de votre demande. Veuillez réessayer plus tard.');
+                    }
+                });
+            }
+            
+            // Chargement des demandes existantes
+            async function loadRequests() {
+                const requestsContainer = document.getElementById('requests-container');
+                const noRequestsMessage = document.getElementById('no-requests-message');
+                
+                if (!requestsContainer) return;
+                
+                try {
+                    const response = await fetch('/api/gdpr/my-requests');
+                    const result = await response.json();
+                    
+                    if (response.ok && result.requests) {
+                        // Vider le conteneur
+                        requestsContainer.innerHTML = '';
+                        
+                        if (result.requests.length === 0) {
+                            noRequestsMessage.style.display = 'block';
+                        } else {
+                            noRequestsMessage.style.display = 'none';
+                            
+                            // Trier les demandes par date (la plus récente d'abord)
+                            result.requests.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                            
+                            // Afficher chaque demande
+                            result.requests.forEach(request => {
+                                const requestElement = createRequestElement(request);
+                                requestsContainer.appendChild(requestElement);
+                            });
+                        }
+                    } else {
+                        console.error('Erreur lors de la récupération des demandes:', result.error);
+                        noRequestsMessage.textContent = 'Une erreur est survenue lors du chargement des demandes.';
+                        noRequestsMessage.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des demandes:', error);
+                    noRequestsMessage.textContent = 'Une erreur est survenue lors du chargement des demandes.';
+                    noRequestsMessage.style.display = 'block';
+                }
+            }
+            
+            // Création d'un élément de demande
+            function createRequestElement(request) {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                
+                // Type de demande
+                const requestTypeText = request.requestType === 'access' ? 'Accès aux données' : 'Suppression des données';
+                
+                // Statut de la demande
+                let statusClass = '';
+                let statusText = '';
+                
+                switch (request.status) {
+                    case 'pending':
+                        statusClass = 'status-pending';
+                        statusText = 'En attente';
+                        break;
+                    case 'processing':
+                        statusClass = 'status-processing';
+                        statusText = 'En cours de traitement';
+                        break;
+                    case 'completed':
+                        statusClass = 'status-completed';
+                        statusText = 'Terminée';
+                        break;
+                    case 'rejected':
+                        statusClass = 'status-rejected';
+                        statusText = 'Rejetée';
+                        break;
+                    default:
+                        statusClass = 'status-pending';
+                        statusText = request.status;
+                }
+                
+                // Formatage de la date
+                const createdDate = new Date(request.createdAt);
+                const formattedDate = createdDate.toLocaleDateString('fr-FR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                // Création du contenu
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-title">${requestTypeText}</div>
+                        <span class="request-status ${statusClass}">${statusText}</span>
+                    </div>
+                    <p><strong>Date de la demande :</strong> ${formattedDate}</p>
+                    <p><strong>Référence :</strong> ${request.id}</p>
+                    ${request.completedAt ? `<p><strong>Date de traitement :</strong> ${new Date(request.completedAt).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>` : ''}
+                    ${request.statusReason ? `<p><strong>Raison :</strong> ${request.statusReason}</p>` : ''}
+                    <div class="form-actions" style="margin-top: 15px;">
+                        ${request.requestType === 'access' && request.status === 'completed' ? `<a href="/api/gdpr/download-data/${request.id}" class="btn">Télécharger mes données</a>` : ''}
+                        <button class="btn" onclick="viewRequestDetails('${request.id}')">Voir les détails</button>
+                    </div>
+                `;
+                
+                return card;
+            }
+            
+            // Exposer la fonction viewRequestDetails globalement
+            window.viewRequestDetails = async function(requestId) {
+                try {
+                    const response = await fetch(`/api/gdpr/request/${requestId}`);
+                    const result = await response.json();
+                    
+                    if (response.ok && result.request) {
+                        const request = result.request;
+                        alert(`Détails de la demande ${requestId}:\nType: ${request.requestType === 'access' ? 'Accès aux données' : 'Suppression des données'}\nStatut: ${request.status}\nDate: ${new Date(request.createdAt).toLocaleDateString('fr-FR')}`);
+                    } else {
+                        alert(`Erreur: ${result.error || 'Une erreur est survenue lors de la récupération des détails'}`);
+                    }
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des détails de la demande:', error);
+                    alert('Une erreur est survenue lors de la récupération des détails de la demande.');
+                }
+            };
+            
+            // Charger les demandes au chargement de la page
+            loadRequests();
+        });
+    </script>
+</body>
+</html>

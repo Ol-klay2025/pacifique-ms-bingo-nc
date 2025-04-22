@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS BINGO - Online Bingo Game</title>
+    <link rel="icon" href="/favicon.ico">
+    <style>
+        :root {
+            --primary: #2a3a8c;
+            --secondary: #4c2a7a;
+            --accent: #ffcc00;
+            --text: #ffffff;
+            --background: #121212;
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 0;
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-balance {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        .btn {
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--box-shadow);
+        }
+        
+        main {
+            flex: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .game-status {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .next-game, .jackpot {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .countdown {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .jackpot-amount {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .game-area {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+        
+        .card-area {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .number-board {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .number-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 0.5rem;
+        }
+        
+        .number-ball {
+            width: 2.2rem;
+            height: 2.2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: #000;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+        
+        .number-ball.called {
+            background: var(--accent);
+            transform: scale(1.1);
+            box-shadow: 0 0 10px var(--accent);
+        }
+        
+        .last-called {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        
+        .last-number {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 204, 0, 0.7);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(255, 204, 0, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 204, 0, 0);
+            }
+        }
+        
+        .bingo-card {
+            background: #f0f0f0;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        .card-header {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 2px;
+            padding: 2px;
+        }
+        
+        .card-cell {
+            aspect-ratio: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            color: #000;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+        
+        .card-cell.empty {
+            background: #e0e0e0;
+        }
+        
+        .card-cell.marked {
+            background: #ff9999;
+            color: #800000;
+        }
+        
+        .card-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .login-form {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+        
+        .form-switch {
+            color: var(--primary);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        footer {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .game-area {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                font-size: 0.9rem;
+                gap: 1rem;
+            }
+            
+            .number-ball {
+                width: 1.8rem;
+                height: 1.8rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with navigation -->
+    <header>
+        <a href="/" class="logo">
+            <span>MS BINGO</span>
+        </a>
+        
+        <nav class="nav-links">
+            <a href="#" class="active" id="play-link">Play</a>
+            <a href="#" id="rules-link">Rules</a>
+            <a href="#" id="stats-link">Statistics</a>
+            <a href="#" id="shop-link">Shop</a>
+        </nav>
+        
+        <div class="user-controls">
+            <div class="user-balance hidden" id="user-balance">€0.00</div>
+            <a href="#" class="btn" id="login-button">Login</a>
+            <a href="#" class="btn hidden" id="logout-button">Logout</a>
+        </div>
+    </header>
+    
+    <main>
+        <!-- Game status and jackpot -->
+        <section class="game-status">
+            <div class="next-game">
+                <h3>Next game in</h3>
+                <div class="countdown" id="game-countdown">--:--</div>
+            </div>
+            
+            <div class="jackpot">
+                <h3>Current jackpot</h3>
+                <div class="jackpot-amount" id="jackpot-amount">€0.00</div>
+            </div>
+        </section>
+        
+        <!-- Game area -->
+        <section class="game-area">
+            <div class="card-area" id="card-area">
+                <h2>My Bingo Cards</h2>
+                <div id="cards-container">
+                    <p>Login to purchase cards and play.</p>
+                </div>
+                <div class="card-controls hidden" id="card-controls">
+                    <span>Price per card: <strong id="card-price">€1.00</strong></span>
+                    <a href="#" class="btn" id="buy-card-button">Buy a card</a>
+                </div>
+            </div>
+            
+            <div class="number-board">
+                <h2>Called Numbers</h2>
+                <div class="number-grid" id="number-grid">
+                    <!-- Numbers 1-90 will be generated by JavaScript -->
+                </div>
+                <div class="last-called">
+                    <h3>Last number called</h3>
+                    <div class="last-number" id="last-number">--</div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Login/registration overlay (hidden by default) -->
+    <div class="login-overlay hidden" id="login-overlay">
+        <div class="login-form">
+            <h2 id="form-title">Login</h2>
+            <form id="auth-form">
+                <div class="form-group" id="username-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                </div>
+                
+                <div class="form-group hidden" id="email-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                
+                <div class="form-actions">
+                    <span class="form-switch" id="form-switch">Create an account</span>
+                    <button type="submit" class="btn">Login</button>
+                </div>
+            </form>
+            <button class="btn" id="close-overlay" style="margin-top: 1rem; background: #f0f0f0; color: #333;">Close</button>
+        </div>
+    </div>
+    
+    <footer>
+        &copy; 2025 MS BINGO - All rights reserved
+    </footer>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // DOM elements
+        const loginButton = document.getElementById('login-button');
+        const logoutButton = document.getElementById('logout-button');
+        const loginOverlay = document.getElementById('login-overlay');
+        const closeOverlay = document.getElementById('close-overlay');
+        const formSwitch = document.getElementById('form-switch');
+        const formTitle = document.getElementById('form-title');
+        const authForm = document.getElementById('auth-form');
+        const emailGroup = document.getElementById('email-group');
+        const userBalance = document.getElementById('user-balance');
+        const cardControls = document.getElementById('card-controls');
+        const buyCardButton = document.getElementById('buy-card-button');
+        const cardsContainer = document.getElementById('cards-container');
+        const submitButton = authForm.querySelector('[type="submit"]');
+        
+        // Application state
+        let isLoginForm = true;
+        let isLoggedIn = false;
+        let userData = null;
+        let gameData = {
+            nextGameStart: null,
+            jackpotAmount: 0,
+            cardPrice: 100, // in cents
+            isSpecialGame: false
+        };
+        
+        // Generate number grid
+        const numberGrid = document.getElementById('number-grid');
+        for (let i = 1; i <= 90; i++) {
+            const numberBall = document.createElement('div');
+            numberBall.classList.add('number-ball');
+            numberBall.textContent = i;
+            numberBall.id = `ball-${i}`;
+            numberGrid.appendChild(numberBall);
+        }
+        
+        // Event handlers
+        loginButton.addEventListener('click', () => {
+            loginOverlay.classList.remove('hidden');
+        });
+        
+        closeOverlay.addEventListener('click', () => {
+            loginOverlay.classList.add('hidden');
+        });
+        
+        formSwitch.addEventListener('click', () => {
+            isLoginForm = !isLoginForm;
+            
+            if (isLoginForm) {
+                formTitle.textContent = 'Login';
+                formSwitch.textContent = 'Create an account';
+                submitButton.textContent = 'Login';
+                emailGroup.classList.add('hidden');
+            } else {
+                formTitle.textContent = 'Register';
+                formSwitch.textContent = 'I already have an account';
+                submitButton.textContent = 'Register';
+                emailGroup.classList.remove('hidden');
+            }
+        });
+        
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (isLoginForm) {
+                // Login logic
+                try {
+                    const response = await fetch('/api/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify({ username, password })
+                    });
+                    
+                    if (response.ok) {
+                        const user = await response.json();
+                        loginSuccess(user);
+                    } else {
+                        alert('Incorrect username or password.');
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    alert('Error during login. Please try again.');
+                }
+            } else {
+                // Registration logic
+                const email = document.getElementById('email').value;
+                
+                try {
+                    const response = await fetch('/api/register', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify({ username, email, password })
+                    });
+                    
+                    if (response.ok) {
+                        const user = await response.json();
+                        loginSuccess(user);
+                    } else {
+                        const error = await response.text();
+                        alert(`Registration error: ${error}`);
+                    }
+                } catch (error) {
+                    console.error('Registration error:', error);
+                    alert('Error during registration. Please try again.');
+                }
+            }
+        });
+        
+        logoutButton.addEventListener('click', async () => {
+            try {
+                await fetch('/api/logout', { 
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                logoutSuccess();
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        });
+        
+        buyCardButton.addEventListener('click', async () => {
+            if (!isLoggedIn) {
+                alert('Please login to purchase a card.');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/games/buy-cards', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ 
+                        gameId: gameData.nextGameId,
+                        quantity: 1
+                    })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    // Update user balance
+                    userData.balance = result.newBalance;
+                    updateUserInterface();
+                    
+                    // Add cards to UI
+                    if (result.cards && result.cards.length > 0) {
+                        for (const card of result.cards) {
+                            addCardToUI(card);
+                        }
+                    }
+                } else {
+                    const error = await response.text();
+                    alert(`Error purchasing card: ${error}`);
+                }
+            } catch (error) {
+                console.error('Card purchase error:', error);
+                alert('Error purchasing card. Please try again.');
+            }
+        });
+        
+        // Utility functions
+        function loginSuccess(user) {
+            userData = user;
+            isLoggedIn = true;
+            updateUserInterface();
+            loginOverlay.classList.add('hidden');
+            fetchGameData();
+            initializeWebSocket();
+        }
+        
+        function logoutSuccess() {
+            userData = null;
+            isLoggedIn = false;
+            updateUserInterface();
+            // Reset interface
+            cardsContainer.innerHTML = '<p>Login to purchase cards and play.</p>';
+        }
+        
+        function updateUserInterface() {
+            if (isLoggedIn && userData) {
+                loginButton.classList.add('hidden');
+                logoutButton.classList.remove('hidden');
+                userBalance.classList.remove('hidden');
+                cardControls.classList.remove('hidden');
+                
+                // Update displayed balance
+                userBalance.textContent = `€${(userData.balance / 100).toFixed(2)}`;
+            } else {
+                loginButton.classList.remove('hidden');
+                logoutButton.classList.add('hidden');
+                userBalance.classList.add('hidden');
+                cardControls.classList.add('hidden');
+            }
+        }
+        
+        async function fetchGameData() {
+            try {
+                const response = await fetch('/api/games/next', {
+                    credentials: 'include'
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    gameData = data;
+                    
+                    // Update interface with game data
+                    document.getElementById('jackpot-amount').textContent = `€${(gameData.jackpotAmount / 100).toFixed(2)}`;
+                    document.getElementById('card-price').textContent = `€${(gameData.cardPrice / 100).toFixed(2)}`;
+                    
+                    // Initialize countdown
+                    startCountdown(new Date(gameData.nextGameStart));
+                    
+                    // Fetch user cards for next game
+                    if (isLoggedIn) {
+                        fetchUserCards(gameData.nextGameId);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching game data:', error);
+            }
+        }
+        
+        async function fetchUserCards(gameId) {
+            try {
+                const response = await fetch(`/api/cards/user?gameId=${gameId}`, {
+                    credentials: 'include' 
+                });
+                if (response.ok) {
+                    const cards = await response.json();
+                    
+                    if (cards.length > 0) {
+                        cardsContainer.innerHTML = '';
+                        cards.forEach(card => addCardToUI(card));
+                    } else {
+                        cardsContainer.innerHTML = '<p>You don\'t have any cards for this game yet.</p>';
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching cards:', error);
+            }
+        }
+        
+        function addCardToUI(card) {
+            const cardElement = document.createElement('div');
+            cardElement.classList.add('bingo-card');
+            cardElement.dataset.cardId = card.id;
+            
+            // Create card header
+            const cardHeader = document.createElement('div');
+            cardHeader.classList.add('card-header');
+            cardHeader.textContent = `Card #${card.id}`;
+            cardElement.appendChild(cardHeader);
+            
+            // Create number grid
+            const cardGrid = document.createElement('div');
+            cardGrid.classList.add('card-grid');
+            
+            // Fill grid with card numbers
+            for (let row = 0; row < 3; row++) {
+                for (let col = 0; col < 9; col++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('card-cell');
+                    
+                    const number = card.numbers[row][col];
+                    if (number === 0) {
+                        cell.classList.add('empty');
+                    } else {
+                        cell.textContent = number;
+                        cell.dataset.number = number;
+                    }
+                    
+                    cardGrid.appendChild(cell);
+                }
+            }
+            
+            cardElement.appendChild(cardGrid);
+            
+            // Add card to container
+            if (cardsContainer.querySelector('p')) {
+                cardsContainer.innerHTML = '';
+            }
+            cardsContainer.appendChild(cardElement);
+        }
+        
+        function startCountdown(targetDate) {
+            const countdownElement = document.getElementById('game-countdown');
+            
+            function updateCountdown() {
+                const now = new Date();
+                const timeLeft = targetDate - now;
+                
+                if (timeLeft <= 0) {
+                    countdownElement.textContent = "In progress...";
+                    return;
+                }
+                
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                
+                countdownElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+        
+        function initializeWebSocket() {
+            // Determine WebSocket protocol (ws or wss)
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws`;
+            
+            const socket = new WebSocket(wsUrl);
+            
+            socket.onopen = () => {
+                console.log('WebSocket connection established');
+                
+                // Send message to identify (if logged in)
+                if (isLoggedIn && userData) {
+                    socket.send(JSON.stringify({
+                        type: 'IDENTIFY',
+                        userId: userData.id
+                    }));
+                }
+            };
+            
+            socket.onmessage = (event) => {
+                const message = JSON.parse(event.data);
+                
+                switch (message.type) {
+                    case 'GAME_SCHEDULED':
+                        // New game scheduled
+                        gameData.nextGameId = message.gameId;
+                        gameData.nextGameStart = new Date(message.startTime);
+                        gameData.isSpecialGame = message.isSpecialGame;
+                        gameData.cardPrice = message.isSpecialGame ? 250 : 100;
+                        
+                        // Update interface
+                        document.getElementById('card-price').textContent = `€${(gameData.cardPrice / 100).toFixed(2)}`;
+                        startCountdown(gameData.nextGameStart);
+                        break;
+                        
+                    case 'GAME_STARTED':
+                        // Game has started
+                        document.getElementById('game-countdown').textContent = "In progress...";
+                        break;
+                        
+                    case 'NUMBER_CALLED':
+                        // New number called
+                        updateCalledNumber(message.number);
+                        break;
+                        
+                    case 'QUINE_WON':
+                        // Someone won a quine
+                        if (message.winners.includes(userData?.id)) {
+                            alert(`QUINE! You won €${(message.amount / 100).toFixed(2)}!`);
+                            // Update balance
+                            userData.balance += message.amount;
+                            updateUserInterface();
+                        } else {
+                            alert(`Someone got a quine after ${message.numbersCalled} numbers!`);
+                        }
+                        break;
+                        
+                    case 'BINGO_WON':
+                        // Someone won a bingo
+                        let winMessage = `BINGO! Game over after ${message.numbersCalled} numbers.`;
+                        
+                        if (message.winners.includes(userData?.id)) {
+                            winMessage += ` You won €${(message.amount / 100).toFixed(2)}!`;
+                            
+                            if (message.jackpotWon) {
+                                winMessage += ` + JACKPOT of €${(message.jackpotAmount / 100).toFixed(2)}!`;
+                            }
+                            
+                            // Update balance
+                            userData.balance += message.amount + (message.jackpotWon ? message.jackpotAmount : 0);
+                            updateUserInterface();
+                        }
+                        
+                        alert(winMessage);
+                        break;
+                        
+                    case 'GAME_ENDED':
+                        // Game is over
+                        document.getElementById('game-countdown').textContent = "Finished";
+                        // Reset number grid
+                        resetNumberGrid();
+                        // Clear cards container
+                        cardsContainer.innerHTML = '<p>Waiting for next game...</p>';
+                        break;
+                        
+                    case 'JACKPOT_UPDATED':
+                        // Jackpot update
+                        gameData.jackpotAmount = message.amount;
+                        document.getElementById('jackpot-amount').textContent = `€${(gameData.jackpotAmount / 100).toFixed(2)}`;
+                        break;
+                }
+            };
+            
+            socket.onclose = () => {
+                console.log('WebSocket connection closed');
+                // Try to reconnect after 5 seconds
+                setTimeout(initializeWebSocket, 5000);
+            };
+            
+            socket.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+        }
+        
+        function updateCalledNumber(number) {
+            // Update last called number
+            document.getElementById('last-number').textContent = number;
+            
+            // Mark the number on the grid
+            const ball = document.getElementById(`ball-${number}`);
+            if (ball) {
+                ball.classList.add('called');
+            }
+            
+            // Mark the number on user cards
+            const cards = cardsContainer.querySelectorAll('.bingo-card');
+            cards.forEach(card => {
+                const cells = card.querySelectorAll(`.card-cell[data-number="${number}"]`);
+                cells.forEach(cell => {
+                    cell.classList.add('marked');
+                });
+            });
+        }
+        
+        function resetNumberGrid() {
+            const balls = document.querySelectorAll('.number-ball');
+            balls.forEach(ball => {
+                ball.classList.remove('called');
+            });
+            
+            document.getElementById('last-number').textContent = '--';
+        }
+        
+        // Initialize application
+        fetchGameData();
+        
+        // Check if user is already logged in
+        fetch('/api/user', {
+            credentials: 'include'
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('User not logged in');
+            })
+            .then(user => {
+                loginSuccess(user);
+            })
+            .catch(error => {
+                console.log('User not logged in:', error);
+            });
+    });
+    </script>
+</body>
+</html>

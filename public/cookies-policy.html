@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS BINGO - Politique de Cookies</title>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0099cc;
+            --secondary-color: #4CAF50;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --border-radius: 8px;
+            --transition-speed: 0.3s;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            line-height: 1.6;
+            background-image: url('/images/pacifique-bingo-background.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.65);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+            background-color: rgba(26, 26, 26, 0.8);
+            border-radius: var(--border-radius);
+            padding: 15px 20px;
+        }
+        
+        header h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+        }
+        
+        header nav {
+            display: flex;
+            gap: 10px;
+        }
+        
+        header nav a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            transition: background-color var(--transition-speed);
+            font-weight: 500;
+        }
+        
+        header nav a:hover, header nav a.active {
+            background-color: var(--primary-color);
+        }
+        
+        .cookies-content {
+            background-color: rgba(26, 26, 26, 0.8);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .cookies-content h2 {
+            color: var(--primary-color);
+            font-size: 24px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .cookies-content h3 {
+            color: var(--light-color);
+            font-size: 20px;
+            margin: 25px 0 15px;
+        }
+        
+        .cookies-content p {
+            margin-bottom: 15px;
+        }
+        
+        .cookies-content ul, .cookies-content ol {
+            margin-bottom: 15px;
+            margin-left: 20px;
+        }
+        
+        .cookies-content li {
+            margin-bottom: 10px;
+        }
+        
+        .cookies-content strong {
+            color: var(--light-color);
+        }
+        
+        .date-updated {
+            font-style: italic;
+            color: #ccc;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .table-of-contents {
+            background-color: rgba(44, 62, 80, 0.2);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+        }
+        
+        .table-of-contents h3 {
+            margin-top: 0;
+        }
+        
+        .table-of-contents ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+        
+        .table-of-contents a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color var(--transition-speed);
+        }
+        
+        .table-of-contents a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+        
+        .section {
+            scroll-margin-top: 80px;
+        }
+        
+        .cookie-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            overflow-x: auto;
+            display: block;
+        }
+        
+        .cookie-table th, .cookie-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .cookie-table th {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .cookie-table tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            transition: background-color var(--transition-speed);
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+        }
+        
+        .btn:hover {
+            background-color: #007ba1;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .footer-links {
+            margin-top: 10px;
+        }
+        
+        .footer-links a {
+            margin: 0 10px;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            header nav {
+                margin-top: 15px;
+            }
+            
+            .cookies-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MS BINGO</h1>
+            <nav>
+                <a href="/">Accueil</a>
+                <a href="/play.html">Jouer</a>
+                <a href="/contact.html">Contact</a>
+            </nav>
+        </header>
+        
+        <div class="cookies-content">
+            <h2>Politique de Cookies</h2>
+            <p class="date-updated">Dernière mise à jour : 14 avril 2025</p>
+            
+            <div class="table-of-contents">
+                <h3>Sommaire</h3>
+                <ul>
+                    <li><a href="#introduction">1. Introduction</a></li>
+                    <li><a href="#what-are-cookies">2. Qu'est-ce que les cookies ?</a></li>
+                    <li><a href="#cookies-we-use">3. Les cookies que nous utilisons</a></li>
+                    <li><a href="#third-party">4. Cookies tiers</a></li>
+                    <li><a href="#manage-cookies">5. Comment gérer vos cookies</a></li>
+                    <li><a href="#changes">6. Modifications de la politique</a></li>
+                    <li><a href="#contact">7. Nous contacter</a></li>
+                </ul>
+            </div>
+            
+            <div id="introduction" class="section">
+                <h3>1. Introduction</h3>
+                <p>Pacifique MS Bingo utilise des cookies et des technologies similaires sur notre site web pour améliorer votre expérience utilisateur. Cette politique explique comment nous utilisons les cookies, ce qu'ils sont et comment vous pouvez les gérer.</p>
+                <p>En continuant à utiliser notre site, vous consentez à l'utilisation des cookies conformément à cette politique. Si vous n'acceptez pas l'utilisation de cookies, vous pouvez les désactiver en suivant les instructions ci-dessous.</p>
+            </div>
+            
+            <div id="what-are-cookies" class="section">
+                <h3>2. Qu'est-ce que les cookies ?</h3>
+                <p>Les cookies sont de petits fichiers texte qui sont stockés sur votre ordinateur ou appareil mobile lorsque vous visitez un site web. Ils sont largement utilisés pour faire fonctionner les sites web de manière plus efficace, ainsi que pour fournir des informations aux propriétaires du site.</p>
+                <p>Les cookies permettent à un site web de reconnaître votre appareil et de mémoriser certaines informations sur votre visite, comme vos préférences de langue, les pages que vous avez consultées et les fonctionnalités que vous avez utilisées.</p>
+                <p>Il existe différents types de cookies :</p>
+                <ul>
+                    <li><strong>Cookies de session :</strong> existent seulement pendant votre session de navigation et sont supprimés lorsque vous fermez votre navigateur</li>
+                    <li><strong>Cookies persistants :</strong> restent sur votre appareil après la fermeture de votre navigateur jusqu'à leur expiration ou jusqu'à ce que vous les supprimiez</li>
+                    <li><strong>Cookies propriétaires :</strong> créés par le site que vous visitez</li>
+                    <li><strong>Cookies tiers :</strong> créés par d'autres sites que celui que vous visitez</li>
+                </ul>
+            </div>
+            
+            <div id="cookies-we-use" class="section">
+                <h3>3. Les cookies que nous utilisons</h3>
+                <p>Nous utilisons différents types de cookies pour diverses raisons :</p>
+                
+                <h4>3.1 Cookies strictement nécessaires</h4>
+                <p>Ces cookies sont essentiels au fonctionnement de notre site et vous permettent de naviguer et d'utiliser ses fonctionnalités. Sans ces cookies, certains services que vous avez demandés, comme la connexion à votre compte ou l'ajout d'articles à votre panier, ne peuvent pas être fournis.</p>
+                
+                <table class="cookie-table">
+                    <thead>
+                        <tr>
+                            <th>Nom du cookie</th>
+                            <th>Objectif</th>
+                            <th>Durée</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>session_id</td>
+                            <td>Maintient votre session active et vous permet de rester connecté</td>
+                            <td>Session</td>
+                        </tr>
+                        <tr>
+                            <td>csrf_token</td>
+                            <td>Protège contre les attaques de type Cross-Site Request Forgery</td>
+                            <td>Session</td>
+                        </tr>
+                        <tr>
+                            <td>auth_token</td>
+                            <td>Vérifie que vous êtes authentifié lorsque vous accédez à des zones sécurisées</td>
+                            <td>30 jours</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4>3.2 Cookies de performance</h4>
+                <p>Ces cookies nous permettent de compter les visites et les sources de trafic afin que nous puissions mesurer et améliorer les performances de notre site. Ils nous aident à savoir quelles pages sont les plus populaires ou les moins populaires et à voir comment les visiteurs se déplacent sur le site.</p>
+                
+                <table class="cookie-table">
+                    <thead>
+                        <tr>
+                            <th>Nom du cookie</th>
+                            <th>Objectif</th>
+                            <th>Durée</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>_ga</td>
+                            <td>Utilisé par Google Analytics pour distinguer les utilisateurs uniques</td>
+                            <td>2 ans</td>
+                        </tr>
+                        <tr>
+                            <td>_gid</td>
+                            <td>Utilisé par Google Analytics pour stocker des informations sur la façon dont les visiteurs utilisent le site</td>
+                            <td>24 heures</td>
+                        </tr>
+                        <tr>
+                            <td>_gat</td>
+                            <td>Utilisé par Google Analytics pour limiter le taux de demandes</td>
+                            <td>1 minute</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4>3.3 Cookies de fonctionnalité</h4>
+                <p>Ces cookies permettent au site de se souvenir des choix que vous faites (comme votre nom d'utilisateur, votre langue ou la région dans laquelle vous vous trouvez) et peuvent également être utilisés pour fournir les services que vous avez demandés. Ils peuvent également être utilisés pour personnaliser votre expérience en mémorisant vos préférences.</p>
+                
+                <table class="cookie-table">
+                    <thead>
+                        <tr>
+                            <th>Nom du cookie</th>
+                            <th>Objectif</th>
+                            <th>Durée</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>language</td>
+                            <td>Mémorise la préférence de langue</td>
+                            <td>1 an</td>
+                        </tr>
+                        <tr>
+                            <td>theme</td>
+                            <td>Mémorise les préférences d'affichage (mode clair/sombre)</td>
+                            <td>1 an</td>
+                        </tr>
+                        <tr>
+                            <td>game_settings</td>
+                            <td>Enregistre vos préférences de jeu</td>
+                            <td>6 mois</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4>3.4 Cookies de ciblage</h4>
+                <p>Ces cookies peuvent être placés sur notre site par nos partenaires publicitaires. Ils peuvent être utilisés par ces entreprises pour établir un profil de vos intérêts et vous montrer des publicités pertinentes sur d'autres sites. Ils ne stockent pas directement d'informations personnelles, mais sont basés sur l'identification unique de votre navigateur et de votre appareil internet.</p>
+                
+                <table class="cookie-table">
+                    <thead>
+                        <tr>
+                            <th>Nom du cookie</th>
+                            <th>Objectif</th>
+                            <th>Durée</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>_fbp</td>
+                            <td>Utilisé par Facebook pour diffuser, mesurer et améliorer la pertinence des publicités</td>
+                            <td>3 mois</td>
+                        </tr>
+                        <tr>
+                            <td>ads_prefs</td>
+                            <td>Utilisé pour afficher des publicités personnalisées basées sur vos intérêts</td>
+                            <td>6 mois</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="third-party" class="section">
+                <h3>4. Cookies tiers</h3>
+                <p>Certains cookies sont placés par des services tiers qui apparaissent sur nos pages. Nous n'avons pas le contrôle direct sur ces cookies, mais vous pouvez les gérer via les paramètres de votre navigateur ou les sites des tiers concernés.</p>
+                <p>Nous utilisons des services tiers qui peuvent placer des cookies sur votre appareil lorsque vous visitez notre site :</p>
+                <ul>
+                    <li><strong>Google Analytics :</strong> Utilisé pour analyser l'utilisation du site et améliorer l'expérience utilisateur <a href="https://policies.google.com/privacy" target="_blank">Politique de confidentialité de Google</a></li>
+                    <li><strong>Stripe :</strong> Notre processeur de paiement, qui place des cookies pour faciliter les transactions sécurisées <a href="https://stripe.com/privacy" target="_blank">Politique de confidentialité de Stripe</a></li>
+                    <li><strong>Facebook :</strong> Pour l'intégration des médias sociaux et certaines fonctionnalités marketing <a href="https://www.facebook.com/policy.php" target="_blank">Politique de confidentialité de Facebook</a></li>
+                </ul>
+            </div>
+            
+            <div id="manage-cookies" class="section">
+                <h3>5. Comment gérer vos cookies</h3>
+                <p>Vous pouvez contrôler et gérer les cookies de plusieurs façons :</p>
+                
+                <h4>5.1 Panneau de préférences des cookies</h4>
+                <p>Vous pouvez modifier vos préférences en matière de cookies à tout moment en utilisant notre panneau de préférences des cookies. Cliquez sur le bouton ci-dessous pour ouvrir le panneau :</p>
+                <button id="open-cookie-preferences" class="btn">Gérer mes préférences de cookies</button>
+                
+                <h4>5.2 Paramètres du navigateur</h4>
+                <p>La plupart des navigateurs web vous permettent de gérer vos préférences en matière de cookies. Vous pouvez définir votre navigateur pour qu'il refuse les cookies ou supprime certains cookies. Cependant, si vous désactivez tous les cookies, vous ne pourrez peut-être pas utiliser toutes les fonctionnalités de notre site.</p>
+                <p>Voici comment vous pouvez gérer les cookies dans les navigateurs les plus populaires :</p>
+                <ul>
+                    <li><a href="https://support.google.com/chrome/answer/95647" target="_blank">Google Chrome</a></li>
+                    <li><a href="https://support.mozilla.org/fr/kb/effacer-les-cookies-pour-supprimer-les-information" target="_blank">Mozilla Firefox</a></li>
+                    <li><a href="https://support.microsoft.com/fr-fr/help/17442/windows-internet-explorer-delete-manage-cookies" target="_blank">Microsoft Edge</a></li>
+                    <li><a href="https://support.apple.com/fr-fr/guide/safari/sfri11471/mac" target="_blank">Safari</a></li>
+                </ul>
+                
+                <h4>5.3 Désactivation des cookies tiers spécifiques</h4>
+                <p>Pour désactiver Google Analytics, vous pouvez utiliser le <a href="https://tools.google.com/dlpage/gaoptout" target="_blank">module complémentaire de désactivation de Google Analytics</a>.</p>
+            </div>
+            
+            <div id="changes" class="section">
+                <h3>6. Modifications de la politique</h3>
+                <p>Nous pouvons mettre à jour cette politique de cookies périodiquement pour refléter, par exemple, les changements dans les cookies que nous utilisons ou pour d'autres raisons opérationnelles, légales ou réglementaires.</p>
+                <p>Nous vous encourageons à consulter régulièrement cette page pour rester informé des cookies que nous utilisons et de leurs objectifs.</p>
+            </div>
+            
+            <div id="contact" class="section">
+                <h3>7. Nous contacter</h3>
+                <p>Si vous avez des questions concernant notre utilisation des cookies ou cette politique, veuillez nous contacter :</p>
+                <ul>
+                    <li><strong>Par e-mail :</strong> privacy@ms-bingo.com</li>
+                    <li><strong>Par courrier :</strong> MS Bingo, Attention: Protection des données, BP 12345, 98800 Nouméa, Nouvelle-Calédonie</li>
+                </ul>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2025 Pacifique MS Bingo. Tous droits réservés.</p>
+            <div class="footer-links">
+                <a href="/terms.html">Conditions d'utilisation</a>
+                <a href="/privacy-policy.html">Politique de confidentialité</a>
+                <a href="/cookies-policy.html">Politique de cookies</a>
+                <a href="/contact.html">Contact</a>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Script pour ouvrir la bannière de gestion des cookies
+        document.getElementById('open-cookie-preferences').addEventListener('click', function() {
+            // Cette fonction serait normalement connectée à votre gestionnaire de consentement des cookies
+            alert('Le panneau de préférences des cookies sera implémenté ici');
+        });
+    </script>
+</body>
+</html>

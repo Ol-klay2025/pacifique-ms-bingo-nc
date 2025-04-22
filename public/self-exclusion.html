@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-exclusion et Limites - PACIFIQUE MS BINGO</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f9fd;
+            margin: 0;
+            padding: 0;
+            color: #37474f;
+        }
+        
+        .self-exclusion-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .self-exclusion-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .self-exclusion-header h1 {
+            color: #0d47a1;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .self-exclusion-header p {
+            color: #546e7a;
+            font-size: 16px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .self-exclusion-tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+        
+        .self-exclusion-tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #78909c;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .self-exclusion-tab.active {
+            color: #1976d2;
+        }
+        
+        .self-exclusion-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #1976d2;
+        }
+        
+        .self-exclusion-tab-content {
+            display: none;
+        }
+        
+        .self-exclusion-tab-content.active {
+            display: block;
+        }
+        
+        .self-exclusion-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .self-exclusion-card-header {
+            background-color: #e3f2fd;
+            padding: 15px 20px;
+            border-bottom: 1px solid #bbdefb;
+        }
+        
+        .self-exclusion-card-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #1976d2;
+        }
+        
+        .self-exclusion-card-body {
+            padding: 20px;
+        }
+        
+        .self-exclusion-form-group {
+            margin-bottom: 20px;
+        }
+        
+        .self-exclusion-form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #455a64;
+        }
+        
+        .self-exclusion-form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .self-exclusion-form-input:focus {
+            border-color: #90caf9;
+            outline: none;
+        }
+        
+        .self-exclusion-form-helper {
+            display: block;
+            margin-top: 6px;
+            font-size: 14px;
+            color: #78909c;
+        }
+        
+        .self-exclusion-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .self-exclusion-button:hover {
+            background-color: #1565c0;
+        }
+        
+        .self-exclusion-button:disabled {
+            background-color: #b0bec5;
+            cursor: not-allowed;
+        }
+        
+        .self-exclusion-button.danger {
+            background-color: #f44336;
+        }
+        
+        .self-exclusion-button.danger:hover {
+            background-color: #d32f2f;
+        }
+        
+        .self-exclusion-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .self-exclusion-stat-card {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .self-exclusion-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1976d2;
+            margin-bottom: 5px;
+        }
+        
+        .self-exclusion-stat-label {
+            font-size: 14px;
+            color: #546e7a;
+        }
+        
+        .self-exclusion-progress {
+            margin-bottom: 20px;
+        }
+        
+        .self-exclusion-progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .self-exclusion-progress-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #455a64;
+        }
+        
+        .self-exclusion-progress-value {
+            font-size: 14px;
+            color: #78909c;
+        }
+        
+        .self-exclusion-progress-bar {
+            height: 8px;
+            background-color: #eceff1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .self-exclusion-progress-fill {
+            height: 100%;
+            background-color: #42a5f5;
+            transition: width 0.3s ease;
+        }
+        
+        .self-exclusion-progress-fill.warning {
+            background-color: #ffb74d;
+        }
+        
+        .self-exclusion-progress-fill.danger {
+            background-color: #ef5350;
+        }
+        
+        .self-exclusion-session-timer {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1976d2;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .self-exclusion-alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .self-exclusion-alert.info {
+            background-color: #e3f2fd;
+            color: #0d47a1;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .self-exclusion-alert.warning {
+            background-color: #fff3e0;
+            color: #e65100;
+            border-left: 4px solid #ff9800;
+        }
+        
+        .self-exclusion-alert.danger {
+            background-color: #ffebee;
+            color: #b71c1c;
+            border-left: 4px solid #f44336;
+        }
+        
+        .self-exclusion-alert.success {
+            background-color: #e8f5e9;
+            color: #1b5e20;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .self-exclusion-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .self-exclusion-modal.active {
+            display: flex;
+        }
+        
+        .self-exclusion-modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .self-exclusion-modal-header {
+            margin-bottom: 15px;
+        }
+        
+        .self-exclusion-modal-header h3 {
+            margin: 0;
+            color: #d32f2f;
+            font-size: 24px;
+        }
+        
+        .self-exclusion-modal-body {
+            margin-bottom: 20px;
+        }
+        
+        .self-exclusion-modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .self-exclusion-checkbox-group {
+            margin-bottom: 15px;
+        }
+        
+        .self-exclusion-checkbox-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .self-exclusion-checkbox {
+            margin-right: 10px;
+        }
+        
+        .self-exclusion-radio-group {
+            margin-bottom: 15px;
+        }
+        
+        .self-exclusion-radio-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .self-exclusion-radio {
+            margin-right: 10px;
+        }
+        
+        .self-exclusion-divider {
+            height: 1px;
+            background-color: #e0e0e0;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .self-exclusion-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .self-exclusion-tab {
+                flex: 1;
+                text-align: center;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <h1>PACIFIQUE MS BINGO</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Accueil</a></li>
+                    <li><a href="/play.html">Jouer</a></li>
+                    <li><a href="/self-exclusion.html" class="active">Auto-exclusion</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <div class="self-exclusion-container">
+            <div class="self-exclusion-header">
+                <h1>Auto-exclusion et Limites de Jeu</h1>
+                <p>Définissez vos propres limites pour jouer de manière responsable ou excluez-vous temporairement ou définitivement.</p>
+            </div>
+            
+            <div class="self-exclusion-tabs">
+                <div class="self-exclusion-tab active" data-tab="limits">Limites de jeu</div>
+                <div class="self-exclusion-tab" data-tab="exclusion">Auto-exclusion</div>
+                <div class="self-exclusion-tab" data-tab="statistics">Statistiques</div>
+            </div>
+            
+            <!-- Onglet Limites de jeu -->
+            <div id="limits-tab" class="self-exclusion-tab-content active">
+                <div class="self-exclusion-card">
+                    <div class="self-exclusion-card-header">
+                        <h2>Vos limites actuelles</h2>
+                    </div>
+                    <div class="self-exclusion-card-body">
+                        <div id="limits-loading">Chargement de vos limites...</div>
+                        
+                        <div id="limits-content" style="display: none;">
+                            <div class="self-exclusion-alert info">
+                                <p><strong>Information :</strong> La définition de limites plus restrictives prend effet immédiatement. Pour augmenter vos limites, une période de réflexion de 24 heures est nécessaire.</p>
+                            </div>
+                            
+                            <div class="self-exclusion-stats">
+                                <div class="self-exclusion-stat-card">
+                                    <div class="self-exclusion-stat-value" id="daily-limit-value">Non définie</div>
+                                    <div class="self-exclusion-stat-label">Limite quotidienne</div>
+                                </div>
+                                <div class="self-exclusion-stat-card">
+                                    <div class="self-exclusion-stat-value" id="weekly-limit-value">Non définie</div>
+                                    <div class="self-exclusion-stat-label">Limite hebdomadaire</div>
+                                </div>
+                                <div class="self-exclusion-stat-card">
+                                    <div class="self-exclusion-stat-value" id="session-limit-value">Non définie</div>
+                                    <div class="self-exclusion-stat-label">Limite de temps</div>
+                                </div>
+                            </div>
+                            
+                            <div id="limits-stats" style="display: none;">
+                                <div class="self-exclusion-divider"></div>
+                                
+                                <div class="self-exclusion-progress">
+                                    <div class="self-exclusion-progress-label">
+                                        <div class="self-exclusion-progress-text">Utilisation quotidienne</div>
+                                        <div class="self-exclusion-progress-value" id="daily-usage-text">0 / 0 ₣</div>
+                                    </div>
+                                    <div class="self-exclusion-progress-bar">
+                                        <div id="daily-usage-bar" class="self-exclusion-progress-fill" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="self-exclusion-progress">
+                                    <div class="self-exclusion-progress-label">
+                                        <div class="self-exclusion-progress-text">Utilisation hebdomadaire</div>
+                                        <div class="self-exclusion-progress-value" id="weekly-usage-text">0 / 0 ₣</div>
+                                    </div>
+                                    <div class="self-exclusion-progress-bar">
+                                        <div id="weekly-usage-bar" class="self-exclusion-progress-fill" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div id="session-timer-container" style="display: none;">
+                                    <div class="self-exclusion-divider"></div>
+                                    <div class="self-exclusion-progress-label">
+                                        <div class="self-exclusion-progress-text">Temps de session actuel</div>
+                                    </div>
+                                    <div class="self-exclusion-session-timer" id="session-timer">00:00:00</div>
+                                </div>
+                            </div>
+                            
+                            <div class="self-exclusion-divider"></div>
+                            
+                            <form id="limits-form">
+                                <div class="self-exclusion-form-group">
+                                    <label class="self-exclusion-form-label" for="daily-limit">Limite quotidienne (₣)</label>
+                                    <input type="number" id="daily-limit" class="self-exclusion-form-input" min="0" step="100" placeholder="Entrez un montant...">
+                                    <span class="self-exclusion-form-helper">Montant maximum que vous souhaitez dépenser par jour</span>
+                                </div>
+                                
+                                <div class="self-exclusion-form-group">
+                                    <label class="self-exclusion-form-label" for="weekly-limit">Limite hebdomadaire (₣)</label>
+                                    <input type="number" id="weekly-limit" class="self-exclusion-form-input" min="0" step="100" placeholder="Entrez un montant...">
+                                    <span class="self-exclusion-form-helper">Montant maximum que vous souhaitez dépenser par semaine</span>
+                                </div>
+                                
+                                <div class="self-exclusion-form-group">
+                                    <label class="self-exclusion-form-label" for="session-limit">Limite de temps par session (minutes)</label>
+                                    <input type="number" id="session-limit" class="self-exclusion-form-input" min="0" step="5" placeholder="Entrez une durée...">
+                                    <span class="self-exclusion-form-helper">Durée maximum d'une session de jeu</span>
+                                </div>
+                                
+                                <div id="limit-error" class="self-exclusion-alert danger" style="display: none;"></div>
+                                <div id="limit-success" class="self-exclusion-alert success" style="display: none;"></div>
+                                
+                                <button type="submit" id="save-limits-btn" class="self-exclusion-button">Enregistrer mes limites</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Onglet Auto-exclusion -->
+            <div id="exclusion-tab" class="self-exclusion-tab-content">
+                <div class="self-exclusion-card">
+                    <div class="self-exclusion-card-header">
+                        <h2>Auto-exclusion</h2>
+                    </div>
+                    <div class="self-exclusion-card-body">
+                        <div class="self-exclusion-alert warning">
+                            <p><strong>Attention :</strong> L'auto-exclusion est une mesure sérieuse qui vous empêchera de jouer pendant la période choisie. Une fois activée, elle ne peut pas être annulée avant son terme.</p>
+                        </div>
+                        
+                        <div id="exclusion-status" class="self-exclusion-alert info" style="display: none;">
+                            <p id="exclusion-status-text"></p>
+                        </div>
+                        
+                        <form id="exclusion-form">
+                            <div class="self-exclusion-form-group">
+                                <label class="self-exclusion-form-label">Type d'auto-exclusion</label>
+                                
+                                <div class="self-exclusion-radio-group">
+                                    <div class="self-exclusion-radio-option">
+                                        <input type="radio" id="exclusion-temporary" name="exclusion-type" value="temporary" class="self-exclusion-radio" checked>
+                                        <label for="exclusion-temporary">Temporaire</label>
+                                    </div>
+                                    <div class="self-exclusion-radio-option">
+                                        <input type="radio" id="exclusion-permanent" name="exclusion-type" value="permanent" class="self-exclusion-radio">
+                                        <label for="exclusion-permanent">Permanente</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="exclusion-duration-container" class="self-exclusion-form-group">
+                                <label class="self-exclusion-form-label" for="exclusion-duration">Durée (jours)</label>
+                                <select id="exclusion-duration" class="self-exclusion-form-input">
+                                    <option value="1">1 jour</option>
+                                    <option value="7">7 jours</option>
+                                    <option value="14">14 jours</option>
+                                    <option value="30">30 jours</option>
+                                    <option value="90">90 jours</option>
+                                    <option value="180">180 jours</option>
+                                    <option value="365">1 an</option>
+                                </select>
+                            </div>
+                            
+                            <div class="self-exclusion-form-group">
+                                <label class="self-exclusion-form-label" for="exclusion-reason">Raison (optionnelle)</label>
+                                <textarea id="exclusion-reason" class="self-exclusion-form-input" rows="3" placeholder="Pourquoi souhaitez-vous vous auto-exclure?"></textarea>
+                            </div>
+                            
+                            <div id="exclusion-error" class="self-exclusion-alert danger" style="display: none;"></div>
+                            
+                            <button type="button" id="exclusion-submit-btn" class="self-exclusion-button danger">M'auto-exclure</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Onglet Statistiques -->
+            <div id="statistics-tab" class="self-exclusion-tab-content">
+                <div class="self-exclusion-card">
+                    <div class="self-exclusion-card-header">
+                        <h2>Vos statistiques de jeu</h2>
+                    </div>
+                    <div class="self-exclusion-card-body">
+                        <div id="stats-loading">Chargement de vos statistiques...</div>
+                        
+                        <div id="stats-content" style="display: none;">
+                            <div class="self-exclusion-stats">
+                                <div class="self-exclusion-stat-card">
+                                    <div class="self-exclusion-stat-value" id="total-spent-daily">0 ₣</div>
+                                    <div class="self-exclusion-stat-label">Dépensé aujourd'hui</div>
+                                </div>
+                                <div class="self-exclusion-stat-card">
+                                    <div class="self-exclusion-stat-value" id="total-spent-weekly">0 ₣</div>
+                                    <div class="self-exclusion-stat-label">Dépensé cette semaine</div>
+                                </div>
+                                <div class="self-exclusion-stat-card">
+                                    <div class="self-exclusion-stat-value" id="total-bets-daily">0</div>
+                                    <div class="self-exclusion-stat-label">Parties aujourd'hui</div>
+                                </div>
+                                <div class="self-exclusion-stat-card">
+                                    <div class="self-exclusion-stat-value" id="total-bets-weekly">0</div>
+                                    <div class="self-exclusion-stat-label">Parties cette semaine</div>
+                                </div>
+                            </div>
+                            
+                            <div class="self-exclusion-divider"></div>
+                            
+                            <div class="self-exclusion-alert info">
+                                <p>Ces statistiques vous aident à suivre vos habitudes de jeu. Utilisez-les pour définir des limites adaptées à votre situation.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Modal de confirmation d'auto-exclusion -->
+    <div id="exclusion-modal" class="self-exclusion-modal">
+        <div class="self-exclusion-modal-content">
+            <div class="self-exclusion-modal-header">
+                <h3>Confirmation d'auto-exclusion</h3>
+            </div>
+            <div class="self-exclusion-modal-body">
+                <div class="self-exclusion-alert danger">
+                    <p><strong>Attention :</strong> Vous êtes sur le point de vous auto-exclure. Cette action est définitive et ne pourra pas être annulée avant la fin de la période choisie.</p>
+                </div>
+                
+                <p id="exclusion-confirmation-text">Vous allez vous auto-exclure pour une durée de <strong id="exclusion-period">X jours</strong>. Pendant cette période, vous ne pourrez pas accéder aux jeux.</p>
+                
+                <div class="self-exclusion-checkbox-group">
+                    <div class="self-exclusion-checkbox-container">
+                        <input type="checkbox" id="exclusion-confirm-check" class="self-exclusion-checkbox">
+                        <label for="exclusion-confirm-check">Je comprends que cette action est définitive et ne pourra pas être annulée.</label>
+                    </div>
+                </div>
+            </div>
+            <div class="self-exclusion-modal-footer">
+                <button id="exclusion-cancel-btn" class="self-exclusion-button">Annuler</button>
+                <button id="exclusion-confirm-btn" class="self-exclusion-button danger" disabled>Confirmer</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-columns">
+                <div class="footer-column">
+                    <h3>À propos</h3>
+                    <p>PACIFIQUE MS BINGO est une plateforme de jeu en ligne certifiée offrant une expérience de bingo équitable et sécurisée.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Liens utiles</h3>
+                    <ul>
+                        <li><a href="/play.html">Jouer</a></li>
+                        <li><a href="/kyc.html">Vérification KYC</a></li>
+                        <li><a href="/self-exclusion.html">Auto-exclusion</a></li>
+                        <li><a href="/fairness-verifier.html">Vérificateur d'équité</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Assistance</h3>
+                    <ul>
+                        <li><a href="#">Règles du jeu</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contactez-nous</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 PACIFIQUE MS BINGO - Tous droits réservés</p>
+                <p>Licence ANJ en cours d'approbation</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Éléments DOM - Onglets
+            const tabs = document.querySelectorAll('.self-exclusion-tab');
+            const tabContents = document.querySelectorAll('.self-exclusion-tab-content');
+            
+            // Éléments DOM - Limites
+            const limitsLoading = document.getElementById('limits-loading');
+            const limitsContent = document.getElementById('limits-content');
+            const limitsForm = document.getElementById('limits-form');
+            const dailyLimitInput = document.getElementById('daily-limit');
+            const weeklyLimitInput = document.getElementById('weekly-limit');
+            const sessionLimitInput = document.getElementById('session-limit');
+            const saveLimitsBtn = document.getElementById('save-limits-btn');
+            const limitError = document.getElementById('limit-error');
+            const limitSuccess = document.getElementById('limit-success');
+            
+            // Éléments DOM - Affichage des limites
+            const dailyLimitValue = document.getElementById('daily-limit-value');
+            const weeklyLimitValue = document.getElementById('weekly-limit-value');
+            const sessionLimitValue = document.getElementById('session-limit-value');
+            const limitsStats = document.getElementById('limits-stats');
+            const dailyUsageText = document.getElementById('daily-usage-text');
+            const dailyUsageBar = document.getElementById('daily-usage-bar');
+            const weeklyUsageText = document.getElementById('weekly-usage-text');
+            const weeklyUsageBar = document.getElementById('weekly-usage-bar');
+            const sessionTimerContainer = document.getElementById('session-timer-container');
+            const sessionTimer = document.getElementById('session-timer');
+            
+            // Éléments DOM - Auto-exclusion
+            const exclusionForm = document.getElementById('exclusion-form');
+            const exclusionType = document.querySelectorAll('input[name="exclusion-type"]');
+            const exclusionDurationContainer = document.getElementById('exclusion-duration-container');
+            const exclusionDuration = document.getElementById('exclusion-duration');
+            const exclusionReason = document.getElementById('exclusion-reason');
+            const exclusionSubmitBtn = document.getElementById('exclusion-submit-btn');
+            const exclusionError = document.getElementById('exclusion-error');
+            const exclusionStatus = document.getElementById('exclusion-status');
+            const exclusionStatusText = document.getElementById('exclusion-status-text');
+            
+            // Éléments DOM - Modal d'auto-exclusion
+            const exclusionModal = document.getElementById('exclusion-modal');
+            const exclusionPeriod = document.getElementById('exclusion-period');
+            const exclusionConfirmCheck = document.getElementById('exclusion-confirm-check');
+            const exclusionCancelBtn = document.getElementById('exclusion-cancel-btn');
+            const exclusionConfirmBtn = document.getElementById('exclusion-confirm-btn');
+            const exclusionConfirmationText = document.getElementById('exclusion-confirmation-text');
+            
+            // Éléments DOM - Statistiques
+            const statsLoading = document.getElementById('stats-loading');
+            const statsContent = document.getElementById('stats-content');
+            const totalSpentDaily = document.getElementById('total-spent-daily');
+            const totalSpentWeekly = document.getElementById('total-spent-weekly');
+            const totalBetsDaily = document.getElementById('total-bets-daily');
+            const totalBetsWeekly = document.getElementById('total-bets-weekly');
+            
+            // Variables globales
+            let sessionStartTime = null;
+            let sessionInterval = null;
+            let currentLimits = {};
+            let sessionTimeLimitMinutes = null;
+            
+            // Vérifier si l'utilisateur est connecté
+            checkAuthStatus();
+            
+            // Gérer la navigation par onglets
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // Désactiver tous les onglets et contenus
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Activer l'onglet et le contenu sélectionnés
+                    tab.classList.add('active');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                    
+                    // Charger les données spécifiques à l'onglet si nécessaire
+                    if (tabId === 'limits' && !currentLimits.loaded) {
+                        loadUserLimits();
+                    } else if (tabId === 'statistics') {
+                        loadUserStats();
+                    } else if (tabId === 'exclusion') {
+                        checkExclusionStatus();
+                    }
+                });
+            });
+            
+            // Gérer le type d'auto-exclusion
+            exclusionType.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    if (radio.value === 'permanent') {
+                        exclusionDurationContainer.style.display = 'none';
+                    } else {
+                        exclusionDurationContainer.style.display = 'block';
+                    }
+                });
+            });
+            
+            // Événement pour le formulaire de limites
+            limitsForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                setUserLimits();
+            });
+            
+            // Événement pour le bouton d'auto-exclusion
+            exclusionSubmitBtn.addEventListener('click', function() {
+                showExclusionModal();
+            });
+            
+            // Événements pour le modal d'auto-exclusion
+            exclusionConfirmCheck.addEventListener('change', function() {
+                exclusionConfirmBtn.disabled = !this.checked;
+            });
+            
+            exclusionCancelBtn.addEventListener('click', function() {
+                closeExclusionModal();
+            });
+            
+            exclusionConfirmBtn.addEventListener('click', function() {
+                submitExclusion();
+            });
+            
+            /**
+             * Vérifie si l'utilisateur est connecté
+             */
+            function checkAuthStatus() {
+                fetch('/api/user')
+                    .then(response => {
+                        if (!response.ok) {
+                            window.location.href = '/login.html?redirect=/self-exclusion.html';
+                            throw new Error('Non connecté');
+                        }
+                        return response.json();
+                    })
+                    .then(user => {
+                        // Charger les limites utilisateur
+                        loadUserLimits();
+                        
+                        // Vérifier s'il y a une session active
+                        checkActiveSession();
+                    })
+                    .catch(error => {
+                        console.error('Erreur de vérification de connexion:', error);
+                    });
+            }
+            
+            /**
+             * Charge les limites utilisateur
+             */
+            function loadUserLimits() {
+                limitsLoading.style.display = 'block';
+                limitsContent.style.display = 'none';
+                
+                fetch('/api/self-exclusion/limits')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erreur lors de la récupération des limites');
+                        }
+                        return response.json();
+                    })
+                    .then(limits => {
+                        // Stocker les limites actuelles
+                        currentLimits = limits;
+                        currentLimits.loaded = true;
+                        
+                        // Mettre à jour l'affichage des limites
+                        updateLimitsDisplay(limits);
+                        
+                        // Charger les limites dans le formulaire
+                        dailyLimitInput.value = limits.dailyLimit || '';
+                        weeklyLimitInput.value = limits.weeklyLimit || '';
+                        sessionLimitInput.value = limits.sessionTimeLimit || '';
+                        
+                        // Mettre à jour les barres de progression si des statistiques sont disponibles
+                        if (limits.currentStats) {
+                            updateStatsDisplay(limits.currentStats);
+                        }
+                        
+                        limitsLoading.style.display = 'none';
+                        limitsContent.style.display = 'block';
+                    })
+                    .catch(error => {
+                        console.error('Erreur de chargement des limites:', error);
+                        limitsLoading.textContent = 'Erreur lors du chargement des limites. Veuillez réessayer.';
+                    });
+            }
+            
+            /**
+             * Met à jour l'affichage des limites
+             * @param {Object} limits - Limites utilisateur
+             */
+            function updateLimitsDisplay(limits) {
+                // Mettre à jour les valeurs affichées
+                dailyLimitValue.textContent = limits.dailyLimit ? `${limits.dailyLimit} ₣` : 'Non définie';
+                weeklyLimitValue.textContent = limits.weeklyLimit ? `${limits.weeklyLimit} ₣` : 'Non définie';
+                sessionLimitValue.textContent = limits.sessionTimeLimit ? `${limits.sessionTimeLimit} min` : 'Non définie';
+                
+                // Stocker la limite de temps pour le minuteur de session
+                sessionTimeLimitMinutes = limits.sessionTimeLimit;
+            }
+            
+            /**
+             * Met à jour l'affichage des statistiques
+             * @param {Object} stats - Statistiques utilisateur
+             */
+            function updateStatsDisplay(stats) {
+                const dailyTotal = stats.dailyTotal || 0;
+                const weeklyTotal = stats.weeklyTotal || 0;
+                const dailyLimit = currentLimits.dailyLimit || 0;
+                const weeklyLimit = currentLimits.weeklyLimit || 0;
+                
+                // Afficher les statistiques seulement si des limites sont définies
+                if (dailyLimit || weeklyLimit) {
+                    limitsStats.style.display = 'block';
+                    
+                    // Mettre à jour la barre de progression quotidienne
+                    if (dailyLimit) {
+                        const dailyPercentage = Math.min(100, (dailyTotal / dailyLimit) * 100);
+                        dailyUsageText.textContent = `${dailyTotal} / ${dailyLimit} ₣`;
+                        dailyUsageBar.style.width = `${dailyPercentage}%`;
+                        
+                        // Changer la couleur selon le pourcentage
+                        if (dailyPercentage >= 90) {
+                            dailyUsageBar.className = 'self-exclusion-progress-fill danger';
+                        } else if (dailyPercentage >= 75) {
+                            dailyUsageBar.className = 'self-exclusion-progress-fill warning';
+                        } else {
+                            dailyUsageBar.className = 'self-exclusion-progress-fill';
+                        }
+                    }
+                    
+                    // Mettre à jour la barre de progression hebdomadaire
+                    if (weeklyLimit) {
+                        const weeklyPercentage = Math.min(100, (weeklyTotal / weeklyLimit) * 100);
+                        weeklyUsageText.textContent = `${weeklyTotal} / ${weeklyLimit} ₣`;
+                        weeklyUsageBar.style.width = `${weeklyPercentage}%`;
+                        
+                        // Changer la couleur selon le pourcentage
+                        if (weeklyPercentage >= 90) {
+                            weeklyUsageBar.className = 'self-exclusion-progress-fill danger';
+                        } else if (weeklyPercentage >= 75) {
+                            weeklyUsageBar.className = 'self-exclusion-progress-fill warning';
+                        } else {
+                            weeklyUsageBar.className = 'self-exclusion-progress-fill';
+                        }
+                    }
+                }
+            }
+            
+            /**
+             * Définit les limites utilisateur
+             */
+            function setUserLimits() {
+                // Récupérer les valeurs du formulaire
+                const dailyLimit = dailyLimitInput.value ? parseInt(dailyLimitInput.value) : null;
+                const weeklyLimit = weeklyLimitInput.value ? parseInt(weeklyLimitInput.value) : null;
+                const sessionTimeLimit = sessionLimitInput.value ? parseInt(sessionLimitInput.value) : null;
+                
+                // Valider les entrées
+                if ((dailyLimit !== null && dailyLimit <= 0) || 
+                    (weeklyLimit !== null && weeklyLimit <= 0) || 
+                    (sessionTimeLimit !== null && sessionTimeLimit <= 0)) {
+                    showLimitError('Les limites doivent être des valeurs positives');
+                    return;
+                }
+                
+                // Désactiver le bouton pendant la soumission
+                saveLimitsBtn.disabled = true;
+                saveLimitsBtn.textContent = 'Enregistrement...';
+                
+                // Envoyer la requête
+                fetch('/api/self-exclusion/limits', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        dailyLimit,
+                        weeklyLimit,
+                        sessionTimeLimit
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => {
+                            throw new Error(data.message || 'Erreur lors de la définition des limites');
+                        });
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    // Mettre à jour les limites actuelles
+                    currentLimits = result;
+                    
+                    // Mettre à jour l'affichage
+                    updateLimitsDisplay(result);
+                    
+                    // Afficher le message de succès
+                    showLimitSuccess('Vos limites ont été mises à jour avec succès');
+                    
+                    // Charger les limites à nouveau pour obtenir les statistiques mises à jour
+                    loadUserLimits();
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la définition des limites:', error);
+                    showLimitError(error.message);
+                })
+                .finally(() => {
+                    // Réactiver le bouton
+                    saveLimitsBtn.disabled = false;
+                    saveLimitsBtn.textContent = 'Enregistrer mes limites';
+                });
+            }
+            
+            /**
+             * Affiche un message d'erreur pour les limites
+             * @param {string} message - Message d'erreur
+             */
+            function showLimitError(message) {
+                limitError.textContent = message;
+                limitError.style.display = 'block';
+                limitSuccess.style.display = 'none';
+                
+                // Cacher après 5 secondes
+                setTimeout(() => {
+                    limitError.style.display = 'none';
+                }, 5000);
+            }
+            
+            /**
+             * Affiche un message de succès pour les limites
+             * @param {string} message - Message de succès
+             */
+            function showLimitSuccess(message) {
+                limitSuccess.textContent = message;
+                limitSuccess.style.display = 'block';
+                limitError.style.display = 'none';
+                
+                // Cacher après 5 secondes
+                setTimeout(() => {
+                    limitSuccess.style.display = 'none';
+                }, 5000);
+            }
+            
+            /**
+             * Charge les statistiques utilisateur
+             */
+            function loadUserStats() {
+                statsLoading.style.display = 'block';
+                statsContent.style.display = 'none';
+                
+                fetch('/api/self-exclusion/limits')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erreur lors de la récupération des statistiques');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.currentStats) {
+                            const stats = data.currentStats;
+                            
+                            // Mettre à jour les statistiques affichées
+                            totalSpentDaily.textContent = `${stats.dailyTotal || 0} ₣`;
+                            totalSpentWeekly.textContent = `${stats.weeklyTotal || 0} ₣`;
+                            totalBetsDaily.textContent = stats.dailyBets || 0;
+                            totalBetsWeekly.textContent = stats.weeklyBets || 0;
+                            
+                            statsLoading.style.display = 'none';
+                            statsContent.style.display = 'block';
+                        } else {
+                            throw new Error('Statistiques non disponibles');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur de chargement des statistiques:', error);
+                        statsLoading.textContent = 'Erreur lors du chargement des statistiques. Veuillez réessayer.';
+                    });
+            }
+            
+            /**
+             * Vérifie s'il y a une session active
+             */
+            function checkActiveSession() {
+                fetch('/api/self-exclusion/can-play')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erreur lors de la vérification de la session');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Vérifier s'il y a une session active
+                        if (data.currentSessionDuration > 0) {
+                            // Une session est active, démarrer le minuteur
+                            sessionStartTime = new Date();
+                            sessionStartTime.setMinutes(sessionStartTime.getMinutes() - data.currentSessionDuration);
+                            
+                            startSessionTimer();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur de vérification de session:', error);
+                    });
+            }
+            
+            /**
+             * Démarre le minuteur de session
+             */
+            function startSessionTimer() {
+                if (!sessionStartTime) {
+                    sessionStartTime = new Date();
+                    
+                    // Enregistrer le début de la session
+                    fetch('/api/self-exclusion/start-session', {
+                        method: 'POST'
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors du démarrage de la session:', error);
+                    });
+                }
+                
+                // Afficher le conteneur du minuteur
+                sessionTimerContainer.style.display = 'block';
+                
+                // Mettre à jour le minuteur immédiatement
+                updateSessionTimer();
+                
+                // Mettre à jour le minuteur toutes les secondes
+                if (!sessionInterval) {
+                    sessionInterval = setInterval(updateSessionTimer, 1000);
+                }
+            }
+            
+            /**
+             * Met à jour le minuteur de session
+             */
+            function updateSessionTimer() {
+                if (!sessionStartTime) return;
+                
+                const now = new Date();
+                const elapsed = now - sessionStartTime;
+                
+                // Convertir en heures, minutes, secondes
+                const hours = Math.floor(elapsed / 3600000);
+                const minutes = Math.floor((elapsed % 3600000) / 60000);
+                const seconds = Math.floor((elapsed % 60000) / 1000);
+                
+                // Formater l'affichage
+                sessionTimer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Vérifier si la limite de temps est atteinte
+                if (sessionTimeLimitMinutes && minutes + (hours * 60) >= sessionTimeLimitMinutes) {
+                    sessionTimer.style.color = '#f44336';
+                } else {
+                    sessionTimer.style.color = '#1976d2';
+                }
+            }
+            
+            /**
+             * Vérifie le statut d'auto-exclusion de l'utilisateur
+             */
+            function checkExclusionStatus() {
+                fetch('/api/self-exclusion/can-play')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erreur lors de la vérification du statut');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (!data.canPlay && data.reason === 'excluded') {
+                            // L'utilisateur est actuellement exclu
+                            let statusText = '';
+                            
+                            if (data.isPermanent) {
+                                statusText = 'Vous êtes actuellement exclu de façon permanente. Cette exclusion ne peut pas être annulée.';
+                                
+                                // Désactiver le formulaire
+                                exclusionForm.style.display = 'none';
+                            } else {
+                                const endDate = new Date(data.endDate).toLocaleDateString('fr-FR');
+                                statusText = `Vous êtes actuellement exclu jusqu'au ${endDate}. Cette exclusion ne peut pas être annulée avant cette date.`;
+                                
+                                // Désactiver le formulaire
+                                exclusionForm.style.display = 'none';
+                            }
+                            
+                            // Afficher le statut
+                            exclusionStatusText.textContent = statusText;
+                            exclusionStatus.style.display = 'block';
+                        } else {
+                            // L'utilisateur n'est pas exclu
+                            exclusionStatus.style.display = 'none';
+                            exclusionForm.style.display = 'block';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors de la vérification du statut d\'exclusion:', error);
+                    });
+            }
+            
+            /**
+             * Affiche le modal de confirmation d'auto-exclusion
+             */
+            function showExclusionModal() {
+                // Récupérer les valeurs du formulaire
+                const isTemporary = document.getElementById('exclusion-temporary').checked;
+                const duration = exclusionDuration.value;
+                
+                // Mettre à jour le texte du modal
+                if (isTemporary) {
+                    let durationText = `${duration} jours`;
+                    if (duration === '1') {
+                        durationText = '1 jour';
+                    } else if (duration === '365') {
+                        durationText = '1 an';
+                    }
+                    
+                    exclusionPeriod.textContent = durationText;
+                    exclusionConfirmationText.innerHTML = `Vous allez vous auto-exclure pour une durée de <strong>${durationText}</strong>. Pendant cette période, vous ne pourrez pas accéder aux jeux.`;
+                } else {
+                    exclusionPeriod.textContent = 'permanente';
+                    exclusionConfirmationText.innerHTML = `Vous allez vous auto-exclure de façon <strong>permanente</strong>. Vous ne pourrez plus accéder aux jeux à l'avenir.`;
+                }
+                
+                // Réinitialiser la case à cocher et le bouton
+                exclusionConfirmCheck.checked = false;
+                exclusionConfirmBtn.disabled = true;
+                
+                // Afficher le modal
+                exclusionModal.classList.add('active');
+            }
+            
+            /**
+             * Ferme le modal de confirmation d'auto-exclusion
+             */
+            function closeExclusionModal() {
+                exclusionModal.classList.remove('active');
+            }
+            
+            /**
+             * Soumet la demande d'auto-exclusion
+             */
+            function submitExclusion() {
+                // Récupérer les valeurs du formulaire
+                const isPermanent = document.getElementById('exclusion-permanent').checked;
+                const duration = parseInt(exclusionDuration.value);
+                const reason = exclusionReason.value;
+                
+                // Désactiver le bouton pendant la soumission
+                exclusionConfirmBtn.disabled = true;
+                exclusionConfirmBtn.textContent = 'Traitement...';
+                
+                // Envoyer la requête
+                fetch('/api/self-exclusion/exclude', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        isPermanent,
+                        duration,
+                        reason
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => {
+                            throw new Error(data.message || 'Erreur lors de l\'auto-exclusion');
+                        });
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    // Fermer le modal
+                    closeExclusionModal();
+                    
+                    // Rediriger vers la page d'accueil
+                    window.location.href = '/?excluded=true';
+                })
+                .catch(error => {
+                    console.error('Erreur lors de l\'auto-exclusion:', error);
+                    
+                    // Fermer le modal
+                    closeExclusionModal();
+                    
+                    // Afficher l'erreur
+                    exclusionError.textContent = error.message;
+                    exclusionError.style.display = 'block';
+                    
+                    // Réactiver le bouton
+                    exclusionConfirmBtn.disabled = false;
+                    exclusionConfirmBtn.textContent = 'Confirmer';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

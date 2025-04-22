@@ -1,0 +1,227 @@
+/* Styles pour le gestionnaire de joueurs */
+
+/* Panneau des utilisateurs connectés */
+.users-panel {
+    z-index: 1000;
+}
+
+/* Style pour les notifications */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(42, 42, 42, 0.9);
+    color: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 2000;
+    animation: slideInRight 0.3s ease-out;
+    max-width: 350px;
+}
+
+.notification-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-content h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+}
+
+.notification-content p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.quine-notification {
+    border-left: 4px solid #ff9800;
+}
+
+.bingo-notification {
+    border-left: 4px solid #4CAF50;
+}
+
+.success-notification {
+    border-left: 4px solid #4CAF50;
+}
+
+.lottery-notification {
+    border-left: 4px solid #9c27b0;
+}
+
+.connect-notification {
+    border-left: 4px solid #2196F3;
+}
+
+.photo-notification {
+    border-left: 4px solid #00BCD4;
+}
+
+/* Style pour les sélecteurs de photos de profil */
+.photo-selector-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.photo-selector-content {
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.photo-selector-header {
+    background-color: #0099cc;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.photo-selector-header h3 {
+    margin: 0;
+}
+
+.photo-selector-header .close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.photo-options {
+    padding: 20px;
+}
+
+.avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.avatar-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.avatar-option:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-5px);
+}
+
+.avatar-preview {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 10px;
+    background-color: #0099cc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-preview.no-avatar {
+    background-color: #555;
+    font-size: 36px;
+    color: white;
+}
+
+.avatar-name {
+    font-size: 14px;
+    text-align: center;
+    color: #ddd;
+}
+
+.photo-upload {
+    padding: 20px;
+    border-top: 1px solid #444;
+}
+
+.photo-upload label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.photo-upload input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: white;
+}
+
+/* Style pour la liste des gagnants */
+.winners-panel {
+    margin-top: 20px;
+}
+
+.no-winners {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+    font-style: italic;
+}
+
+/* Animations */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Style pour l'utilisateur actuel */
+.user-bubble.current-user {
+    background-color: rgba(0, 153, 204, 0.3);
+    cursor: pointer;
+}
+
+.user-bubble.current-user:hover {
+    background-color: rgba(0, 153, 204, 0.5);
+}
+
+.user-bubble.current-user::after {
+    content: '✏️';
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+/* Style pour la validation de carte */
+.card-validation-display .bingo-card {
+    transform: scale(0.8);
+    margin: 0 auto;
+}

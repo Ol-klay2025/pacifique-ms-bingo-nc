@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS BINGO - Politique de Confidentialité</title>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0099cc;
+            --secondary-color: #4CAF50;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --border-radius: 8px;
+            --transition-speed: 0.3s;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            line-height: 1.6;
+            background-image: url('/images/pacifique-bingo-background.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.65);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+            background-color: rgba(26, 26, 26, 0.8);
+            border-radius: var(--border-radius);
+            padding: 15px 20px;
+        }
+        
+        header h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+        }
+        
+        header nav {
+            display: flex;
+            gap: 10px;
+        }
+        
+        header nav a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            transition: background-color var(--transition-speed);
+            font-weight: 500;
+        }
+        
+        header nav a:hover, header nav a.active {
+            background-color: var(--primary-color);
+        }
+        
+        .privacy-content {
+            background-color: rgba(26, 26, 26, 0.8);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .privacy-content h2 {
+            color: var(--primary-color);
+            font-size: 24px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .privacy-content h3 {
+            color: var(--light-color);
+            font-size: 20px;
+            margin: 25px 0 15px;
+        }
+        
+        .privacy-content p {
+            margin-bottom: 15px;
+        }
+        
+        .privacy-content ul, .privacy-content ol {
+            margin-bottom: 15px;
+            margin-left: 20px;
+        }
+        
+        .privacy-content li {
+            margin-bottom: 10px;
+        }
+        
+        .privacy-content strong {
+            color: var(--light-color);
+        }
+        
+        .date-updated {
+            font-style: italic;
+            color: #ccc;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .table-of-contents {
+            background-color: rgba(44, 62, 80, 0.2);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+        }
+        
+        .table-of-contents h3 {
+            margin-top: 0;
+        }
+        
+        .table-of-contents ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+        
+        .table-of-contents a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color var(--transition-speed);
+        }
+        
+        .table-of-contents a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+        
+        .section {
+            scroll-margin-top: 80px;
+        }
+        
+        .highlight-box {
+            background-color: rgba(0, 153, 204, 0.1);
+            border-left: 3px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .footer-links {
+            margin-top: 10px;
+        }
+        
+        .footer-links a {
+            margin: 0 10px;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            header nav {
+                margin-top: 15px;
+            }
+            
+            .privacy-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MS BINGO</h1>
+            <nav>
+                <a href="/">Accueil</a>
+                <a href="/play.html">Jouer</a>
+                <a href="/contact.html">Contact</a>
+            </nav>
+        </header>
+        
+        <div class="privacy-content">
+            <h2>Politique de Confidentialité</h2>
+            <p class="date-updated">Dernière mise à jour : 14 avril 2025</p>
+            
+            <div class="table-of-contents">
+                <h3>Sommaire</h3>
+                <ul>
+                    <li><a href="#introduction">1. Introduction</a></li>
+                    <li><a href="#responsable">2. Responsable du traitement</a></li>
+                    <li><a href="#collecte">3. Informations que nous collectons</a></li>
+                    <li><a href="#base-legale">4. Base légale du traitement</a></li>
+                    <li><a href="#utilisation">5. Comment nous utilisons vos informations</a></li>
+                    <li><a href="#partage">6. Partage de vos informations</a></li>
+                    <li><a href="#conservation">7. Conservation des données</a></li>
+                    <li><a href="#securite">8. Sécurité des données</a></li>
+                    <li><a href="#droits">9. Vos droits</a></li>
+                    <li><a href="#cookies">10. Politique relative aux cookies</a></li>
+                    <li><a href="#modifications">11. Modifications de la politique</a></li>
+                    <li><a href="#contact">12. Nous contacter</a></li>
+                </ul>
+            </div>
+            
+            <div id="introduction" class="section">
+                <h3>1. Introduction</h3>
+                <p>Bienvenue sur la politique de confidentialité de Pacifique MS Bingo. Cette politique explique comment nous collectons, utilisons, divulguons, transférons et stockons vos informations lorsque vous utilisez notre plateforme de jeu.</p>
+                <p>Nous nous engageons à respecter votre vie privée et à protéger vos données personnelles conformément au Règlement Général sur la Protection des Données (RGPD) et aux autres lois applicables sur la protection des données.</p>
+            </div>
+            
+            <div id="responsable" class="section">
+                <h3>2. Responsable du traitement</h3>
+                <p>Le responsable du traitement des données est la direction de la plateforme Pacifique MS Bingo.</p>
+                <p>Pour toute question concernant cette politique ou nos pratiques en matière de protection des données, veuillez nous contacter à l'adresse email suivante : <strong>privacy@ms-bingo.com</strong>.</p>
+            </div>
+            
+            <div id="collecte" class="section">
+                <h3>3. Informations que nous collectons</h3>
+                <p>Nous collectons différents types d'informations vous concernant :</p>
+                <ul>
+                    <li><strong>Informations d'inscription :</strong> nom d'utilisateur, adresse e-mail, mot de passe (crypté)</li>
+                    <li><strong>Informations de vérification d'identité (KYC) :</strong> nom complet, date de naissance, adresse, documents d'identité, photos</li>
+                    <li><strong>Informations de paiement :</strong> historique des transactions, méthodes de paiement (les détails complets de vos cartes de crédit ne sont pas stockés sur nos serveurs)</li>
+                    <li><strong>Informations techniques :</strong> adresse IP, type d'appareil, navigateur web, système d'exploitation, identifiants d'appareil</li>
+                    <li><strong>Données d'utilisation :</strong> activités de jeu, gains, mises, préférences de jeu, historique des connexions</li>
+                    <li><strong>Communications :</strong> messages que vous nous envoyez via le support client, enquêtes ou formulaires de contact</li>
+                </ul>
+            </div>
+            
+            <div id="base-legale" class="section">
+                <h3>4. Base légale du traitement</h3>
+                <p>Le traitement de vos données repose sur les bases légales suivantes :</p>
+                <ul>
+                    <li><strong>Consentement (article 6.1.a du RGPD) :</strong> lorsque vous acceptez notre politique de confidentialité et l'utilisation de certains cookies non essentiels</li>
+                    <li><strong>Exécution du contrat (article 6.1.b du RGPD) :</strong> pour vous fournir nos services de jeu</li>
+                    <li><strong>Obligations légales (article 6.1.c du RGPD) :</strong> pour nous conformer aux exigences réglementaires, notamment en matière de jeu responsable, KYC et lutte contre le blanchiment d'argent</li>
+                    <li><strong>Intérêts légitimes (article 6.1.f du RGPD) :</strong> pour améliorer nos services, assurer la sécurité et prévenir la fraude</li>
+                </ul>
+            </div>
+            
+            <div id="utilisation" class="section">
+                <h3>5. Comment nous utilisons vos informations</h3>
+                <p>Nous utilisons vos informations pour :</p>
+                <ul>
+                    <li>Créer et gérer votre compte</li>
+                    <li>Vérifier votre identité conformément aux exigences réglementaires</li>
+                    <li>Traiter vos dépôts et retraits</li>
+                    <li>Vous fournir l'accès aux jeux et fonctionnalités de la plateforme</li>
+                    <li>Communiquer avec vous concernant votre compte, nos services ou les promotions</li>
+                    <li>Prévenir les activités frauduleuses et assurer la sécurité de la plateforme</li>
+                    <li>Se conformer aux obligations légales et réglementaires</li>
+                    <li>Analyser et améliorer nos services</li>
+                    <li>Personnaliser votre expérience utilisateur</li>
+                </ul>
+            </div>
+            
+            <div id="partage" class="section">
+                <h3>6. Partage de vos informations</h3>
+                <p>Nous pouvons partager vos informations avec :</p>
+                <ul>
+                    <li><strong>Prestataires de services :</strong> entreprises qui nous aident à exploiter notre plateforme (traitement des paiements, vérification d'identité, hébergement, support client)</li>
+                    <li><strong>Autorités réglementaires :</strong> lorsque cela est requis par la loi, notamment pour la conformité aux réglementations de jeu</li>
+                    <li><strong>Partenaires commerciaux :</strong> uniquement si vous avez donné votre consentement explicite</li>
+                </ul>
+                <p>Nous ne vendons jamais vos données personnelles à des tiers. Lorsque nous partageons vos informations avec des prestataires de services, nous exigeons qu'ils respectent la confidentialité et la sécurité de vos données.</p>
+            </div>
+            
+            <div id="conservation" class="section">
+                <h3>7. Conservation des données</h3>
+                <p>Nous conservons vos données personnelles aussi longtemps que nécessaire pour les finalités pour lesquelles elles ont été collectées, notamment :</p>
+                <ul>
+                    <li>Pendant toute la durée de votre relation avec nous</li>
+                    <li>Pour répondre à nos obligations légales et réglementaires (généralement 5 ans après la fin de la relation client pour les documents relatifs aux transactions)</li>
+                    <li>Pour résoudre les litiges et faire respecter nos accords</li>
+                </ul>
+                <p>Vous pouvez demander la suppression de vos données dans certaines circonstances, comme expliqué dans la section "Vos droits".</p>
+            </div>
+            
+            <div id="securite" class="section">
+                <h3>8. Sécurité des données</h3>
+                <p>Nous mettons en œuvre des mesures techniques et organisationnelles appropriées pour protéger vos données personnelles contre la perte, l'accès non autorisé, la divulgation, l'altération et la destruction, notamment :</p>
+                <ul>
+                    <li>Cryptage des données sensibles</li>
+                    <li>Protocoles HTTPS pour toutes les communications</li>
+                    <li>Contrôles d'accès stricts</li>
+                    <li>Surveillance continue de la sécurité</li>
+                    <li>Formation régulière du personnel sur la protection des données</li>
+                </ul>
+                <p>Malgré ces mesures, aucune méthode de transmission ou de stockage électronique n'est totalement sécurisée. Nous ne pouvons donc pas garantir une sécurité absolue.</p>
+            </div>
+            
+            <div id="droits" class="section">
+                <h3>9. Vos droits</h3>
+                <p>Conformément au RGPD, vous disposez des droits suivants concernant vos données personnelles :</p>
+                <ul>
+                    <li><strong>Droit d'accès :</strong> vous pouvez demander une copie des données personnelles que nous détenons à votre sujet</li>
+                    <li><strong>Droit de rectification :</strong> vous pouvez demander la correction des données inexactes</li>
+                    <li><strong>Droit à l'effacement (droit à l'oubli) :</strong> vous pouvez demander la suppression de vos données dans certaines circonstances</li>
+                    <li><strong>Droit à la limitation du traitement :</strong> vous pouvez demander la restriction du traitement de vos données</li>
+                    <li><strong>Droit à la portabilité des données :</strong> vous pouvez recevoir vos données dans un format structuré et les transférer à un autre responsable du traitement</li>
+                    <li><strong>Droit d'opposition :</strong> vous pouvez vous opposer au traitement de vos données dans certaines circonstances</li>
+                    <li><strong>Droit de retirer votre consentement :</strong> lorsque le traitement est basé sur le consentement</li>
+                </ul>
+                <p>Pour exercer ces droits, contactez-nous à <strong>privacy@ms-bingo.com</strong>. Nous répondrons à votre demande dans un délai d'un mois. Ce délai peut être prolongé de deux mois si nécessaire, compte tenu de la complexité et du nombre de demandes.</p>
+                <p>Vous avez également le droit d'introduire une réclamation auprès d'une autorité de protection des données.</p>
+                
+                <div class="highlight-box">
+                    <p><strong>Comment demander l'effacement de vos données :</strong></p>
+                    <p>Pour exercer votre droit à l'oubli, vous pouvez:</p>
+                    <ol>
+                        <li>Accéder à la page "Paramètres du compte" sur votre profil</li>
+                        <li>Sélectionner l'option "Supprimer mon compte et mes données"</li>
+                        <li>Suivre les instructions pour confirmer votre identité</li>
+                        <li>Ou nous contacter directement à privacy@ms-bingo.com en précisant votre demande</li>
+                    </ol>
+                    <p>Certaines données peuvent être conservées malgré votre demande pour respecter nos obligations légales (notamment fiscales et anti-blanchiment).</p>
+                </div>
+            </div>
+            
+            <div id="cookies" class="section">
+                <h3>10. Politique relative aux cookies</h3>
+                <p>Nous utilisons des cookies et des technologies similaires pour améliorer votre expérience sur notre plateforme. Un cookie est un petit fichier texte stocké sur votre appareil lorsque vous visitez notre site.</p>
+                <p>Nous utilisons différents types de cookies :</p>
+                <ul>
+                    <li><strong>Cookies essentiels :</strong> nécessaires au fonctionnement de la plateforme (session, authentification)</li>
+                    <li><strong>Cookies de performance :</strong> pour analyser comment les visiteurs utilisent le site</li>
+                    <li><strong>Cookies de fonctionnalité :</strong> pour mémoriser vos préférences</li>
+                    <li><strong>Cookies de ciblage :</strong> pour vous montrer des contenus personnalisés</li>
+                </ul>
+                <p>Vous pouvez gérer vos préférences en matière de cookies via notre bannière de cookies ou les paramètres de votre navigateur. Notez que la désactivation de certains cookies peut affecter votre expérience sur la plateforme.</p>
+                <p>Pour plus d'informations sur les cookies spécifiques que nous utilisons, consultez notre <a href="/cookies-policy.html">Politique de cookies</a>.</p>
+            </div>
+            
+            <div id="modifications" class="section">
+                <h3>11. Modifications de la politique</h3>
+                <p>Nous pouvons mettre à jour cette politique de confidentialité périodiquement pour refléter les changements dans nos pratiques ou pour d'autres raisons opérationnelles, légales ou réglementaires.</p>
+                <p>Nous vous informerons de tout changement important en publiant la nouvelle politique sur cette page et, si les changements sont significatifs, nous vous en informerons par e-mail ou par une notification sur notre plateforme.</p>
+                <p>Nous vous encourageons à consulter régulièrement cette politique pour rester informé de la façon dont nous protégeons vos informations.</p>
+            </div>
+            
+            <div id="contact" class="section">
+                <h3>12. Nous contacter</h3>
+                <p>Si vous avez des questions ou des préoccupations concernant cette politique de confidentialité ou le traitement de vos données personnelles, veuillez nous contacter :</p>
+                <ul>
+                    <li><strong>Par e-mail :</strong> privacy@ms-bingo.com</li>
+                    <li><strong>Par courrier :</strong> MS Bingo, Attention: Protection des données, BP 12345, 98800 Nouméa, Nouvelle-Calédonie</li>
+                </ul>
+                <p>Notre Délégué à la Protection des Données peut être contacté à l'adresse : dpo@ms-bingo.com</p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2025 Pacifique MS Bingo. Tous droits réservés.</p>
+            <div class="footer-links">
+                <a href="/terms.html">Conditions d'utilisation</a>
+                <a href="/privacy-policy.html">Politique de confidentialité</a>
+                <a href="/cookies-policy.html">Politique de cookies</a>
+                <a href="/contact.html">Contact</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

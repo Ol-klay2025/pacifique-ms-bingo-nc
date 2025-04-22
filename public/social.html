@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MS BINGO - Fonctionnalités Sociales</title>
+  <style>
+    body {
+      font-family: 'Trebuchet MS', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #1a1a1a;
+      color: white;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%230099cc" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,224C672,213,768,171,864,165.3C960,160,1056,192,1152,208C1248,224,1344,224,1392,224L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+      background-repeat: no-repeat;
+      background-position: bottom;
+      background-size: 100% 50%;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background-color: #0099cc;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    h1 {
+      margin: 0;
+      color: white;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    }
+    
+    nav {
+      display: flex;
+      gap: 10px;
+    }
+    
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    
+    nav a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .social-container {
+      display: flex;
+      background-color: #2a2a2a;
+      border-radius: 8px;
+      overflow: hidden;
+      height: 70vh;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .sidebar {
+      width: 300px;
+      background-color: #222;
+      border-right: 1px solid #444;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .main-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .chat-empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #777;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .chat-empty-state i {
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+    
+    /* Éléments visuels supplémentaires */
+    .button {
+      background-color: #0099cc;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .button:hover {
+      background-color: #00aadd;
+    }
+    
+    .button.secondary {
+      background-color: #555;
+    }
+    
+    .button.secondary:hover {
+      background-color: #666;
+    }
+    
+    .button:disabled {
+      background-color: #555;
+      cursor: not-allowed;
+    }
+    
+    .loading-spinner {
+      border: 3px solid rgba(0, 153, 204, 0.3);
+      border-radius: 50%;
+      border-top: 3px solid #0099cc;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>MS BINGO</h1>
+      <nav>
+        <a href="/profile">Profil</a>
+        <a href="/play">Jouer</a>
+        <a href="/social" class="active">Social</a>
+        <a href="/logout" id="logout-btn">Déconnexion</a>
+      </nav>
+    </header>
+    
+    <div class="social-container">
+      <div class="sidebar">
+        <div class="social-tabs">
+          <div class="social-tab active" data-tab="friends">Amis <span class="unread-count hidden">0</span></div>
+          <div class="social-tab" data-tab="chat-rooms">Salons</div>
+        </div>
+        
+        <!-- Onglet Amis -->
+        <div class="tab-content active" id="friends-tab">
+          <div class="user-search">
+            <input type="text" id="user-search-input" placeholder="Rechercher des utilisateurs...">
+            <div class="search-results" id="search-results"></div>
+          </div>
+          
+          <h3>Mes amis</h3>
+          <ul class="friends-list" id="friends-list">
+            <li class="loading-item">
+              <div class="loading-spinner"></div>
+            </li>
+          </ul>
+          
+          <div class="friend-requests">
+            <h3>Demandes d'amitié <span id="friend-request-count"></span></h3>
+            <div id="friend-requests-list"></div>
+          </div>
+        </div>
+        
+        <!-- Onglet Salons de chat -->
+        <div class="tab-content" id="chat-rooms-tab">
+          <button id="create-room-btn" class="button">Créer un salon</button>
+          
+          <div id="create-room-form" class="hidden">
+            <h3>Nouveau salon</h3>
+            <div class="form-group">
+              <label for="room-name">Nom</label>
+              <input type="text" id="room-name" placeholder="Nom du salon">
+            </div>
+            <div class="form-group">
+              <label for="room-description">Description</label>
+              <textarea id="room-description" placeholder="Description du salon"></textarea>
+            </div>
+            <div class="form-check">
+              <input type="checkbox" id="room-private">
+              <label for="room-private">Salon privé</label>
+            </div>
+            <div class="form-actions">
+              <button id="create-room-submit" class="button">Créer</button>
+              <button id="create-room-cancel" class="button secondary">Annuler</button>
+            </div>
+          </div>
+          
+          <h3>Salons disponibles</h3>
+          <ul class="chat-rooms-list" id="chat-rooms-list">
+            <li class="loading-item">
+              <div class="loading-spinner"></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="main-content">
+        <!-- Zone de chat -->
+        <div id="chat-container" class="chat-container">
+          <div class="chat-header" id="chat-header">
+            <h3>Sélectionnez un ami pour commencer à discuter</h3>
+          </div>
+          
+          <div class="chat-messages" id="chat-messages">
+            <div class="chat-empty-state">
+              <i>💬</i>
+              <p>Sélectionnez un ami dans la liste pour commencer à discuter</p>
+            </div>
+          </div>
+          
+          <div class="chat-input hidden" id="chat-input">
+            <input type="text" id="message-input" placeholder="Écrivez votre message...">
+            <button id="send-message-btn">Envoyer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="/js/social-features.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        // Récupérer les informations de l'utilisateur
+        const userResponse = await fetch('/api/user', {
+          credentials: 'include'
+        });
+        
+        if (!userResponse.ok) {
+          window.location.href = '/';
+          return;
+        }
+        
+        const user = await userResponse.json();
+        console.log('User:', user);
+        
+        // Initialiser les fonctionnalités sociales
+        await window.initializeSocialFeatures(user.id, user.username);
+        
+        // Configurer les événements d'interface utilisateur
+        setupUIEvents();
+        
+      } catch (error) {
+        console.error('Error loading social features:', error);
+      }
+    });
+    
+    function setupUIEvents() {
+      const social = window.msBingoSocial;
+      
+      // Gestion des onglets
+      const tabs = document.querySelectorAll('.social-tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          // Désactiver tous les onglets
+          tabs.forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          
+          // Activer l'onglet cliqué
+          tab.classList.add('active');
+          const tabId = `${tab.dataset.tab}-tab`;
+          document.getElementById(tabId).classList.add('active');
+        });
+      });
+      
+      // Charger les amis
+      social.on('onFriendsUpdated', renderFriendsList);
+      
+      // Charger les demandes d'amitié
+      social.on('onFriendRequestsUpdated', renderFriendRequests);
+      
+      // Charger les salons de chat
+      social.on('onChatRoomsUpdated', renderChatRooms);
+      
+      // Gestion des messages
+      social.on('onMessagesUpdated', renderMessages);
+      social.on('onNewMessage', handleNewMessage);
+      
+      // Gestion des messages de salon
+      social.on('onRoomMessagesUpdated', renderRoomMessages);
+      
+      // Recherche d'utilisateurs
+      const searchInput = document.getElementById('user-search-input');
+      let searchTimeout;
+      
+      searchInput.addEventListener('input', () => {
+        const query = searchInput.value.trim();
+        
+        clearTimeout(searchTimeout);
+        
+        if (query.length >= 3) {
+          searchTimeout = setTimeout(async () => {
+            try {
+              const users = await social.searchUsers(query);
+              renderSearchResults(users);
+            } catch (error) {
+              console.error('Error searching users:', error);
+            }
+          }, 300);
+        } else {
+          document.getElementById('search-results').innerHTML = '';
+        }
+      });
+      
+      // Envoi de messages
+      const messageInput = document.getElementById('message-input');
+      const sendButton = document.getElementById('send-message-btn');
+      
+      function sendMessage() {
+        const message = messageInput.value.trim();
+        if (message && social.currentChatFriendId) {
+          social.sendMessage(social.currentChatFriendId, message);
+          messageInput.value = '';
+        }
+      }
+      
+      sendButton.addEventListener('click', sendMessage);
+      
+      messageInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          sendMessage();
+        }
+      });
+      
+      // Création de salon
+      const createRoomBtn = document.getElementById('create-room-btn');
+      const createRoomForm = document.getElementById('create-room-form');
+      const createRoomSubmit = document.getElementById('create-room-submit');
+      const createRoomCancel = document.getElementById('create-room-cancel');
+      
+      createRoomBtn.addEventListener('click', () => {
+        createRoomBtn.classList.add('hidden');
+        createRoomForm.classList.remove('hidden');
+      });
+      
+      createRoomCancel.addEventListener('click', () => {
+        createRoomForm.classList.add('hidden');
+        createRoomBtn.classList.remove('hidden');
+        document.getElementById('room-name').value = '';
+        document.getElementById('room-description').value = '';
+        document.getElementById('room-private').checked = false;
+      });
+      
+      createRoomSubmit.addEventListener('click', async () => {
+        const name = document.getElementById('room-name').value.trim();
+        const description = document.getElementById('room-description').value.trim();
+        const isPrivate = document.getElementById('room-private').checked;
+        
+        if (!name) {
+          alert('Veuillez entrer un nom pour le salon');
+          return;
+        }
+        
+        try {
+          await social.createChatRoom(name, description, isPrivate);
+          createRoomForm.classList.add('hidden');
+          createRoomBtn.classList.remove('hidden');
+          document.getElementById('room-name').value = '';
+          document.getElementById('room-description').value = '';
+          document.getElementById('room-private').checked = false;
+        } catch (error) {
+          console.error('Error creating chat room:', error);
+          alert('Erreur lors de la création du salon');
+        }
+      });
+      
+      // Gestion de la déconnexion
+      document.getElementById('logout-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        fetch('/api/logout', {
+          method: 'POST',
+          credentials: 'include'
+        }).then(() => {
+          window.location.href = '/';
+        }).catch(error => {
+          console.error('Error logging out:', error);
+        });
+      });
+    }
+    
+    // Rendu de la liste d'amis
+    function renderFriendsList(friends) {
+      const friendsList = document.getElementById('friends-list');
+      
+      if (!friends || friends.length === 0) {
+        friendsList.innerHTML = '<li class="empty-state">Vous n\'avez pas encore d\'amis</li>';
+        return;
+      }
+      
+      friendsList.innerHTML = friends.map(friend => `
+        <li data-friend-id="${friend.id}" class="friend-item">
+          <div class="friend-name">${friend.username}</div>
+          <div class="friend-actions">
+            <button class="chat-btn" data-friend-id="${friend.id}">💬</button>
+            <button class="remove-friend-btn" data-friend-id="${friend.id}">❌</button>
+          </div>
+        </li>
+      `).join('');
+      
+      // Ajouter les gestionnaires d'événements pour le chat
+      friendsList.querySelectorAll('.chat-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const friendId = parseInt(e.target.dataset.friendId);
+          openChat(friendId);
+        });
+      });
+      
+      // Ajouter les gestionnaires d'événements pour la suppression d'amis
+      friendsList.querySelectorAll('.remove-friend-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const friendId = parseInt(e.target.dataset.friendId);
+          
+          if (confirm('Êtes-vous sûr de vouloir supprimer cet ami ?')) {
+            try {
+              await window.msBingoSocial.removeFriend(friendId);
+            } catch (error) {
+              console.error('Error removing friend:', error);
+              alert('Erreur lors de la suppression de l\'ami');
+            }
+          }
+        });
+      });
+    }
+    
+    // Rendu des demandes d'amitié
+    function renderFriendRequests(requests) {
+      const requestsList = document.getElementById('friend-requests-list');
+      const countElement = document.getElementById('friend-request-count');
+      
+      // Mettre à jour le compteur
+      const incomingCount = requests.incoming.length;
+      countElement.textContent = incomingCount > 0 ? `(${incomingCount})` : '';
+      
+      // Afficher les demandes reçues
+      if (incomingCount === 0) {
+        requestsList.innerHTML = '<div class="empty-state">Aucune demande en attente</div>';
+        return;
+      }
+      
+      requestsList.innerHTML = requests.incoming.map(request => `
+        <div class="friend-request">
+          <div class="request-info">
+            <div class="request-username">${request.username}</div>
+            <div class="request-date">${formatDate(request.created_at)}</div>
+          </div>
+          <div class="request-actions">
+            <button class="accept-btn" data-request-id="${request.id}">✓</button>
+            <button class="decline-btn" data-request-id="${request.id}">✗</button>
+          </div>
+        </div>
+      `).join('');
+      
+      // Ajouter les gestionnaires d'événements pour les réponses
+      requestsList.querySelectorAll('.accept-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const requestId = parseInt(e.target.dataset.requestId);
+          try {
+            await window.msBingoSocial.respondToFriendRequest(requestId, true);
+          } catch (error) {
+            console.error('Error accepting friend request:', error);
+            alert('Erreur lors de l\'acceptation de la demande');
+          }
+        });
+      });
+      
+      requestsList.querySelectorAll('.decline-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const requestId = parseInt(e.target.dataset.requestId);
+          try {
+            await window.msBingoSocial.respondToFriendRequest(requestId, false);
+          } catch (error) {
+            console.error('Error declining friend request:', error);
+            alert('Erreur lors du refus de la demande');
+          }
+        });
+      });
+    }
+    
+    // Rendu des résultats de recherche
+    function renderSearchResults(users) {
+      const resultsContainer = document.getElementById('search-results');
+      
+      if (!users || users.length === 0) {
+        resultsContainer.innerHTML = '<div class="empty-state">Aucun utilisateur trouvé</div>';
+        return;
+      }
+      
+      resultsContainer.innerHTML = users.map(user => {
+        let buttonHtml = '';
+        
+        if (user.friendshipStatus === 'accepted') {
+          buttonHtml = '<button disabled>Déjà ami</button>';
+        } else if (user.friendshipStatus === 'pending') {
+          if (user.isOutgoing) {
+            buttonHtml = '<button disabled>Demande envoyée</button>';
+          } else {
+            buttonHtml = '<button disabled>Demande reçue</button>';
+          }
+        } else {
+          buttonHtml = `<button class="add-friend-btn" data-user-id="${user.id}">Ajouter</button>`;
+        }
+        
+        return `
+          <div class="search-result">
+            <div class="result-username">${user.username}</div>
+            <div class="result-actions">
+              ${buttonHtml}
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      // Ajouter les gestionnaires d'événements pour les demandes d'amitié
+      resultsContainer.querySelectorAll('.add-friend-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const userId = parseInt(e.target.dataset.userId);
+          try {
+            await window.msBingoSocial.sendFriendRequest(userId);
+            e.target.disabled = true;
+            e.target.textContent = 'Demande envoyée';
+          } catch (error) {
+            console.error('Error sending friend request:', error);
+            alert('Erreur lors de l\'envoi de la demande');
+          }
+        });
+      });
+    }
+    
+    // Ouvrir une conversation avec un ami
+    async function openChat(friendId) {
+      try {
+        // Sélectionner l'ami dans la liste
+        document.querySelectorAll('.friend-item').forEach(item => {
+          item.classList.remove('active');
+          if (parseInt(item.dataset.friendId) === friendId) {
+            item.classList.add('active');
+          }
+        });
+        
+        // Afficher le loader
+        document.getElementById('chat-messages').innerHTML = '<div class="loading-spinner"></div>';
+        
+        // Charger les messages
+        const data = await window.msBingoSocial.loadMessages(friendId);
+        
+        // Mettre à jour l'en-tête du chat
+        document.getElementById('chat-header').innerHTML = `
+          <h3>Conversation avec ${data.friend.username}</h3>
+        `;
+        
+        // Afficher la zone de saisie
+        document.getElementById('chat-input').classList.remove('hidden');
+        
+        // Donner le focus à l'input
+        document.getElementById('message-input').focus();
+      } catch (error) {
+        console.error('Error opening chat:', error);
+        alert('Erreur lors de l\'ouverture de la conversation');
+      }
+    }
+    
+    // Rendu des messages
+    function renderMessages(messages) {
+      const messagesContainer = document.getElementById('chat-messages');
+      
+      if (!messages || messages.length === 0) {
+        messagesContainer.innerHTML = `
+          <div class="chat-empty-state">
+            <i>💬</i>
+            <p>Aucun message dans cette conversation</p>
+            <p>Envoyez le premier message pour démarrer la discussion</p>
+          </div>
+        `;
+        return;
+      }
+      
+      messagesContainer.innerHTML = messages.map(message => {
+        const isSent = message.sender_id === window.msBingoSocial.userId;
+        const time = formatTime(message.created_at);
+        
+        return `
+          <div class="message ${isSent ? 'sent' : 'received'}" data-message-id="${message.id}">
+            ${!isSent ? `<div class="message-sender">${message.sender_name}</div>` : ''}
+            <div class="message-content">${message.content}</div>
+            <div class="message-time">${time}</div>
+          </div>
+        `;
+      }).join('');
+      
+      // Faire défiler jusqu'au dernier message
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+    
+    // Gestion des nouveaux messages
+    function handleNewMessage(data) {
+      // Si l'utilisateur n'est pas sur la conversation actuelle, afficher une notification
+      if (window.msBingoSocial.currentChatFriendId !== data.senderId) {
+        window.msBingoSocial.showNotification(`Nouveau message de ${data.senderName}`);
+      }
+    }
+    
+    // Rendu des salons de chat
+    function renderChatRooms(rooms) {
+      const roomsList = document.getElementById('chat-rooms-list');
+      
+      if (!rooms || rooms.length === 0) {
+        roomsList.innerHTML = '<li class="empty-state">Aucun salon disponible</li>';
+        return;
+      }
+      
+      roomsList.innerHTML = rooms.map(room => {
+        let joinButton = '';
+        
+        if (!room.is_member) {
+          joinButton = `<button class="join-room-btn" data-room-id="${room.id}">Rejoindre</button>`;
+        }
+        
+        return `
+          <li data-room-id="${room.id}" class="room-item ${room.is_member ? 'member' : ''}">
+            <div class="room-info">
+              <div class="room-name">${room.name} ${room.is_private ? '🔒' : ''}</div>
+              <div class="room-description">${room.description || ''}</div>
+              <div class="room-members">${room.member_count} membres</div>
+            </div>
+            <div class="room-actions">
+              ${joinButton}
+              ${room.is_member ? `<button class="open-room-btn" data-room-id="${room.id}">Ouvrir</button>` : ''}
+            </div>
+          </li>
+        `;
+      }).join('');
+      
+      // Ajouter les gestionnaires d'événements pour rejoindre les salons
+      roomsList.querySelectorAll('.join-room-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const roomId = parseInt(e.target.dataset.roomId);
+          try {
+            await window.msBingoSocial.joinChatRoom(roomId);
+          } catch (error) {
+            console.error('Error joining chat room:', error);
+            alert('Erreur lors de la tentative de rejoindre le salon');
+          }
+        });
+      });
+      
+      // Ajouter les gestionnaires d'événements pour ouvrir les salons
+      roomsList.querySelectorAll('.open-room-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const roomId = parseInt(e.target.dataset.roomId);
+          openChatRoom(roomId);
+        });
+      });
+    }
+    
+    // Ouvrir un salon de chat
+    async function openChatRoom(roomId) {
+      try {
+        // Sélectionner le salon dans la liste
+        document.querySelectorAll('.room-item').forEach(item => {
+          item.classList.remove('active');
+          if (parseInt(item.dataset.roomId) === roomId) {
+            item.classList.add('active');
+          }
+        });
+        
+        // Trouver le nom du salon
+        const room = window.msBingoSocial.chatRooms.find(r => r.id === roomId);
+        
+        // Afficher le loader
+        document.getElementById('chat-messages').innerHTML = '<div class="loading-spinner"></div>';
+        
+        // Charger les messages
+        await window.msBingoSocial.loadRoomMessages(roomId);
+        
+        // Mettre à jour l'en-tête du chat
+        document.getElementById('chat-header').innerHTML = `
+          <h3>Salon: ${room.name}</h3>
+          <div class="room-description">${room.description || ''}</div>
+        `;
+        
+        // Afficher la zone de saisie
+        document.getElementById('chat-input').classList.remove('hidden');
+        
+        // Modifier le gestionnaire d'envoi pour les messages de salon
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-message-btn');
+        
+        // Supprimer les anciens gestionnaires
+        const newMessageInput = messageInput.cloneNode(true);
+        const newSendButton = sendButton.cloneNode(true);
+        
+        messageInput.parentNode.replaceChild(newMessageInput, messageInput);
+        sendButton.parentNode.replaceChild(newSendButton, sendButton);
+        
+        // Ajouter les nouveaux gestionnaires
+        function sendRoomMessage() {
+          const message = newMessageInput.value.trim();
+          if (message) {
+            window.msBingoSocial.sendRoomMessage(roomId, message);
+            newMessageInput.value = '';
+          }
+        }
+        
+        newSendButton.addEventListener('click', sendRoomMessage);
+        
+        newMessageInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            sendRoomMessage();
+          }
+        });
+        
+        // Donner le focus à l'input
+        newMessageInput.focus();
+      } catch (error) {
+        console.error('Error opening chat room:', error);
+        alert('Erreur lors de l\'ouverture du salon');
+      }
+    }
+    
+    // Rendu des messages d'un salon
+    function renderRoomMessages(messages) {
+      const messagesContainer = document.getElementById('chat-messages');
+      
+      if (!messages || messages.length === 0) {
+        messagesContainer.innerHTML = `
+          <div class="chat-empty-state">
+            <i>💬</i>
+            <p>Aucun message dans ce salon</p>
+            <p>Envoyez le premier message pour démarrer la discussion</p>
+          </div>
+        `;
+        return;
+      }
+      
+      messagesContainer.innerHTML = messages.map(message => {
+        const isSent = message.user_id === window.msBingoSocial.userId;
+        const time = formatTime(message.created_at);
+        
+        return `
+          <div class="message ${isSent ? 'sent' : 'received'}" data-message-id="${message.id}">
+            ${!isSent ? `<div class="message-sender">${message.sender_name}</div>` : ''}
+            <div class="message-content">${message.message}</div>
+            <div class="message-time">${time}</div>
+          </div>
+        `;
+      }).join('');
+      
+      // Faire défiler jusqu'au dernier message
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+    
+    // Formater une date
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('fr-FR', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+    
+    // Formater une heure
+    function formatTime(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleTimeString('fr-FR', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+  </script>
+</body>
+</html>

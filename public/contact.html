@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - PACIFIQUE MS BINGO</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/landing.css">
+    <style>
+        :root {
+            --primary-color: #0097b2;
+            --secondary-color: #ff7e00;
+            --accent-color: #ffcc00;
+            --bg-dark: #0a2a3b;
+            --text-light: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            background-image: url('/img/ocean-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .overlay {
+            background-color: rgba(10, 42, 59, 0.8);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-section {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 1.6;
+        }
+        
+        .contact-section h1 {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .contact-section p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .contact-email {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .contact-email:hover {
+            text-decoration: underline;
+        }
+        
+        .contact-item {
+            margin-bottom: 1.5rem;
+        }
+        
+        .warning-box {
+            background-color: rgba(255, 126, 0, 0.2);
+            border-left: 4px solid var(--secondary-color);
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .warning-box h3 {
+            color: var(--secondary-color);
+            margin-top: 0;
+        }
+        
+        .help-line {
+            font-style: italic;
+            margin-top: 1rem;
+        }
+        
+        .back-button {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.8rem 1.8rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            background-color: #007d99;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+            color: var(--accent-color);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .contact-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <div class="container">
+            <header>
+                <img src="/img/logo.png" alt="PACIFIQUE MS BINGO" class="logo" style="max-width: 350px;">
+            </header>
+            
+            <section class="contact-section">
+                <h1>Contact</h1>
+                
+                <p>Pour toute question, remarque ou demande d'assistance, vous pouvez nous contacter par e-mail :</p>
+                
+                <div class="contact-item">
+                    <h3>Support technique :</h3>
+                    <a href="mailto:support@pacifiquemsbingo.nc" class="contact-email">support@pacifiquemsbingo.nc</a>
+                </div>
+                
+                <div class="contact-item">
+                    <h3>Informations générales et partenaires :</h3>
+                    <a href="mailto:contact@pacifiquemsbingo.nc" class="contact-email">contact@pacifiquemsbingo.nc</a>
+                </div>
+                
+                <p>Notre équipe s'engage à vous répondre sous 24 à 48h (jours ouvrés), du lundi au samedi de 10h à 17h (heure locale).</p>
+                
+                <div class="warning-box">
+                    <h3>Attention :</h3>
+                    <p>Le jeu d'argent est interdit aux mineurs. Jouez avec modération.</p>
+                    <p class="help-line">En cas de problème lié au jeu, contactez Joueurs Info Service au 09 74 75 13 13 (appel non surtaxé).</p>
+                </div>
+                
+                <div style="text-align: center;">
+                    <a href="/" class="back-button">Retour à l'accueil</a>
+                </div>
+            </section>
+        </div>
+        
+        <footer>
+            <div class="footer-links">
+                <a href="/">Accueil</a>
+                <a href="/about.html">À propos</a>
+                <a href="/rules.html">Règles du jeu</a>
+                <a href="/terms.html">Conditions d'utilisation</a>
+                <a href="/privacy.html">Politique de confidentialité</a>
+            </div>
+            
+            <p>&copy; 2025 PACIFIQUE MS BINGO. Tous droits réservés.</p>
+        </footer>
+    </div>
+</body>
+</html>

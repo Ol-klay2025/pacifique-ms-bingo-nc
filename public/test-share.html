@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Partage Social - MS BINGO Pacifique</title>
+    
+    <!-- Scripts -->
+    <script src="/js/lib/confetti.min.js"></script>
+    <script src="/js/celebration-animations.js"></script>
+    <script src="/js/social-share.js"></script>
+    <script src="/js/social-integration.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Trebuchet MS', Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: white;
+            margin: 0;
+            padding: 0;
+            background-image: url('/img/bingo-crypto-bg.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header {
+            background-color: #0099cc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            margin: 0;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        .test-panel {
+            background-color: rgba(42, 42, 42, 0.85);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        button {
+            background-color: #0099cc;
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        button:hover {
+            background-color: #00b3ee;
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button.warning {
+            background-color: #ff9800;
+        }
+        
+        button.success {
+            background-color: #4CAF50;
+        }
+        
+        button.danger {
+            background-color: #f44336;
+        }
+        
+        .region-selector {
+            margin-top: 20px;
+        }
+        
+        .region-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .region-option {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 120px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .region-option:hover {
+            background-color: #444;
+        }
+        
+        .region-option.active {
+            border-color: #0099cc;
+            background-color: #0099cc33;
+        }
+        
+        .region-name {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .preview-card {
+            background-color: #333;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            border: 2px solid #0099cc;
+        }
+        
+        .card-header {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            background-color: #0099cc;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 5px 0;
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-rows: repeat(3, 1fr);
+        }
+        
+        .card-row {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+        }
+        
+        .card-cell {
+            padding: 10px 0;
+            text-align: center;
+            border: 1px solid #444;
+        }
+        
+        .card-cell.marked {
+            background-color: #0099cc;
+            color: white;
+        }
+        
+        .card-cell.empty {
+            background-color: #4CAF50;
+            opacity: 0.5;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #0099cc;
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Test Partage Social - MS BINGO Pacifique</h1>
+        </header>
+        
+        <div class="test-panel">
+            <h2>Tester les fonctionnalités de partage social</h2>
+            <p>Cette page permet de tester le partage social pour les différents types de victoires sans avoir à jouer une partie complète.</p>
+            
+            <div class="region-selector">
+                <h3>Choisir votre région</h3>
+                <div class="region-options">
+                    <div class="region-option" data-region="default">
+                        <div class="region-name">Par défaut</div>
+                    </div>
+                    <div class="region-option" data-region="tahiti">
+                        <div class="region-name">Tahiti</div>
+                    </div>
+                    <div class="region-option" data-region="newcaledonia">
+                        <div class="region-name">Nouvelle-Calédonie</div>
+                    </div>
+                    <div class="region-option" data-region="fiji">
+                        <div class="region-name">Fidji</div>
+                    </div>
+                    <div class="region-option" data-region="samoa">
+                        <div class="region-name">Samoa</div>
+                    </div>
+                    <div class="region-option" data-region="pacific">
+                        <div class="region-name">Pacifique</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button class="warning" id="test-quine">Tester Quine + Partage</button>
+                <button class="success" id="test-bingo">Tester Bingo + Partage</button>
+                <button class="danger" id="test-jackpot">Tester Jackpot + Partage</button>
+            </div>
+            
+            <div class="button-group" style="margin-top: 10px;">
+                <button id="test-share-quine">Partage Quine Uniquement</button>
+                <button id="test-share-bingo">Partage Bingo Uniquement</button>
+                <button id="test-share-jackpot">Partage Jackpot Uniquement</button>
+            </div>
+            
+            <div class="button-group" style="margin-top: 20px;">
+                <button id="test-oneclick-quine">Partage Un Clic - Quine</button>
+                <button id="test-oneclick-bingo">Partage Un Clic - Bingo</button>
+                <button id="test-oneclick-jackpot">Partage Un Clic - Jackpot</button>
+            </div>
+            
+            <div class="button-group" style="margin-top: 10px;">
+                <button id="social-settings" class="warning">Gérer mes comptes sociaux</button>
+            </div>
+        </div>
+        
+        <div class="test-panel">
+            <h2>Aperçu du carton de bingo</h2>
+            <p>Voici un aperçu du carton qui sera utilisé pour les tests de partage.</p>
+            
+            <div class="preview-card">
+                <div class="card-header">
+                    <div>1-9</div>
+                    <div>10-19</div>
+                    <div>20-29</div>
+                    <div>30-39</div>
+                    <div>40-49</div>
+                    <div>50-59</div>
+                    <div>60-69</div>
+                    <div>70-79</div>
+                    <div>80-90</div>
+                </div>
+                <div class="card-grid">
+                    <div class="card-row">
+                        <div class="card-cell marked">3</div>
+                        <div class="card-cell marked">16</div>
+                        <div class="card-cell marked">31</div>
+                        <div class="card-cell marked">47</div>
+                        <div class="card-cell marked">62</div>
+                        <div class="card-cell empty"></div>
+                        <div class="card-cell empty"></div>
+                        <div class="card-cell empty"></div>
+                        <div class="card-cell empty"></div>
+                    </div>
+                    <div class="card-row">
+                        <div class="card-cell marked">7</div>
+                        <div class="card-cell marked">24</div>
+                        <div class="card-cell empty"></div>
+                        <div class="card-cell marked">54</div>
+                        <div class="card-cell marked">65</div>
+                        <div class="card-cell empty"></div>
+                        <div class="card-cell empty"></div>
+                        <div class="card-cell empty"></div>
+                        <div class="card-cell empty"></div>
+                    </div>
+                    <div class="card-row">
+                        <div class="card-cell marked">14</div>
+                        <div class="card-cell marked">28</div>
+                        <div class="card-cell marked">36</div>
+                        <div class="card-cell marked">59</div>
+                        <div class="card-cell marked">71</div>
+                        <div class="card-cell empty"></div>
+                        <div class="card-cell empty"></div>
+                        <div class="card-cell empty"></div>
+                        <div class="card-cell empty"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <a href="/play.html" class="back-link">← Retour à la page de jeu</a>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sélectionner la région par défaut
+            const defaultRegion = document.querySelector('.region-option[data-region="default"]');
+            defaultRegion.classList.add('active');
+            
+            // Gérer le clic sur les options de région
+            document.querySelectorAll('.region-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Retirer la classe active de toutes les régions
+                    document.querySelectorAll('.region-option').forEach(opt => {
+                        opt.classList.remove('active');
+                    });
+                    
+                    // Ajouter la classe active à la région sélectionnée
+                    this.classList.add('active');
+                    
+                    // Stocker la région dans localStorage
+                    const regionCode = this.getAttribute('data-region');
+                    localStorage.setItem('userRegion', regionCode);
+                });
+            });
+            
+            // Tester les animations de célébration avec partage
+            document.getElementById('test-quine').addEventListener('click', function() {
+                const region = getSelectedRegion();
+                
+                // Déclencher l'événement quine-achieved
+                const quineEvent = new CustomEvent('quine-achieved', {
+                    detail: {
+                        card: {
+                            playerName: 'Vous',
+                            numbers: [
+                                [3, 16, 31, 47, 62],
+                                [7, 24, 0, 54, 65],
+                                [14, 28, 36, 59, 71]
+                            ],
+                            markedNumbers: [3, 14, 24, 59, 0],
+                            winningNumbers: [3, 14, 24, 59, 0]
+                        }
+                    }
+                });
+                document.dispatchEvent(quineEvent);
+                
+                // Déclencher l'animation de célébration
+                const celebrationEvent = new CustomEvent('bingo:quine', {
+                    detail: { region: region }
+                });
+                document.dispatchEvent(celebrationEvent);
+            });
+            
+            document.getElementById('test-bingo').addEventListener('click', function() {
+                const region = getSelectedRegion();
+                
+                // Déclencher l'événement bingo-achieved
+                const bingoEvent = new CustomEvent('bingo-achieved', {
+                    detail: {
+                        card: {
+                            playerName: 'Vous',
+                            numbers: [
+                                [3, 16, 31, 47, 62],
+                                [7, 24, 0, 54, 65],
+                                [14, 28, 36, 59, 71]
+                            ],
+                            markedNumbers: [3, 14, 24, 59, 16, 31, 47, 62, 7, 54, 65, 28, 36, 71, 0],
+                            winningNumbers: [3, 14, 24, 59, 16, 31, 47, 62, 7, 54, 65, 28, 36, 71, 0]
+                        }
+                    }
+                });
+                document.dispatchEvent(bingoEvent);
+                
+                // Déclencher l'animation de célébration
+                const celebrationEvent = new CustomEvent('bingo:bingo', {
+                    detail: { region: region }
+                });
+                document.dispatchEvent(celebrationEvent);
+            });
+            
+            document.getElementById('test-jackpot').addEventListener('click', function() {
+                const region = getSelectedRegion();
+                
+                // Déclencher l'événement bingo-achieved (pour la compatibilité)
+                const bingoEvent = new CustomEvent('bingo-achieved', {
+                    detail: {
+                        card: {
+                            playerName: 'Vous',
+                            numbers: [
+                                [3, 16, 31, 47, 62],
+                                [7, 24, 0, 54, 65],
+                                [14, 28, 36, 59, 71]
+                            ],
+                            markedNumbers: [3, 14, 24, 59, 16, 31, 47, 62, 7, 54, 65, 28, 36, 71, 0],
+                            winningNumbers: [3, 14, 24, 59, 16, 31, 47, 62, 7, 54, 65, 28, 36, 71, 0]
+                        }
+                    }
+                });
+                document.dispatchEvent(bingoEvent);
+                
+                // Déclencher l'animation de célébration du jackpot
+                const jackpotEvent = new CustomEvent('bingo:jackpot', {
+                    detail: { region: region }
+                });
+                document.dispatchEvent(jackpotEvent);
+            });
+            
+            // Tester uniquement le partage social
+            document.getElementById('test-share-quine').addEventListener('click', function() {
+                const language = document.documentElement.lang || 'fr';
+                window.showShareModal('quine', 3000, language);
+            });
+            
+            document.getElementById('test-share-bingo').addEventListener('click', function() {
+                const language = document.documentElement.lang || 'fr';
+                window.showShareModal('bingo', 10000, language);
+            });
+            
+            document.getElementById('test-share-jackpot').addEventListener('click', function() {
+                const language = document.documentElement.lang || 'fr';
+                window.showShareModal('jackpot', 100000, language);
+            });
+            
+            // Fonction pour obtenir la région sélectionnée
+            function getSelectedRegion() {
+                const activeRegion = document.querySelector('.region-option.active');
+                return activeRegion ? activeRegion.getAttribute('data-region') : 'default';
+            }
+            
+            // Test des fonctionnalités d'intégration sociale en un clic
+            document.getElementById('test-oneclick-quine').addEventListener('click', function() {
+                window.showOneClickShare('quine', 3000);
+            });
+            
+            document.getElementById('test-oneclick-bingo').addEventListener('click', function() {
+                window.showOneClickShare('bingo', 10000);
+            });
+            
+            document.getElementById('test-oneclick-jackpot').addEventListener('click', function() {
+                window.showOneClickShare('jackpot', 100000);
+            });
+            
+            // Gestion des comptes sociaux
+            document.getElementById('social-settings').addEventListener('click', function() {
+                window.showSocialSettings();
+            });
+        });
+    </script>
+</body>
+</html>

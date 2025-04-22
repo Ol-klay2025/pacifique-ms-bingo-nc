@@ -1,0 +1,261 @@
+/* 
+ * MS BINGO - Animation de chargement
+ * Style pour l'animation ludique inspirée du thème BINGO avec effet "sniper"
+ */
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 10, 10, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    color: white;
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.loading-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.bingo-loader {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    margin-bottom: 20px;
+}
+
+.bingo-ball {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: inset -3px -3px 8px rgba(0, 0, 0, 0.4), 0 0 10px rgba(255, 255, 255, 0.2);
+    animation: pop-in 0.5s ease-out, float 3s ease-in-out infinite alternate;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.bingo-ball::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    width: 12px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+    transform: rotate(25deg);
+}
+
+.bingo-ball:nth-child(1) {
+    background-color: #DD3333; /* Rouge pour B */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    animation-delay: 0s;
+}
+
+.bingo-ball:nth-child(2) {
+    background-color: #3366CC; /* Bleu pour I */
+    top: 25%;
+    left: 25%;
+    animation-delay: 0.2s;
+}
+
+.bingo-ball:nth-child(3) {
+    background-color: #FF9900; /* Orange pour N */
+    top: 25%;
+    right: 25%;
+    animation-delay: 0.4s;
+}
+
+.bingo-ball:nth-child(4) {
+    background-color: #33CC33; /* Vert pour G */
+    bottom: 25%;
+    left: 25%;
+    animation-delay: 0.6s;
+}
+
+.bingo-ball:nth-child(5) {
+    background-color: #9933CC; /* Violet pour O */
+    bottom: 25%;
+    right: 25%;
+    animation-delay: 0.8s;
+}
+
+/* Effet de "crosshair" (viseur) */
+.sniper-scope {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1), inset 0 0 0 2px rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+    z-index: 10;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.sniper-scope::before, .sniper-scope::after {
+    content: '';
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.sniper-scope::before {
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    transform: translateY(-50%);
+}
+
+.sniper-scope::after {
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    transform: translateX(-50%);
+}
+
+.sniper-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 0, 0, 0.7);
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.7);
+    z-index: 11;
+    animation: blink 1s ease-in-out infinite;
+}
+
+.loading-text {
+    font-size: 18px;
+    margin-top: 20px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+.progress-bar {
+    width: 280px;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    margin-top: 15px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #0099cc;
+    width: 0%;
+    border-radius: 3px;
+    transition: width 0.5s ease-out;
+    box-shadow: 0 0 8px #0099cc;
+}
+
+/* Animations */
+@keyframes pop-in {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+    }
+    80% {
+        transform: scale(1.1) rotate(360deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1) rotate(360deg);
+        opacity: 1;
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-10px) rotate(5deg);
+    }
+    100% {
+        transform: translateY(5px) rotate(-5deg);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.05);
+        opacity: 0.7;
+    }
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 5px #0099cc, 0 0 10px #0099cc, 0 0 15px #0099cc;
+    }
+    to {
+        text-shadow: 0 0 10px #0099cc, 0 0 20px #0099cc, 0 0 30px #0099cc;
+    }
+}
+
+/* Animation pour viser et "sniper" une boule */
+.targeted {
+    animation: target-lock 1s ease-in-out;
+}
+
+@keyframes target-lock {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 0, 0, 0);
+    }
+    50% {
+        transform: scale(1.2);
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+    }
+    75% {
+        transform: scale(0.9);
+        box-shadow: 0 0 40px rgba(255, 0, 0, 0.5);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+    }
+}
